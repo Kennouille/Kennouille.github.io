@@ -21,12 +21,10 @@
         }
     </style>
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
-        import { getDatabase } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
-        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDRcm_z44LdHpc_1gO_k-k0ARZkbI9XZm4",
             authDomain: "julias-clean.firebaseapp.com",
@@ -37,10 +35,33 @@
             measurementId: "G-TBNN0RJSXW"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const database = getDatabase(app);
+
+        function loadDataFromFirebase() {
+            get(ref(database, 'tableData')).then(snapshot => {
+                const data = snapshot.val();
+                if (data) {
+                    const tableBody = document.querySelector('#data-table tbody');
+                    tableBody.innerHTML = ''; // Clear previous data
+                    data.forEach(rowData => {
+                        const row = document.createElement('tr');
+                        rowData.forEach(cellData => {
+                            const cellElement = document.createElement('td');
+                            cellElement.textContent = cellData;
+                            cellElement.contentEditable = "true"; // Rendre les cellules éditables
+                            row.appendChild(cellElement);
+                        });
+                        tableBody.appendChild(row);
+                    });
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDataFromFirebase();
+        });
     </script>
 </head>
 <body>
@@ -64,31 +85,5 @@
             <!-- Les données seront insérées ici -->
         </tbody>
     </table>
-
-    <script>
-        function loadDataFromFirebase() {
-            database.ref('tableData').once('value').then(snapshot => {
-                const data = snapshot.val();
-                if (data) {
-                    const tableBody = document.querySelector('#data-table tbody');
-                    tableBody.innerHTML = ''; // Clear previous data
-                    data.forEach(rowData => {
-                        const row = document.createElement('tr');
-                        rowData.forEach(cellData => {
-                            const cellElement = document.createElement('td');
-                            cellElement.textContent = cellData;
-                            cellElement.contentEditable = "true"; // Rendre les cellules éditables
-                            row.appendChild(cellElement);
-                        });
-                        tableBody.appendChild(row);
-                    });
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            loadDataFromFirebase();
-        });
-    </script>
 </body>
 </html>

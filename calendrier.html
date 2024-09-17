@@ -121,34 +121,51 @@
 
 
         function updateCalendar() {
-        // ... (partie existante pour calculer le premier jour, le nombre de jours, etc.)
+        var calendarTable = document.getElementById("calendarTable");
+        var monthYear = document.getElementById("monthYear");
+        calendarTable.innerHTML = `
+            <tr>
+                <th>Lu</th>
+                <th>Ma</th>
+                <th>Mie</th>
+                <th>Ju</th>
+                <th>Vie</th>
+                <th>Sa</th>
+                <th>Do</th>
+            </tr>
+        `;
 
-        // Nettoyer le tableau du calendrier
-        var calendarTable = document.getElementById('calendarTable');
-        calendarTable.innerHTML = '<tr><th>Lu</th><th>Ma</th><th>Mie</th><th>Ju</th><th>Vie</th><th>Sa</th><th>Do</th></tr>';
+        var firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-        // Créer une nouvelle ligne pour chaque semaine
-        var row = calendarTable.insertRow();
+        var date = 1;
+        for (var i = 0; i < 6; i++) {
+            var row = document.createElement("tr");
 
-        // Ajouter les jours du mois
-        var dayCount = 1;
-        for (var i = 0; i < 7; i++) {
-          if (i >= startDay) {
-            var cell = row.insertCell();
-            cell.textContent = dayCount;
-            dayCount++;
-            // ... (autres traitements pour les classes, événements, etc.)
-          } else {
-            row.insertCell().textContent = '&nbsp;';
-          }
-          if (i === 6 || dayCount > daysInMonth) {
-            row = calendarTable.insertRow();
-          }
+            for (var j = 0; j < 7; j++) {
+                if (i === 0 && j < firstDay) {
+                    var cell = document.createElement("td");
+                    var cellText = document.createTextNode("");
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                } else if (date > daysInMonth) {
+                    break;
+                } else {
+                    var cell = document.createElement("td");
+                    var cellText = document.createTextNode(date);
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                    date++;
+                }
+            }
+
+            calendarTable.appendChild(row);
         }
 
-          // Mettre à jour l'affichage du mois et de l'année
-          document.getElementById('monthYear').textContent = monthNames[currentMonth] + ' ' + currentYear;
-        }
+        monthYear.innerHTML = monthNames[currentMonth] + " " + currentYear;
+    }
+
+    updateCalendar();
 
         function changeMonth(offset) {
         currentMonth += offset;

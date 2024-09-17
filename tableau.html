@@ -26,67 +26,67 @@
         import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            databaseURL: "YOUR_DATABASE_URL",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID",
-            measurementId: "YOUR_MEASUREMENT_ID"
+            apiKey: "AIzaSyDRcm_z44LdHpc_1gO_k-k0ARZkbI9XZm4",
+            authDomain: "julias-clean.firebaseapp.com",
+            databaseURL: "https://julias-clean-default-rtdb.firebaseio.com",
+            projectId: "julias-clean",
+            storageBucket: "julias-clean.appspot.com",
+            messagingSenderId: "642706594397",
+            appId: "1:642706594397:web:57dfac7739e028720f8bb4",
+            measurementId: "G-TBNN0RJSXW"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const database = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const database = getDatabase(app);
 
-        function loadDataFromFirebase() {
-            get(ref(database, 'tableData')).then(snapshot => {
-                const data = snapshot.val();
-                console.log(data); // Affiche les données dans la console du navigateur
-                if (data) {
-                    const tableBody = document.querySelector('#data-table tbody');
-                    tableBody.innerHTML = ''; // Clear previous data
-                    Object.keys(data).forEach(key => {
-                        const rowData = data[key];
-                        const row = document.createElement('tr');
-                        Object.values(rowData).forEach(cellData => {
-                            const cellElement = document.createElement('td');
-                            cellElement.textContent = cellData;
-                            cellElement.contentEditable = "true"; // Rendre les cellules éditables
-                            row.appendChild(cellElement);
-                        });
-                        tableBody.appendChild(row);
-                    });
-                }
-            }).catch(error => {
-                console.error('Erreur lors du chargement des données :', error);
+function loadDataFromFirebase() {
+    get(ref(database, 'tableData')).then(snapshot => {
+        const data = snapshot.val();
+        console.log(data); // Affiche les données dans la console du navigateur
+        if (data) {
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = ''; // Clear previous data
+            Object.keys(data).forEach(key => {
+                const rowData = data[key];
+                const row = document.createElement('tr');
+                Object.values(rowData).forEach(cellData => {
+                    const cellElement = document.createElement('td');
+                    cellElement.textContent = cellData;
+                    cellElement.contentEditable = "true"; // Rendre les cellules éditables
+                    row.appendChild(cellElement);
+                });
+                tableBody.appendChild(row);
             });
         }
+    }).catch(error => {
+        console.error('Erreur lors du chargement des données :', error);
+    });
+}
 
-        document.addEventListener('DOMContentLoaded', function() {
-            loadDataFromFirebase();
-        });
-    </script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadDataFromFirebase();
+});
+</script>
 </head>
 <body>
-    <h1>Tableau de Données</h1>
-    <table id="data-table">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>First Name</th>
-                <th>Ind</th>
-                <th>Link</th>
-                <th>Lugar</th>
-                <th>Mobile Phone</th>
-                <th>Precio</th>
-                <th>Trabajo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Les données seront insérées ici -->
-        </tbody>
-    </table>
+<h1>Tableau de Données</h1>
+<table id="data-table">
+<thead>
+    <tr>
+        <th>Fecha</th>
+        <th>First Name</th>
+        <th>Ind</th>
+        <th>Link</th>
+        <th>Lugar</th>
+        <th>Mobile Phone</th>
+        <th>Precio</th>
+        <th>Trabajo</th>
+    </tr>
+</thead>
+<tbody>
+    <!-- Les données seront insérées ici -->
+</tbody>
+</table>
 </body>
 </html>

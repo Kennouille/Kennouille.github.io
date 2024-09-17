@@ -1,95 +1,151 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Données</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-            color: #333;
-        }
-    </style>
-</head>
-<body>
-    <h1>Tableau de Données</h1>
-    <input type="file" id="file-input" />
-    <select id="sheet-select" style="display:none;"></select>
-    <table id="data-table">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Ind.</th>
-                <th>Mobile</th>
-                <th>Link</th>
-                <th>Lugar</th>
-                <th>Fecha</th>
-                <th>Trabajo</th>
-                <th>Precio</th>
-                <th>Type</th>
-                <th>LinkInternet</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Les données seront insérées ici -->
-        </tbody>
-    </table>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
-    <script>
-        document.getElementById('file-input').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const sheetSelect = document.getElementById('sheet-select');
-                sheetSelect.innerHTML = ''; // Clear previous options
-                workbook.SheetNames.forEach((sheetName, index) => {
-                    const option = document.createElement('option');
-                    option.value = sheetName;
-                    option.textContent = sheetName;
-                    sheetSelect.appendChild(option);
-                });
-                sheetSelect.style.display = 'block';
-                sheetSelect.addEventListener('change', function() {
-                    loadSheet(workbook, sheetSelect.value);
-                });
-                loadSheet(workbook, sheetSelect.value); // Load the first sheet by default
-            };
-            reader.readAsArrayBuffer(file);
-        });
-
-        function loadSheet(workbook, sheetName) {
-            const worksheet = workbook.Sheets[sheetName];
-            const range = XLSX.utils.decode_range("A3:J3656");
-            const tableBody = document.querySelector('#data-table tbody');
-            tableBody.innerHTML = ''; // Clear previous data
-            for (let rowNum = range.s.r; rowNum <= range.e.r; rowNum++) {
-                const row = document.createElement('tr');
-                for (let colNum = range.s.c; colNum <= range.e.c; colNum++) {
-                    const cellAddress = { c: colNum, r: rowNum };
-                    const cellRef = XLSX.utils.encode_cell(cellAddress);
-                    const cell = worksheet[cellRef];
-                    const cellValue = cell ? cell.v : '';
-                    const cellElement = document.createElement('td');
-                    cellElement.textContent = cellValue;
-                    cellElement.contentEditable = "true"; // Rendre les cellules éditables
-                    row.appendChild(cellElement);
-                }
-                tableBody.appendChild(row);
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tableau de Données</title>
+        <link rel="stylesheet" href="styles.css">
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
             }
-        }
-    </script>
-</body>
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+                color: #333;
+            }
+        </style>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    </head>
+    <body>
+        <h1>Tableau de Données</h1>
+        <input type="file" id="file-input" />
+        <select id="sheet-select" style="display:none;"></select>
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Ind.</th>
+                    <th>Mobile</th>
+                    <th>Link</th>
+                    <th>Lugar</th>
+                    <th>Fecha</th>
+                    <th>Trabajo</th>
+                    <th>Precio</th>
+                    <th>Type</th>
+                    <th>LinkInternet</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Les données seront insérées ici -->
+            </tbody>
+        </table>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+        <script>
+            // Configuration Firebase
+            const firebaseConfig = {
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_AUTH_DOMAIN",
+                databaseURL: "YOUR_DATABASE_URL",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_STORAGE_BUCKET",
+                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const database = firebase.database();
+    
+            document.getElementById('file-input').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetSelect = document.getElementById('sheet-select');
+                    sheetSelect.innerHTML = ''; // Clear previous options
+                    workbook.SheetNames.forEach((sheetName, index) => {
+                        const option = document.createElement('option');
+                        option.value = sheetName;
+                        option.textContent = sheetName;
+                        sheetSelect.appendChild(option);
+                    });
+                    sheetSelect.style.display = 'block';
+                    sheetSelect.addEventListener('change', function() {
+                        loadSheet(workbook, sheetSelect.value);
+                    });
+                    loadSheet(workbook, sheetSelect.value); // Load the first sheet by default
+                };
+                reader.readAsArrayBuffer(file);
+            });
+    
+            function loadSheet(workbook, sheetName) {
+                const worksheet = workbook.Sheets[sheetName];
+                const range = XLSX.utils.decode_range("A3:J3656");
+                const tableBody = document.querySelector('#data-table tbody');
+                tableBody.innerHTML = ''; // Clear previous data
+                for (let rowNum = range.s.r; rowNum <= range.e.r; rowNum++) {
+                    const row = document.createElement('tr');
+                    for (let colNum = range.s.c; colNum <= range.e.c; colNum++) {
+                        const cellAddress = { c: colNum, r: rowNum };
+                        const cellRef = XLSX.utils.encode_cell(cellAddress);
+                        const cell = worksheet[cellRef];
+                        const cellValue = cell ? cell.v : '';
+                        const cellElement = document.createElement('td');
+                        cellElement.textContent = cellValue;
+                        cellElement.contentEditable = "true"; // Rendre les cellules éditables
+                        row.appendChild(cellElement);
+                    }
+                    tableBody.appendChild(row);
+                }
+                saveDataToFirebase();
+            }
+    
+            function saveDataToFirebase() {
+                const tableBody = document.querySelector('#data-table tbody');
+                const rows = tableBody.querySelectorAll('tr');
+                const data = [];
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const rowData = [];
+                    cells.forEach(cell => {
+                        rowData.push(cell.textContent);
+                    });
+                    data.push(rowData);
+                });
+                database.ref('tableData').set(data);
+            }
+    
+            function loadDataFromFirebase() {
+                database.ref('tableData').once('value').then(snapshot => {
+                    const data = snapshot.val();
+                    if (data) {
+                        const tableBody = document.querySelector('#data-table tbody');
+                        tableBody.innerHTML = ''; // Clear previous data
+                        data.forEach(rowData => {
+                            const row = document.createElement('tr');
+                            rowData.forEach(cellData => {
+                                const cellElement = document.createElement('td');
+                                cellElement.textContent = cellData;
+                                cellElement.contentEditable = "true"; // Rendre les cellules éditables
+                                row.appendChild(cellElement);
+                            });
+                            tableBody.appendChild(row);
+                        });
+                    }
+                });
+            }
+    
+            document.addEventListener('DOMContentLoaded', function() {
+                loadDataFromFirebase();
+                document.querySelector('#data-table').addEventListener('input', saveDataToFirebase);
+            });
+        </script>
+    </body>
 </html>

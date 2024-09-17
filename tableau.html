@@ -20,9 +20,8 @@
                 color: #333;
             }
         </style>
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-    </head>
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";    </head>
     <body>
         <h1>Tableau de Données</h1>
         <input type="file" id="file-input" />
@@ -51,16 +50,17 @@
         <script>
             // Configuration Firebase
             const firebaseConfig = {
-                apiKey: "YOUR_API_KEY",
-                authDomain: "YOUR_AUTH_DOMAIN",
-                databaseURL: "YOUR_DATABASE_URL",
-                projectId: "YOUR_PROJECT_ID",
-                storageBucket: "YOUR_STORAGE_BUCKET",
-                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-                appId: "YOUR_APP_ID"
+                apiKey: "AIzaSyDRcm_z44LdHpc_1gO_k-k0ARZkbI9XZm4",
+                authDomain: "julias-clean.firebaseapp.com",
+                projectId: "julias-clean",
+                storageBucket: "julias-clean.appspot.com",
+                messagingSenderId: "642706594397",
+                appId: "1:642706594397:web:57dfac7739e028720f8bb4",
+                measurementId: "G-TBNN0RJSXW"
             };
-            firebase.initializeApp(firebaseConfig);
-            const database = firebase.database();
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
     
             document.getElementById('file-input').addEventListener('change', function(event) {
                 const file = event.target.files[0];

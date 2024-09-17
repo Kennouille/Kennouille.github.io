@@ -3,10 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Importer des Données</title>
+    <title>Tableau de Données</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+    </style>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDRcm_z44LdHpc_1gO_k-k0ARZkbI9XZm4",
@@ -19,28 +36,54 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
         const database = getDatabase(app);
 
-        function importJSON(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const jsonData = JSON.parse(e.target.result);
-
-                set(ref(database, 'tableData'), jsonData)
-                    .then(() => {
-                        console.log('Données importées avec succès');
-                    })
-                    .catch(error => {
-                        console.error('Erreur lors de l\'importation des données :', error);
+        function loadDataFromFirebase() {
+            get(ref(database, 'tableData')).then(snapshot => {
+                const data = snapshot.val();
+                if (data) {
+                    const tableBody = document.querySelector('#data-table tbody');
+                    tableBody.innerHTML = ''; // Clear previous data
+                    data.forEach(rowData => {
+                        const row = document.createElement('tr');
+                        rowData.forEach(cellData => {
+                            const cellElement = document.createElement('td');
+                            cellElement.textContent = cellData;
+                            cellElement.contentEditable = "true"; // Rendre les cellules éditables
+                            row.appendChild(cellElement);
+                        });
+                        tableBody.appendChild(row);
                     });
-            };
-            reader.readAsText(file);
+                }
+            });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDataFromFirebase();
+        });
     </script>
 </head>
 <body>
-    <h1>Importer des Données</h1>
-    <input type="file" id="file-input" accept=".json" onchange="importJSON(event)" />
+    <h1>Tableau de Données</h1>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Ind.</th>
+                <th>Mobile</th>
+                <th>Link</th>
+                <th>Lugar</th>
+                <th>Fecha</th>
+                <th>Trabajo</th>
+                <th>Precio</th>
+                <th>Type</th>
+                <th>LinkInternet</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les données seront insérées ici -->
+        </tbody>
+    </table>
 </body>
 </html>

@@ -68,8 +68,10 @@
             const file = event.target.files[0];
             const reader = new FileReader();
             reader.onload = function(e) {
+                console.log("Fichier chargé");
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, { type: 'array' });
+                console.log("Feuilles disponibles :", workbook.SheetNames);
                 const sheetSelect = document.getElementById('sheet-select');
                 sheetSelect.innerHTML = ''; // Clear previous options
                 workbook.SheetNames.forEach((sheetName, index) => {
@@ -88,6 +90,7 @@
         });
 
         function loadSheet(workbook, sheetName) {
+            console.log("Chargement de la feuille :", sheetName);
             const worksheet = workbook.Sheets[sheetName];
             const range = XLSX.utils.decode_range("A3:J3656");
             const tableBody = document.querySelector('#data-table tbody');
@@ -106,6 +109,7 @@
                 }
                 tableBody.appendChild(row);
             }
+            console.log("Données chargées dans le tableau");
             saveDataToFirebase();
         }
 

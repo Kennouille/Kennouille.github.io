@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importer des Données</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRcm_z44LdHpc_1gO_k-k0ARZkbI9XZm4",
+            authDomain: "julias-clean.firebaseapp.com",
+            projectId: "julias-clean",
+            storageBucket: "julias-clean.appspot.com",
+            messagingSenderId: "642706594397",
+            appId: "1:642706594397:web:57dfac7739e028720f8bb4",
+            measurementId: "G-TBNN0RJSXW"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const jsonData = JSON.parse(e.target.result);
+
+                set(ref(database, 'tableData'), jsonData)
+                    .then(() => {
+                        console.log('Données importées avec succès');
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de l\'importation des données :', error);
+                    });
+            };
+            reader.readAsText(file);
+        }
+    </script>
+</head>
+<body>
+    <h1>Importer des Données</h1>
+    <input type="file" id="file-input" accept=".json" onchange="importJSON(event)" />
+</body>
+</html>

@@ -23,12 +23,15 @@
         const database = getDatabase(app);
 
         function importJSON(event) {
+            console.log('Fichier sélectionné'); // Log pour vérifier si la fonction se déclenche
             const file = event.target.files[0];
             const reader = new FileReader();
             reader.onload = function(e) {
+                console.log('Lecture du fichier'); // Log pour vérifier si le fichier est lu
                 const jsonData = JSON.parse(e.target.result);
+                console.log('Données JSON:', jsonData); // Log pour afficher les données JSON
 
-                Object.values(jsonData.tableData).forEach(data => {
+                Object.values(jsonData).forEach(data => {
                     const newRef = push(ref(database, 'tableData'));
                     set(newRef, data)
                         .then(() => {
@@ -41,10 +44,14 @@
             };
             reader.readAsText(file);
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('file-input').addEventListener('change', importJSON);
+        });
     </script>
 </head>
 <body>
     <h1>Importer des Données</h1>
-    <input type="file" id="file-input" accept=".json" onchange="importJSON(event)" />
+    <input type="file" id="file-input" accept=".json" />
 </body>
 </html>

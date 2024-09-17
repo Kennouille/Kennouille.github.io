@@ -23,6 +23,7 @@
 </head>
 <body>
     <h1>Tableau de Données</h1>
+    <input type="file" id="file-input" />
     <table id="data-table">
         <thead>
             <tr>
@@ -39,17 +40,39 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Générer les lignes et colonnes vides et éditables -->
-            <script>
-                for (let i = 1; i <= 4000; i++) {
-                    document.write('<tr>');
-                    for (let j = 1; j <= 10; j++) {
-                        document.write('<td contenteditable="true"></td>');
-                    }
-                    document.write('</tr>');
-                }
-            </script>
+            <!-- Les données seront insérées ici -->
         </tbody>
     </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('file-input').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const range = XLSX.utils.decode_range("A3:J3656");
+                const tableBody = document.querySelector('#data-table tbody');
+                for (let rowNum = range.s.r; rowNum <= range.e.r; rowNum++) {
+                    const row = document.createElement('tr');
+                    for (let colNum = range.s.c; colNum <= range.e.c; colNum++) {
+                        const cellAddress = { c: colNum, r: rowNum };
+                        const cellRef = XLSX.utils.encode_cell(cellAddress);
+                        const cell = worksheet[cellRef];
+                        const cellValue = cell ? cell.v : '';
+                        const cellElement = document.createElement('td');
+                        cellElement.textContent = cellValue;
+                        cellElement.contentEditable = "true"; // Rendre les cellules éditables
+                        row.appendChild(cellElement);
+                    }
+                    tableBody.appendChild(row);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
 </body>
 </html>

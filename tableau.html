@@ -45,8 +45,6 @@
 </head>
 <body>
     <h1>Tableau de Données</h1>
-    <input type="file" id="file-input" />
-    <select id="sheet-select" style="display:none;"></select>
     <table id="data-table">
         <thead>
             <tr>
@@ -67,69 +65,7 @@
         </tbody>
     </table>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script>
-        document.getElementById('file-input').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                console.log("Fichier chargé");
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                console.log("Feuilles disponibles :", workbook.SheetNames);
-                const sheetSelect = document.getElementById('sheet-select');
-                sheetSelect.innerHTML = ''; // Clear previous options
-                workbook.SheetNames.forEach((sheetName, index) => {
-                    const option = document.createElement('option');
-                    option.value = sheetName;
-                    option.textContent = sheetName;
-                    sheetSelect.appendChild(option);
-                });
-                sheetSelect.style.display = 'block';
-                sheetSelect.addEventListener('change', function() {
-                    loadSheet(workbook, sheetSelect.value);
-                });
-                loadSheet(workbook, sheetSelect.value); // Load the first sheet by default
-            };
-            reader.readAsArrayBuffer(file);
-        });
-
-        function loadSheet(workbook, sheetName) {
-            console.log("Chargement de la feuille :", sheetName);
-            const worksheet = workbook.Sheets[sheetName];
-            const range = XLSX.utils.decode_range("A3:J4000");
-            const tableBody = document.querySelector('#data-table tbody');
-            tableBody.innerHTML = ''; // Clear previous data
-
-            for (let rowNum = range.s.r; rowNum <= range.e.r; rowNum++) {
-                const row = document.createElement('tr');
-                for (let colNum = range.s.c; colNum <= range.e.c; colNum++) {
-                    const cellAddress = { c: colNum, r: rowNum };
-                    const cell = worksheet[XLSX.utils.encode_cell(cellAddress)];
-                    const cellValue = cell ? cell.v : '';
-                    const cellElement = document.createElement('td');
-                    cellElement.textContent = cellValue;
-                    row.appendChild(cellElement);
-                }
-                tableBody.appendChild(row);
-            }
-        }
-
-        function saveDataToFirebase() {
-            const tableBody = document.querySelector('#data-table tbody');
-            const rows = tableBody.querySelectorAll('tr');
-            const data = [];
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                const rowData = [];
-                cells.forEach(cell => {
-                    rowData.push(cell.textContent);
-                });
-                data.push(rowData);
-            });
-            database.ref('tableData').set(data);
-        }
-
         function loadDataFromFirebase() {
             database.ref('tableData').once('value').then(snapshot => {
                 const data = snapshot.val();
@@ -152,7 +88,6 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             loadDataFromFirebase();
-            document.querySelector('#data-table').addEventListener('input', saveDataToFirebase);
         });
     </script>
 </body>

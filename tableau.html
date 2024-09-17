@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Données</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tableau de Données</h1>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <!-- Générer les en-têtes de colonnes -->
+                <script>
+                    for (let i = 1; i <= 15; i++) {
+                        document.write('<th>Colonne ' + i + '</th>');
+                    }
+                </script>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Générer les lignes et colonnes -->
+            <script>
+                for (let i = 1; i <= 4000; i++) {
+                    document.write('<tr>');
+                    for (let j = 1; j <= 15; j++) {
+                        document.write('<td>Ligne ' + i + ' Colonne ' + j + '</td>');
+                    }
+                    document.write('</tr>');
+                }
+            </script>
+        </tbody>
+    </table>
+</body>
+</html>

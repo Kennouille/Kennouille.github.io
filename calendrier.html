@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <style>
+        /* Assure-toi d'inclure la police Lobster */
+        @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+        body {
+        }
+        table {
+            border-collapse: separate; /* Change de collapse à separate */
+            width: 100%;
+            border-radius: 12px; /* Arrondir les coins du tableau */
+            overflow: hidden; /* Assure que les coins restent arrondis */
+        }
+        th, td {
+            border: 1px solid blue; /* Bordure bleue pour les cellules */
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .today {
+            background-color: #d3d3d3;
+        }
+        .clickable {
+            cursor: pointer;
+        }
+        .selected {
+            background-color: #add8e6;
+        }
+
+        /* Styles pour les boutons */
+        .button {
+            font-family: 'Lobster', cursive;
+            border: 4px solid blue;
+            background-color: #5DADE2; /* Bleu ciel */
+            color: white;
+            padding: 6px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 11px;
+            margin: 4px 1px;
+            cursor: pointer;
+            border-radius: 12px; /* Pour arrondir les coins */
+        }
+
+        .button:hover {
+            background-color: #5DADE2; /* Un bleu ciel plus foncé pour l'effet hover */
+        }
+
+        /* Mettre le mois et l'année en gras */
+        #monthYear {
+            font-weight: bold;
+        }
+
+        /* Arrondir les coins du tableau */
+        th:first-child {
+            border-top-left-radius: 12px; /* Arrondir le coin supérieur gauche */
+        }
+
+        th:last-child {
+            border-top-right-radius: 12px; /* Arrondir le coin supérieur droit */
+        }
+
+        td:first-child:last-child {
+            border-bottom-left-radius: 12px; /* Arrondir le coin inférieur gauche */
+            border-bottom-right-radius: 12px; /* Arrondir le coin inférieur droit */
+        }
+
+        /* Ajouter un espace entre les boutons et le calendrier */
+        div {
+            margin-bottom: 20px; /* Ajuste la valeur selon l'espace désiré */
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button class="button" onclick="changeMonth(-1)">Precedente</button>
+        <span id="monthYear"></span>
+        <button class="button" onclick="changeMonth(1)">Siguiente</button>
+    </div>
+    <table id="calendarTable">
+        <tr>
+            <th>Lu</th>
+            <th>Ma</th>
+            <th>Mie</th>
+            <th>Ju</th>
+            <th>Vie</th>
+            <th>Sa</th>
+            <th>Do</th>
+        </tr>
+    </table>
+    <p id="selectedDateDisplay"></p>
+    <button class="button" onclick="saveDate()">Mostrar la fecha</button>
+    <button class="button" onclick="createEvents()">Crear evento</button> <!-- Nouveau bouton -->
+    <div id="eventsList"></div>
+    <script>
+        var currentMonth = new Date().getMonth();
+        var currentYear = new Date().getFullYear();
+        var today = new Date();
+        var selectedCell = null;
+
+        // Noms des mois en espagnol
+        var monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+        function changeMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            updateCalendar();
+        }
+
+        function updateCalendar() {
+            // Code pour mettre à jour le calendrier
+        }
+
+        function saveDate() {
+            // Code pour sauvegarder la date
+        }
+
+        function createEvents() {
+            // Code pour créer des événements
+        }
+
+        // Appelle updateCalendar pour initialiser le calendrier
+        updateCalendar();
+    </script>
+</body>
+</html>

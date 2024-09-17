@@ -24,6 +24,7 @@
 <body>
     <h1>Tableau de Données</h1>
     <input type="file" id="file-input" />
+    <select id="sheet-select" style="display:none;"></select>
     <table id="data-table">
         <thead>
             <tr>
@@ -52,27 +53,43 @@
             reader.onload = function(e) {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, { type: 'array' });
-                const sheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[sheetName];
-                const range = XLSX.utils.decode_range("A3:J3656");
-                const tableBody = document.querySelector('#data-table tbody');
-                for (let rowNum = range.s.r; rowNum <= range.e.r; rowNum++) {
-                    const row = document.createElement('tr');
-                    for (let colNum = range.s.c; colNum <= range.e.c; colNum++) {
-                        const cellAddress = { c: colNum, r: rowNum };
-                        const cellRef = XLSX.utils.encode_cell(cellAddress);
-                        const cell = worksheet[cellRef];
-                        const cellValue = cell ? cell.v : '';
-                        const cellElement = document.createElement('td');
-                        cellElement.textContent = cellValue;
-                        cellElement.contentEditable = "true"; // Rendre les cellules éditables
-                        row.appendChild(cellElement);
-                    }
-                    tableBody.appendChild(row);
-                }
+                const sheetSelect = document.getElementById('sheet-select');
+                sheetSelect.innerHTML = ''; // Clear previous options
+                workbook.SheetNames.forEach((sheetName, index) => {
+                    const option = document.createElement('option');
+                    option.value = sheetName;
+                    option.textContent = sheetName;
+                    sheetSelect.appendChild(option);
+                });
+                sheetSelect.style.display = 'block';
+                sheetSelect.addEventListener('change', function() {
+                    loadSheet(workbook, sheetSelect.value);
+                });
+                loadSheet(workbook, sheetSelect.value); // Load the first sheet by default
             };
             reader.readAsArrayBuffer(file);
         });
+
+        function loadSheet(workbook, sheetName) {
+            const worksheet = workbook.Sheets[sheetName];
+            const range = XLSX.utils.decode_range("A3:J3656");
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = ''; // Clear previous data
+            for (let rowNum = range.s.r; rowNum <= range.e.r; rowNum++) {
+                const row = document.createElement('tr');
+                for (let colNum = range.s.c; colNum <= range.e.c; colNum++) {
+                    const cellAddress = { c: colNum, r: rowNum };
+                    const cellRef = XLSX.utils.encode_cell(cellAddress);
+                    const cell = worksheet[cellRef];
+                    const cellValue = cell ? cell.v : '';
+                    const cellElement = document.createElement('td');
+                    cellElement.textContent = cellValue;
+                    cellElement.contentEditable = "true"; // Rendre les cellules éditables
+                    row.appendChild(cellElement);
+                }
+                tableBody.appendChild(row);
+            }
+        }
     </script>
 </body>
 </html>

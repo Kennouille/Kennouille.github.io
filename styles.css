@@ -6,10 +6,10 @@ body {
 }
 
 .agenda {
-    width: 80%;
+    width: 50px;
     margin: 20px auto;
     background-color: #fff;
-    padding: 20px;
+    padding: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -21,7 +21,7 @@ h1 {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 th, td {
@@ -41,4 +41,16 @@ th {
 
 .new-event h2 {
     color: #333;
+}
+
+/* Centrer l'image */
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Centrer les boutons */
+.buttons {
+    text-align: center;
 }

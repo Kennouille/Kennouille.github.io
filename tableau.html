@@ -92,7 +92,7 @@
         function loadSheet(workbook, sheetName) {
             console.log("Chargement de la feuille :", sheetName);
             const worksheet = workbook.Sheets[sheetName];
-            const range = XLSX.utils.decode_range("A3:J3656");
+            const range = XLSX.utils.decode_range("A3:J4000");
             const tableBody = document.querySelector('#data-table tbody');
             tableBody.innerHTML = ''; // Clear previous data
             for (let rowNum = range.s.r; rowNum <= range.e.r; rowNum++) {

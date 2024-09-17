@@ -21,8 +21,9 @@
         }
     </style>
     <script type="module">
-        import { initializeApp } from "firebase/app";
-        import { getAnalytics } from "firebase/analytics";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDRcm_z44LdHpc_1gO_k-k0ARZkbI9XZm4",
@@ -37,6 +38,7 @@
 
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
+        const database = getDatabase(app);
 
         function loadDataFromFirebase() {
             get(ref(database, 'tableData')).then(snapshot => {

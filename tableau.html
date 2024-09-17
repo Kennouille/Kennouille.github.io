@@ -21,13 +21,13 @@
         }
     </style>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
-        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+        import { initializeApp } from "firebase/app";
+        import { getAnalytics } from "firebase/analytics";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDRcm_z44LdHpc_1gO_k-k0ARZkbI9XZm4",
             authDomain: "julias-clean.firebaseapp.com",
+            databaseURL: "https://julias-clean-default-rtdb.firebaseio.com",
             projectId: "julias-clean",
             storageBucket: "julias-clean.appspot.com",
             messagingSenderId: "642706594397",
@@ -37,7 +37,6 @@
 
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
-        const database = getDatabase(app);
 
         function loadDataFromFirebase() {
             get(ref(database, 'tableData')).then(snapshot => {

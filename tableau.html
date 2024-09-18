@@ -44,18 +44,20 @@
                     const row = document.createElement('tr');
 
                     row.innerHTML = `
-                        <td>${rowData.first_name}</td>
-                        <td>${rowData.ind}</td>
-                        <td>${rowData.mobile_phone}</td>
-                        <td>${rowData.link}</td>
-                        <td>${rowData.lugar}</td>
-                        <td>${rowData.fecha}</td>
-                        <td>${rowData.trabajo}</td>
-                        <td>${rowData.precio}</td>
+                        <td>${rowData['First Name']}</td>
+                        <td>${rowData.Ind}</td>
+                        <td>${rowData['Mobile Phone']}</td>
+                        <td>${rowData.Link}</td>
+                        <td>${rowData.Lugar}</td>
+                        <td>${rowData.Fecha}</td>
+                        <td>${rowData.Trabajo}</td>
+                        <td>${rowData.Precio}</td>
                         <td>${rowData.user_id}</td>
                     `;
                     tableBody.appendChild(row);
                 });
+            } else {
+                console.log('Aucune donnée trouvée.');
             }
         }
 

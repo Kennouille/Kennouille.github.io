@@ -5,45 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Importer des Données</title>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js';
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDRcm_z44LdHpc_1gO_k-k0ARZkbI9XZm4",
-            authDomain: "julias-clean.firebaseapp.com",
-            databaseURL: "https://julias-clean-default-rtdb.firebaseio.com",
-            projectId: "julias-clean",
-            storageBucket: "julias-clean.appspot.com",
-            messagingSenderId: "642706594397",
-            appId: "1:642706594397:web:57dfac7739e028720f8bb4",
-            measurementId: "G-TBNN0RJSXW"
-        };
+        const supabaseUrl = 'https://votre-projet.supabase.co';
+        const supabaseKey = 'votre-cle-publique-anonyme';
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        function importJSON(event) {
+        async function importJSON(event) {
             console.log('Fichier sélectionné'); // Log pour vérifier si la fonction se déclenche
             const file = event.target.files[0];
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 console.log('Lecture du fichier'); // Log pour vérifier si le fichier est lu
                 const jsonData = JSON.parse(e.target.result);
                 console.log('Données JSON:', jsonData); // Log pour afficher les données JSON
 
-                Object.values(jsonData).forEach(data => {
-                    const newRef = push(ref(database, 'tableData'));
-                    set(newRef, data)
-                        .then(() => {
-                            console.log('Données importées avec succès');
-                        })
-                        .catch(error => {
-                            console.error('Erreur lors de l\'importation des données :', error);
-                        });
-                });
+                for (const data of Object.values(jsonData)) {
+                    // Supprimez la clé primaire si elle existe dans les données
+                    delete data.id;
+
+                    const { error } = await supabase
+                        .from('tableData')
+                        .insert([data]);
+
+                    if (error) {
+                        console.error('Erreur lors de l\'importation des données :', error);
+                    } else {
+                        console.log('Données importées avec succès');
+                    }
+                }
             };
             reader.readAsText(file);
         }
+
 
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('file-input').addEventListener('change', importJSON);

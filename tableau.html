@@ -21,51 +21,67 @@
         }
     </style>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
-        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js';
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDRcm_z44LdHpc_1gO_k-k0ARZkbI9XZm4",
-            authDomain: "julias-clean.firebaseapp.com",
-            databaseURL: "https://julias-clean-default-rtdb.firebaseio.com",
-            projectId: "julias-clean",
-            storageBucket: "julias-clean.appspot.com",
-            messagingSenderId: "642706594397",
-            appId: "1:642706594397:web:57dfac7739e028720f8bb4",
-            measurementId: "G-TBNN0RJSXW"
-        };
+        const supabaseUrl = 'https://votre-projet.supabase.co';
+        const supabaseKey = 'votre-cle-publique-anonyme';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        
+        async function loadDataFromSupabase() {
+            const { data, error } = await supabase
+                .from('tableData')
+                .select('*');
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const database = getDatabase(app);
+            if (error) {
+                console.error('Erreur lors du chargement des données :', error);
+                return;
+            }
 
-function loadDataFromFirebase() {
-    get(ref(database, 'tableData')).then(snapshot => {
-        const data = snapshot.val();
-        console.log(data); // Affiche les données dans la console du navigateur
-        if (data) {
-            const tableBody = document.querySelector('#data-table tbody');
-            tableBody.innerHTML = ''; // Clear previous data
-            Object.keys(data).forEach(key => {
-                const rowData = data[key];
-                const row = document.createElement('tr');
+            console.log(data); // Affiche les données dans la console du navigateur
+            if (data) {
+                const tableBody = document.querySelector('#data-table tbody');
+                tableBody.innerHTML = ''; // Clear previous data
+                data.forEach(rowData => {
+                    const row = document.createElement('tr');
 
-    <tr>
-        <th>First Name</th>
-        <th>id</th>
-        <th>Ind</th>
-        <th>Mobile Phone</th>
-        <th>Link</th>
-        <th>Lugar</th>
-        <th>Fecha</th>
-        <th>Trabajo</th>
-        <th>Precio</th>
-    </tr>
-</thead>
-<tbody>
-    <!-- Les données seront insérées ici -->
-</tbody>
-</table>
+                    row.innerHTML = `
+                        <td>${rowData.firstName}</td>
+                        <td>${rowData.id}</td>
+                        <td>${rowData.ind}</td>
+                        <td>${rowData.mobilePhone}</td>
+                        <td>${rowData.link}</td>
+                        <td>${rowData.lugar}</td>
+                        <td>${rowData.fecha}</td>
+                        <td>${rowData.trabajo}</td>
+                        <td>${rowData.precio}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDataFromSupabase);
+    </script>
+</head>
+<body>
+    <h1>Tableau de Données</h1>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>id</th>
+                <th>Ind</th>
+                <th>Mobile Phone</th>
+                <th>Link</th>
+                <th>Lugar</th>
+                <th>Fecha</th>
+                <th>Trabajo</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les données seront insérées ici -->
+        </tbody>
+    </table>
 </body>
 </html>

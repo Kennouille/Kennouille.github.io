@@ -50,29 +50,7 @@ function loadDataFromFirebase() {
             Object.keys(data).forEach(key => {
                 const rowData = data[key];
                 const row = document.createElement('tr');
-                Object.values(rowData).forEach(cellData => {
-                    const cellElement = document.createElement('td');
-                    cellElement.textContent = cellData;
-                    cellElement.contentEditable = "true"; // Rendre les cellules éditables
-                    row.appendChild(cellElement);
-                });
-                tableBody.appendChild(row);
-            });
-        }
-    }).catch(error => {
-        console.error('Erreur lors du chargement des données :', error);
-    });
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-    loadDataFromFirebase();
-});
-</script>
-</head>
-<body>
-<h1>Tableau de Données</h1>
-<table id="data-table">
-<thead>
     <tr>
         <th>First Name</th>
         <th>id</th>

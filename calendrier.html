@@ -130,53 +130,41 @@
         var events = {}; // Objet pour stocker les événements par date
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
-        function changeMonth(direction) {
-            currentMonth += direction;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            } else if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
-            renderCalendar();
-        }
-
-        function renderCalendar() {
-            const monthYear = document.getElementById('monthYear');
+        function generateCalendar(month, year) {
             const calendarTable = document.getElementById('calendarTable');
-            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+            const monthYearDisplay = document.getElementById('monthYear');
+            calendarTable.innerHTML = `
+                <tr>
+                    <th>Lu</th>
+                    <th>Ma</th>
+                    <th>Mie</th>
+                    <th>Ju</th>
+                    <th>Vie</th>
+                    <th>Sa</th>
+                    <th>Do</th>
+                </tr>
+            `;
 
-            monthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-
-            // Clear previous calendar cells
-            while (calendarTable.rows.length > 1) {
-                calendarTable.deleteRow(1);
-            }
-
-            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
+            const firstDay = new Date(year, month).getDay();
+            const daysInMonth = 32 - new Date(year, month, 32).getDate();
             let date = 1;
+
             for (let i = 0; i < 6; i++) {
-                const row = document.createElement('tr');
+                let row = document.createElement('tr');
 
                 for (let j = 0; j < 7; j++) {
                     if (i === 0 && j < firstDay) {
-                        const cell = document.createElement('td');
-                        const cellText = document.createTextNode('');
+                        let cell = document.createElement('td');
+                        let cellText = document.createTextNode('');
                         cell.appendChild(cellText);
                         row.appendChild(cell);
                     } else if (date > daysInMonth) {
                         break;
                     } else {
-                        const cell = document.createElement('td');
-                        const cellText = document.createTextNode(date);
+                        let cell = document.createElement('td');
+                        let cellText = document.createTextNode(date);
                         cell.classList.add('clickable');
-                        if (date === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
-                            cell.classList.add('today'); // Ajouter la classe pour la date du jour
-                        }
-                        cell.onclick = () => selectDate(date);
+                        cell.addEventListener('click', handleDateClick);
                         cell.appendChild(cellText);
                         row.appendChild(cell);
                         date++;
@@ -186,46 +174,36 @@
                 calendarTable.appendChild(row);
             }
 
-            // Afficher l'agenda quotidien pour la date du jour
-            selectDate(new Date().getDate());
+            monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
 
-        function selectDate(date) {
+        function handleDateClick(event) {
+            const clickedDate = event.target.textContent;
+            console.log('Date cliquée :', clickedDate); // Log pour vérifier la date cliquée
+
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
-            selectedDateDisplay.textContent = `Date sélectionnée : ${date} ${monthNames[currentMonth]} ${currentYear}`;
+            selectedDateDisplay.textContent = 'Date sélectionnée : ' + clickedDate + ' ' + monthNames[currentMonth] + ' ' + currentYear;
+            console.log('Date affichée :', selectedDateDisplay.textContent); // Log pour vérifier la date affichée
 
-            const selectedDate = `${currentYear}-${currentMonth + 1}-${date}`;
-            const tableBody = document.querySelector('#editable-table tbody');
-            tableBody.innerHTML = ''; // Clear previous data
+            // Supprimer la classe 'selected' des autres dates
+            document.querySelectorAll('.clickable').forEach(dateElement => {
+                dateElement.classList.remove('selected');
+            });
 
-            if (events[selectedDate]) {
-                events[selectedDate].forEach(rowData => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td contenteditable="true">${rowData.hora}</td>
-                        <td contenteditable="true">${rowData.min}</td>
-                        <td contenteditable="true">${rowData.telefono}</td>
-                        <td contenteditable="true">${rowData.nombre}</td>
-                        <td contenteditable="true">${rowData.lugar}</td>
-                        <td contenteditable="true">${rowData.precio}</td>
-                        <td contenteditable="true">${rowData.trabajo}</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } else {
-                // Ajouter une ligne vide si aucun événement n'est trouvé
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                `;
-                tableBody.appendChild(row);
+            // Ajouter la classe 'selected' à la date cliquée
+            event.target.classList.add('selected');
+        }
+
+        function changeMonth(direction) {
+            currentMonth += direction;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
             }
+            generateCalendar(currentMonth, currentYear);
         }
 
         function saveDate() {
@@ -270,24 +248,8 @@
             dataTable2.appendChild(row);
         }
 
-
-        function createEvents() {
-            const eventsList = document.getElementById('eventsList');
-            const event = document.createElement('div');
-            event.textContent = 'Nouvel événement';
-            eventsList.appendChild(event);
-        }
-
-        document.addEventListener('DOMContentLoaded', renderCalendar);
-
-        // Script pour le tableau modifiable
-        const table = document.getElementById('editable-table');
-
-        table.addEventListener('input', (event) => {
-            const cell = event.target;
-            console.log(`Cellule modifiée : ${cell.textContent}`);
-            // Ajoutez ici la logique pour sauvegarder les modifications
-        });
+        // Générer le calendrier pour le mois et l'année actuels
+        generateCalendar(currentMonth, currentYear);
     </script>
 </body>
 </html>

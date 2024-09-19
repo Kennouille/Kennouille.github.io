@@ -7,9 +7,19 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
         table {
             border-collapse: separate;
-            width: 100%;
+            width: 50%; /* Réduire la taille du calendrier */
+            margin: 0 auto; /* Centrer le calendrier */
             border-radius: 12px;
             overflow: hidden;
         }
@@ -22,7 +32,7 @@
             background-color: #f2f2f2;
         }
         .today {
-            background-color: #d3d3d3;
+            background-color: #d3d3d3; /* Couleur gris clair pour la date du jour */
         }
         .clickable {
             cursor: pointer;
@@ -66,6 +76,7 @@
     </style>
 </head>
 <body>
+    <h1>Calendrier</h1>
     <div>
         <button class="button" onclick="changeMonth(-1)">Precedente</button>
         <span id="monthYear"></span>
@@ -162,6 +173,9 @@
                         const cell = document.createElement('td');
                         const cellText = document.createTextNode(date);
                         cell.classList.add('clickable');
+                        if (date === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
+                            cell.classList.add('today'); // Ajouter la classe pour la date du jour
+                        }
                         cell.onclick = () => selectDate(date);
                         cell.appendChild(cellText);
                         row.appendChild(cell);

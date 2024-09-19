@@ -22,11 +22,16 @@
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-            const supabaseUrl = 'https://mngggybayjooqkzbhvqy.supabase.co';
-            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZ2dneWJheWpvb3FremJodnF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY2MTU3NDgsImV4cCI6MjA0MjE5MTc0OH0.lnOqnq1AwN41g4xJ5O9oNIPBQqXYJkSrRhJ3osXtcsk';
-            const supabase = createClient(supabaseUrl, supabaseKey);
+        const supabaseUrl = 'https://mngggybayjooqkzbhvqy.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZ2dneWJheWpvb3FremJodnF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY2MTU3NDgsImV4cCI6MjA0MjE5MTc0OH0.lnOqnq1AwN41g4xJ5O9oNIPBQqXYJkSrRhJ3osXtcsk';
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-            async function loadDataFromSupabase() {
+        // Vérification de la connexion
+        console.log('Tentative de connexion à Supabase avec l\'URL:', supabaseUrl);
+        console.log('Utilisation de la clé API:', supabaseKey);
+
+        async function loadDataFromSupabase() {
+            console.log('Début du chargement des données depuis Supabase...');
             const { data, error } = await supabase
                 .from('tableData')
                 .select('*');
@@ -36,11 +41,12 @@
                 return;
             }
 
-            console.log(data); // Affiche les données dans la console du navigateur
-            if (data) {
+            console.log('Données récupérées :', data); // Affiche les données dans la console du navigateur
+            if (data && data.length > 0) {
                 const tableBody = document.querySelector('#data-table tbody');
                 tableBody.innerHTML = ''; // Clear previous data
                 data.forEach(rowData => {
+                    console.log('Traitement de la ligne de données :', rowData);
                     const row = document.createElement('tr');
 
                     row.innerHTML = `

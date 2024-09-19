@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendrier et Tableau</title>
+    <title>Calendrier et Agenda Quotidien</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
@@ -76,7 +76,7 @@
     </style>
 </head>
 <body>
-    <h1>Calendrier</h1>
+    <h1>Calendrier et Agenda Quotidien</h1>
     <div>
         <button class="button" onclick="changeMonth(-1)">Precedente</button>
         <span id="monthYear"></span>
@@ -128,6 +128,7 @@
     <script>
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
+        var events = {}; // Objet pour stocker les événements par date
 
         function changeMonth(direction) {
             currentMonth += direction;
@@ -185,16 +186,71 @@
 
                 calendarTable.appendChild(row);
             }
+
+            // Afficher l'agenda quotidien pour la date du jour
+            selectDate(new Date().getDate());
         }
 
         function selectDate(date) {
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
             selectedDateDisplay.textContent = `Date sélectionnée : ${date} ${monthNames[currentMonth]} ${currentYear}`;
+
+            const selectedDate = `${currentYear}-${currentMonth + 1}-${date}`;
+            const tableBody = document.querySelector('#editable-table tbody');
+            tableBody.innerHTML = ''; // Clear previous data
+
+            if (events[selectedDate]) {
+                events[selectedDate].forEach(rowData => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td contenteditable="true">${rowData.hora}</td>
+                        <td contenteditable="true">${rowData.min}</td>
+                        <td contenteditable="true">${rowData.telefono}</td>
+                        <td contenteditable="true">${rowData.nombre}</td>
+                        <td contenteditable="true">${rowData.lugar}</td>
+                        <td contenteditable="true">${rowData.precio}</td>
+                        <td contenteditable="true">${rowData.trabajo}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                // Ajouter une ligne vide si aucun événement n'est trouvé
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                `;
+                tableBody.appendChild(row);
+            }
         }
 
         function saveDate() {
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
-            alert(selectedDateDisplay.textContent);
+            const selectedDate = selectedDateDisplay.textContent.split(' : ')[1];
+            const tableBody = document.querySelector('#editable-table tbody');
+            const rows = tableBody.querySelectorAll('tr');
+
+            events[selectedDate] = [];
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowData = {
+                    hora: cells[0].textContent,
+                    min: cells[1].textContent,
+                    telefono: cells[2].textContent,
+                    nombre: cells[3].textContent,
+                    lugar: cells[4].textContent,
+                    precio: cells[5].textContent,
+                    trabajo: cells[6].textContent
+                };
+                events[selectedDate].push(rowData);
+            });
+
+            alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
 
         function createEvents() {
@@ -203,17 +259,6 @@
             event.textContent = 'Nouvel événement';
             eventsList.appendChild(event);
         }
-
-        document.addEventListener('DOMContentLoaded', renderCalendar);
-
-        // Script pour le tableau modifiable
-        const table = document.getElementById('editable-table');
-
-        table.addEventListener('input', (event) => {
-            const cell = event.target;
-            console.log(`Cellule modifiée : ${cell.textContent}`);
-            // Ajoutez ici la logique pour sauvegarder les modifications
-        });
     </script>
 </body>
 </html>

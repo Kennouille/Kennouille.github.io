@@ -128,6 +128,7 @@
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
         var events = {}; // Objet pour stocker les événements par date
+        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
         function changeMonth(direction) {
             currentMonth += direction;
@@ -146,7 +147,6 @@
             const calendarTable = document.getElementById('calendarTable');
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
 
-            const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
             monthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
             // Clear previous calendar cells
@@ -247,10 +247,29 @@
                     travail: cells[6].textContent
                 };
                 events[selectedDate].push(rowData);
+
+                // Appel de la fonction addToDataTable2 pour ajouter l'événement à dataTable2
+                addToDataTable2(rowData);
             });
 
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
+
+        function addToDataTable2(eventData) {
+            const dataTable2 = document.querySelector('#dataTable2 tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${eventData.hora}</td>
+                <td>${eventData.min}</td>
+                <td>${eventData.telefono}</td>
+                <td>${eventData.nombre}</td>
+                <td>${eventData.lugar}</td>
+                <td>${eventData.precio}</td>
+                <td>${eventData.travail}</td>
+            `;
+            dataTable2.appendChild(row);
+        }
+
 
         function createEvents() {
             const eventsList = document.getElementById('eventsList');

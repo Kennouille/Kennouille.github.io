@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendrier</title>
+    <title>Calendrier et Tableau</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
@@ -86,6 +86,34 @@
     <button class="button" onclick="saveDate()">Mostrar la fecha</button>
     <button class="button" onclick="createEvents()">Crear evento</button>
     <div id="eventsList"></div>
+
+    <!-- Tableau modifiable -->
+    <table id="editable-table">
+        <thead>
+            <tr>
+                <th>Hora</th>
+                <th>Min</th>
+                <th>Telefono</th>
+                <th>Nombre</th>
+                <th>Lugar</th>
+                <th>Precio</th>
+                <th>Trabajo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+            </tr>
+            <!-- Ajoutez plus de lignes si nécessaire -->
+        </tbody>
+    </table>
+
     <script>
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
@@ -118,36 +146,60 @@
             const firstDay = new Date(currentYear, currentMonth, 1).getDay();
             const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-            let row = calendarTable.insertRow();
-            for (let i = 0; i < firstDay; i++) {
-                row.insertCell();
-            }
+            let date = 1;
+            for (let i = 0; i < 6; i++) {
+                const row = document.createElement('tr');
 
-            for (let day = 1; day <= daysInMonth; day++) {
-                if (row.cells.length === 7) {
-                    row = calendarTable.insertRow();
+                for (let j = 0; j < 7; j++) {
+                    if (i === 0 && j < firstDay) {
+                        const cell = document.createElement('td');
+                        const cellText = document.createTextNode('');
+                        cell.appendChild(cellText);
+                        row.appendChild(cell);
+                    } else if (date > daysInMonth) {
+                        break;
+                    } else {
+                        const cell = document.createElement('td');
+                        const cellText = document.createTextNode(date);
+                        cell.classList.add('clickable');
+                        cell.onclick = () => selectDate(date);
+                        cell.appendChild(cellText);
+                        row.appendChild(cell);
+                        date++;
+                    }
                 }
-                const cell = row.insertCell();
-                cell.textContent = day;
-                cell.classList.add('clickable');
-                cell.onclick = function() {
-                    selectedDateDisplay.textContent = `Date sélectionnée: ${day} ${monthNames[currentMonth]} ${currentYear}`;
-                };
+
+                calendarTable.appendChild(row);
             }
         }
 
+        function selectDate(date) {
+            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+            selectedDateDisplay.textContent = `Date sélectionnée : ${date} ${monthNames[currentMonth]} ${currentYear}`;
+        }
+
         function saveDate() {
-            alert(document.getElementById('selectedDateDisplay').textContent);
+            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+            alert(selectedDateDisplay.textContent);
         }
 
         function createEvents() {
             const eventsList = document.getElementById('eventsList');
             const event = document.createElement('div');
-            event.textContent = 'Nouvel événement créé';
+            event.textContent = 'Nouvel événement';
             eventsList.appendChild(event);
         }
 
-        renderCalendar();
+        document.addEventListener('DOMContentLoaded', renderCalendar);
+
+        // Script pour le tableau modifiable
+        const table = document.getElementById('editable-table');
+
+        table.addEventListener('input', (event) => {
+            const cell = event.target;
+            console.log(`Cellule modifiée : ${cell.textContent}`);
+            // Ajoutez ici la logique pour sauvegarder les modifications
+        });
     </script>
 </body>
 </html>

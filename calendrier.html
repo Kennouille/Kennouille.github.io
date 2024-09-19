@@ -124,7 +124,6 @@
             <!-- Ajoutez plus de lignes si nécessaire -->
         </tbody>
     </table>
-
     <script>
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
@@ -245,7 +244,7 @@
                     nombre: cells[3].textContent,
                     lugar: cells[4].textContent,
                     precio: cells[5].textContent,
-                    trabajo: cells[6].textContent
+                    travail: cells[6].textContent
                 };
                 events[selectedDate].push(rowData);
             });
@@ -259,6 +258,17 @@
             event.textContent = 'Nouvel événement';
             eventsList.appendChild(event);
         }
+
+        document.addEventListener('DOMContentLoaded', renderCalendar);
+
+        // Script pour le tableau modifiable
+        const table = document.getElementById('editable-table');
+
+        table.addEventListener('input', (event) => {
+            const cell = event.target;
+            console.log(`Cellule modifiée : ${cell.textContent}`);
+            // Ajoutez ici la logique pour sauvegarder les modifications
+        });
     </script>
 </body>
 </html>

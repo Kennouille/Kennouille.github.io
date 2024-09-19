@@ -34,7 +34,7 @@
             console.log('Début du chargement des données depuis Supabase...');
             const { data, error } = await supabase
                 .from('tableData')
-                .select('"First Name"');
+                .select('"First Name", Ind, "Mobile Phone", Link, Lugar, Fecha, Trabajo, Precio, user_id');
 
             if (error) {
                 console.error('Erreur lors du chargement des données :', error);
@@ -43,11 +43,30 @@
 
             console.log('Données récupérées :', data); // Affiche les données dans la console du navigateur
             if (data && data.length > 0) {
-                console.log('Données trouvées.');
+                const tableBody = document.querySelector('#data-table tbody');
+                tableBody.innerHTML = ''; // Clear previous data
+                data.forEach(rowData => {
+                    console.log('Traitement de la ligne de données :', rowData);
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${rowData['First Name']}</td>
+                        <td>${rowData.Ind}</td>
+                        <td>${rowData['Mobile Phone']}</td>
+                        <td>${rowData.Link}</td>
+                        <td>${rowData.Lugar}</td>
+                        <td>${rowData.Fecha}</td>
+                        <td>${rowData.Trabajo}</td>
+                        <td>${rowData.Precio}</td>
+                        <td>${rowData.user_id}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
             } else {
                 console.log('Aucune donnée trouvée.');
             }
         }
+
 
 
 

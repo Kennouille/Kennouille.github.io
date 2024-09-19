@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier</title>
     <style>
-        /* Assure-toi d'inclure la police Lobster */
         @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
         table {
-            border-collapse: separate; /* Change de collapse à separate */
+            border-collapse: separate;
             width: 100%;
-            border-radius: 12px; /* Arrondir les coins du tableau */
-            overflow: hidden; /* Assure que les coins restent arrondis */
+            border-radius: 12px;
+            overflow: hidden;
         }
         th, td {
-            border: 1px solid blue; /* Bordure bleue pour les cellules */
+            border: 1px solid blue;
             text-align: center;
             padding: 8px;
         }
@@ -29,12 +30,10 @@
         .selected {
             background-color: #add8e6;
         }
-
-        /* Styles pour les boutons */
         .button {
             font-family: 'Lobster', cursive;
             border: 4px solid blue;
-            background-color: #5DADE2; /* Bleu ciel */
+            background-color: #5DADE2;
             color: white;
             padding: 6px 10px;
             text-align: center;
@@ -43,35 +42,26 @@
             font-size: 11px;
             margin: 4px 1px;
             cursor: pointer;
-            border-radius: 12px; /* Pour arrondir les coins */
+            border-radius: 12px;
         }
-
         .button:hover {
-            background-color: #5DADE2; /* Un bleu ciel plus foncé pour l'effet hover */
+            background-color: #5DADE2;
         }
-
-        /* Mettre le mois et l'année en gras */
         #monthYear {
             font-weight: bold;
         }
-
-        /* Arrondir les coins du tableau */
         th:first-child {
-            border-top-left-radius: 12px; /* Arrondir le coin supérieur gauche */
+            border-top-left-radius: 12px;
         }
-
         th:last-child {
-            border-top-right-radius: 12px; /* Arrondir le coin supérieur droit */
+            border-top-right-radius: 12px;
         }
-
         td:first-child:last-child {
-            border-bottom-left-radius: 12px; /* Arrondir le coin inférieur gauche */
-            border-bottom-right-radius: 12px; /* Arrondir le coin inférieur droit */
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
         }
-
-        /* Ajouter un espace entre les boutons et le calendrier */
         div {
-            margin-bottom: 20px; /* Ajuste la valeur selon l'espace désiré */
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -94,515 +84,70 @@
     </table>
     <p id="selectedDateDisplay"></p>
     <button class="button" onclick="saveDate()">Mostrar la fecha</button>
-    <button class="button" onclick="createEvents()">Crear evento</button> <!-- Nouveau bouton -->
+    <button class="button" onclick="createEvents()">Crear evento</button>
     <div id="eventsList"></div>
     <script>
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
-        var today = new Date();
-        var selectedCell = null;
 
-        // Noms des mois en espagnol
-        var monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-
-        function changeMonth(delta) {
-         
-            updateCalendar();
+        function changeMonth(direction) {
+            currentMonth += direction;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
         }
 
-        function loadAgenda() {
-            fetch('journalier.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('agenda-container').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading the agenda:', error));
-        }
+        function renderCalendar() {
+            const monthYear = document.getElementById('monthYear');
+            const calendarTable = document.getElementById('calendarTable');
+            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
 
+            const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+            monthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
-        function updateCalendar() {
-        var calendarTable = document.getElementById("calendarTable");
-        var monthYear = document.getElementById("monthYear");
-        calendarTable.innerHTML = `
-            <tr>
-                <th>Lu</th>
-                <th>Ma</th>
-                <th>Mie</th>
-                <th>Ju</th>
-                <th>Vie</th>
-                <th>Sa</th>
-                <th>Do</th>
-            </tr>
-        `;
+            // Clear previous calendar cells
+            while (calendarTable.rows.length > 1) {
+                calendarTable.deleteRow(1);
+            }
 
-        var firstDay = new Date(currentYear, currentMonth, 1).getDay();
-        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-        var date = 1;
-        for (var i = 0; i < 6; i++) {
-            var row = document.createElement("tr");
+            let row = calendarTable.insertRow();
+            for (let i = 0; i < firstDay; i++) {
+                row.insertCell();
+            }
 
-            for (var j = 0; j < 7; j++) {
-                if (i === 0 && j < firstDay) {
-                    var cell = document.createElement("td");
-                    var cellText = document.createTextNode("");
-                    cell.appendChild(cellText);
-                    row.appendChild(cell);
-                } else if (date > daysInMonth) {
-                    break;
-                } else {
-                    var cell = document.createElement("td");
-                    var cellText = document.createTextNode(date);
-                    cell.appendChild(cellText);
-                    row.appendChild(cell);
-                    date++;
+            for (let day = 1; day <= daysInMonth; day++) {
+                if (row.cells.length === 7) {
+                    row = calendarTable.insertRow();
                 }
+                const cell = row.insertCell();
+                cell.textContent = day;
+                cell.classList.add('clickable');
+                cell.onclick = function() {
+                    selectedDateDisplay.textContent = `Date sélectionnée: ${day} ${monthNames[currentMonth]} ${currentYear}`;
+                };
             }
-
-            calendarTable.appendChild(row);
         }
-
-        monthYear.innerHTML = monthNames[currentMonth] + " " + currentYear;
-    }
-
-    updateCalendar();
-
-        function changeMonth(offset) {
-        currentMonth += offset;
-        if (currentMonth < 0) {
-          currentMonth = 11;
-          currentYear--;
-        } else if (currentMonth > 11) {
-          currentMonth = 0;
-          currentYear++;
-        }
-        renderCalendar(currentMonth, currentYear);
-        }
-
-
-
-        function renderCalendar(month, year) {
-        var monthYear = document.getElementById('monthYear');
-        var calendarTable = document.getElementById('calendarTable');
-        monthYear.textContent = monthNames[month] + ' ' + year; // Utilisez le tableau monthNames pour afficher le mois en espagnol
-
-        var rows = calendarTable.getElementsByTagName('tr');
-        while (rows.length > 1) {
-          calendarTable.deleteRow(1);
-        }
-
-        var firstDay = new Date(year, month, 1).getDay();
-        firstDay = (firstDay === 0) ? 6 : firstDay - 1;
-        var daysInMonth = new Date(year, month + 1, 0).getDate();
-        var date = 1;
-        var row = calendarTable.insertRow();
-        for (var i = 0; i < 7; i++) {
-          var cell = row.insertCell();
-          if (i < firstDay) {
-            cell.textContent = '';
-          } else {
-            cell.textContent = date;
-            cell.classList.add('clickable');
-            cell.onclick = (function(d) {
-              return function() { selectDate(this, d, month, year); };
-            })(date);
-            if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-              cell.classList.add('today');
-            }
-            date++;
-          }
-        }
-        while (date <= daysInMonth) {
-          row = calendarTable.insertRow();
-          for (var i = 0; i < 7 && date <= daysInMonth; i++) {
-            var cell = row.insertCell();
-            cell.textContent = date;
-            cell.classList.add('clickable');
-            cell.onclick = (function(d) {
-              return function() { selectDate(this, d, month, year); };
-            })(date);
-            if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-              cell.classList.add('today');
-            }
-            date++;
-          }
-        }
-      }
-
-        function selectDate(cell, date, month, year) {
-        if (selectedCell) {
-          selectedCell.classList.remove('selected');
-        }
-        cell.classList.add('selected');
-        selectedCell = cell;
-
-        var selectedDate = new Date(year, month, date);
-        var formattedDate = selectedDate.getFullYear() + "/" + ("0" + (selectedDate.getMonth() + 1)).slice(-2) + "/" + ("0" + selectedDate.getDate()).slice(-2);
-        document.getElementById('selectedDateDisplay').textContent = "Fecha seleccionada : " + formattedDate;
-
-        // Effacer les cellules B5 à G13
-        google.script.run.clearDailyCalendar();
-
-        google.script.run.withSuccessHandler(displayEvents).getEventsForDate(formattedDate);
-      }
-
-        function displayEvents(events) {
-        var eventsList = document.getElementById('eventsList');
-        eventsList.innerHTML = '';
-        if (events.length > 0) {
-          var ul = document.createElement('ul');
-          events.forEach(function(event) {
-            var li = document.createElement('li');
-            li.textContent = event;
-            ul.appendChild(li);
-          });
-          eventsList.appendChild(ul);
-        } else {
-          eventsList.textContent = 'Aucun événement pour cette date.';
-        }
-      }
 
         function saveDate() {
-        if (selectedCell) {
-          var selectedDate = new Date(currentYear, currentMonth, selectedCell.textContent);
-          var formattedDate = selectedDate.getFullYear() + "/" + ("0" + (selectedDate.getMonth() + 1)).slice(-2) + "/" + ("0" + selectedDate.getDate()).slice(-2);
-
-          google.script.run
-            .withSuccessHandler((result) => {
-              console.log('Date enregistrée avec succès :', result);
-            })
-            .withFailureHandler((error) => {
-              console.error('Erreur lors de l\'enregistrement de la date :', error);
-            })
-            .saveDateToCell(formattedDate);
-        } else {
-          console.error('Aucune date sélectionnée.');
+            alert(document.getElementById('selectedDateDisplay').textContent);
         }
-      }
 
         function createEvents() {
-        google.script.run.createEventsFromSheet();
-      }
-
-        renderCalendar(currentMonth, currentYear);
-
-        function saveDateToCell(date) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        var formattedDate = formatDate(date);
-        sheet.getRange('A1').setValue(formattedDate);
-        clearDailyCalendar();
-        copyEventsToDailyCalendar(formattedDate);
-        updateTrueValues(formattedDate);
-        saveInitialData();
-        sortCustomOrder();
+            const eventsList = document.getElementById('eventsList');
+            const event = document.createElement('div');
+            event.textContent = 'Nouvel événement créé';
+            eventsList.appendChild(event);
         }
 
-
-        function getEventsForDate(date) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        var data = sheet.getDataRange().getValues();
-        var events = [];
-        for (var i = 1; i < data.length; i++) {
-            if (data[i][0] == date) {
-            events.push(data[i][1]);
-            }
-        }
-        return events;
-        }
-
-        function clearDailyCalendar() {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        sheet.getRange('A5:H13').clearContent();
-        
-        // Réinitialiser les valeurs de A5 à A13 à FALSE
-        for (var i = 5; i <= 13; i++) {
-            sheet.getRange('A' + i).setValue(false);
-        }
-        }
-
-        function saveDate(date) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        clearDailyCalendar();
-        
-        var events = getEventsForDate(date); // Utilisation de la fonction pour obtenir les événements
-        for (var i = 0; i < events.length; i++) {
-            var row = 5 + i;
-            sheet.getRange('A' + row).setValue(true);
-            sheet.getRange('B' + row + ':H' + row).setValues([events[i].slice(1)]); // Exclure la date de l'événement
-            
-            
-        }
-        }
-
-        function getEventsForDate(date) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Events'); // Nom de la feuille où les événements sont stockés
-        var data = sheet.getDataRange().getValues();
-        var events = [];
-        
-        for (var i = 1; i < data.length; i++) { // Commence à 1 pour ignorer l'en-tête
-            if (data[i][0] == date) {
-            events.push(data[i]);
-            }
-        }
-        
-        return events;
-        }
-
-
-        function updateDailyCalendar(date) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        var startTime = new Date(date + ' 09:00:00');
-        for (var i = 0; i < 9; i++) {
-            var timeSlot = new Date(startTime.getTime() + i * 60 * 60 * 1000);
-            var cell = sheet.getRange(5 + i, 2); // B5 à B13
-            cell.setValue(timeSlot.toTimeString().slice(0, 5)); // Affiche l'heure au format HH:MM
-        }
-        }
-
-
-        function createEventsFromSheet() {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        var date = sheet.getRange('A1').getValue();
-        var formattedDate = formatDate(date);
-        var data = sheet.getDataRange().getValues();
-        var currentEvent = sheet.getRange(15, 2, 1, 7).getValues()[0]; // Récupère les valeurs de B15 à H15
-        var isMatch = false;
-
-        // Vérifier si les cellules B15 à H15 contiennent des données
-        var hasData = currentEvent.some(function(value) {
-            return value !== '';
-        });
-
-        if (!hasData) {
-            return; // Ne pas créer d'événement si les cellules B15 à H15 sont vides
-        }
-
-        // Vérifier si les données existent déjà après la ligne 18
-        for (var j = 18; j < data.length; j++) {
-            if (formatDate(data[j][0]) == formattedDate) {
-            var event = data[j].slice(1, 8); // Récupère les valeurs de B à H après la ligne 18
-            isMatch = currentEvent.every(function(value, index) {
-                return value === event[index];
-            });
-            
-            if (isMatch) {
-                break;
-            }
-            }
-        }
-
-        // Si les données n'existent pas, copier la ligne 15 dans la première ligne vide après la ligne 18
-        if (!isMatch) {
-            var row = 18;
-            while (sheet.getRange(row, 1).getValue() !== '') {
-            row++;
-            }
-            sheet.getRange(row, 1).setValue(formattedDate);
-            for (var i = 0; i < currentEvent.length; i++) {
-            sheet.getRange(row, 2 + i).setValue(currentEvent[i]);
-            }
-        }
-
-        // Appeler la fonction pour mettre à jour la feuille "Contacts"
-        createEventsFromSheetCalendarioToContacts();
-
-        // Vider les plages B5 à B13
-        sheet.getRange('B5:H13').clearContent();
-
-        // Effacer les cellules B15 à H15
-        sheet.getRange('B15:H15').clearContent();
-
-        // Remplir les plages B5 à B13 avec les éléments trouvés pour la date en A1
-        var rowIndex = 5;
-        for (var j = 18; j < data.length; j++) {
-            if (formatDate(data[j][0]) == formattedDate) {
-            sheet.getRange(rowIndex, 2, 1, 7).setValues([data[j].slice(1, 8)]); // Ajuster la plage à 7 colonnes
-            rowIndex++;
-            }
-        }
-        }
-
-
-        function createEventsFromSheetCalendarioToContacts() {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        var contactsSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Contacts');
-        var phoneNumber = sheet.getRange('D15').getValue().toString(); // Convertir en chaîne de caractères
-        var contactsData = contactsSheet.getRange(1, 3, contactsSheet.getLastRow()).getValues(); // Colonne C
-
-        var found = false;
-        for (var i = 0; i < contactsData.length; i++) {
-            if (contactsData[i][0].toString() == phoneNumber) { // Convertir en chaîne de caractères pour comparaison
-            
-            contactsSheet.getRange(i + 1, 6).setValue(sheet.getRange('A1').getValue()); // Colonne F
-            contactsSheet.getRange(i + 1, 5).setValue(sheet.getRange('F15').getValue()); // Colonne E
-            contactsSheet.getRange(i + 1, 8).setValue(sheet.getRange('G15').getValue()); // Colonne H
-            contactsSheet.getRange(i + 1, 7).setValue(sheet.getRange('H15').getValue()); // Colonne G
-            found = true;
-            break;
-            }
-        }
-
-        if (!found) {
-            
-            var newRow = contactsSheet.getLastRow() + 1;
-            contactsSheet.getRange(newRow, 6).setValue(sheet.getRange('A1').getValue()); // Colonne F
-            contactsSheet.getRange(newRow, 5).setValue(sheet.getRange('F15').getValue()); // Colonne E
-            contactsSheet.getRange(newRow, 8).setValue(sheet.getRange('G15').getValue()); // Colonne H
-            contactsSheet.getRange(newRow, 7).setValue(sheet.getRange('H15').getValue()); // Colonne G
-            contactsSheet.getRange(newRow, 3).setValue(sheet.getRange('D15').getValue()); // Colonne C
-            contactsSheet.getRange(newRow, 1).setValue(sheet.getRange('E15').getValue()); // Colonne A
-        }
-        }
-
-
-
-        function checkAndCreateEvent(date, additionalInfo) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        var data = sheet.getDataRange().getValues();
-        var formattedDate = formatDate(date);
-        var eventExists = false;
-        var rowToUpdate = -1;
-
-        for (var i = 18; i < data.length; i++) {
-            if (data[i][0] == formattedDate && data[i][1] == additionalInfo[0]) { // Compare la date et le time
-            eventExists = true;
-            rowToUpdate = i;
-            break;
-            }
-        }
-
-        if (eventExists) {
-            var changesDetected = false;
-            for (var j = 2; j <= 7; j++) {
-            if (data[rowToUpdate][j] != additionalInfo[j]) {
-                changesDetected = true;
-                break;
-            }
-            }
-
-            if (changesDetected) {
-            var ui = SpreadsheetApp.getUi();
-            var response = ui.alert('Changements détectés', 'Voulez-vous vraiment faire les changements?', ui.ButtonSet.YES_NO);
-
-            if (response == ui.Button.YES) {
-                updateEvent(rowToUpdate, additionalInfo);
-            } else {
-                ui.alert('Aucun changement n\'a été enregistré.');
-            }
-            } else {
-            var ui = SpreadsheetApp.getUi();
-            ui.alert('Données sauvegardées');
-            }
-        } else {
-            createEvent(formattedDate, additionalInfo);
-        }
-        }
-
-
-        function createEvent(date, additionalInfo) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        var row = 18;
-        while (sheet.getRange(row, 1).getValue() !== '') {
-            row++;
-        }
-        sheet.getRange(row, 1).setValue(date);
-        
-        // Définir le format de la colonne B en texte
-        sheet.getRange(row, 2).setNumberFormat('@STRING@');
-        
-        for (var i = 0; i < additionalInfo.length; i++) {
-            sheet.getRange(row, 2 + i).setValue(additionalInfo[i]);
-        }
-        }
-
-        function updateEvent(row, additionalInfo) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        
-        // Définir le format de la colonne B en texte
-        sheet.getRange(row, 2).setNumberFormat('@STRING@');
-        
-        for (var i = 0; i < additionalInfo.length; i++) {
-            sheet.getRange(row, 2 + i).setValue(additionalInfo[i]);
-        }
-        }
-
-        function copyEventsToDailyCalendar(date) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        var data = sheet.getDataRange().getValues();
-        var rowIndex = 5; // Commence à la ligne 5 (B5)
-        
-        // Effacer les événements précédents
-        clearDailyCalendar();
-        
-        for (var i = 18; i < data.length; i++) {
-            if (formatDate(data[i][0]) == date) {
-            for (var j = 1; j <= 7; j++) { // Copie les colonnes B à G
-                sheet.getRange(rowIndex, j + 1).setValue(data[i][j]);
-            }
-            rowIndex++;
-            if (rowIndex > 13) break; // Arrête si on dépasse la ligne 13 (B13)
-
-        // saveInitialData()
-        // sortCustomOrder()  
-            
-            }
-        }
-        }
-
-        function updateTrueValues(date) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        var data = sheet.getDataRange().getValues();
-        
-        // Récupérer les valeurs des colonnes B à H de la ligne 15
-        var currentEvent = sheet.getRange(15, 2, 1, 7).getValues()[0]; // Récupère les valeurs de B15 à H15
-        var isMatch = false;
-        
-        // Parcourir les lignes à partir de la ligne 18
-        for (var j = 18; j < data.length; j++) {
-            if (formatDate(data[j][0]) == date) {
-            var event = data[j].slice(1, 8); // Récupère les valeurs de B à H après la ligne 18
-            isMatch = currentEvent.every(function(value, index) {
-                return value === event[index];
-            });
-            
-            if (isMatch) {
-                sheet.getRange(15, 1).setValue(true); // Met à jour la cellule A15 à TRUE
-                break;
-            }
-            }
-        }
-        }
-
-
-
-
-        function checkEventMatches(date) {
-        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Calendario');
-        var data = sheet.getDataRange().getValues();
-        for (var i = 5; i <= 13; i++) {
-            var rowIndex = i - 4 + 18; // Correspond à la ligne après la 18
-            var match = true;
-            if (formatDate(data[rowIndex][0]) == date) {
-            for (var j = 1; j <= 6; j++) {
-                if (sheet.getRange(i, j + 1).getValue() != data[rowIndex][j]) {
-                match = false;
-                break;
-                }
-            }
-            sheet.getRange(i, 1).setValue(match);
-            } else {
-            sheet.getRange(i, 1).setValue(false);
-            }
-        }
-        }
-
-        function formatDate(date) {
-        var d = new Date(date);
-        var year = d.getFullYear();
-        var month = ('0' + (d.getMonth() + 1)).slice(-2);
-        var day = ('0' + d.getDate()).slice(-2);
-        return year + '/' + month + '/' + day;
-        }
+        renderCalendar();
     </script>
 </body>
 </html>

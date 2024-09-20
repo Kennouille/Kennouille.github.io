@@ -9,7 +9,7 @@
 <body>
     <div class="agenda">
         <h1>Agenda Journalier</h1>
-        <table>
+        <table id="journalierTable">
             <thead>
                 <tr>
                     <th>Fecha</th>
@@ -24,85 +24,56 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Ajoute plus de lignes ici -->
-                <tr>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                </tr>
-                <!-- Répétez cette ligne pour plus de lignes -->
+                <!-- Les lignes seront ajoutées ici par JavaScript -->
             </tbody>
         </table>
-        <script>
-            var currentMonth = new Date().getMonth();
-            var currentYear = new Date().getFullYear();
-            const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-    
-            function checkAndDisplayData(selectedDate) {
-                const rows = document.querySelectorAll('table tbody tr');
-                const agendaTable = document.getElementById('editable-table').getElementsByTagName('tbody')[0];
-                agendaTable.innerHTML = ''; // Clear existing rows
-    
-                rows.forEach(row => {
-                    const fechaCell = row.cells[0].textContent.trim();
-                    if (fechaCell === selectedDate) {
-                        const newRow = agendaTable.insertRow();
-                        for (let i = 1; i <= 7; i++) { // Columns from Hora to Trabajo
-                            const newCell = newRow.insertCell();
-                            newCell.textContent = row.cells[i].textContent.trim();
-                            newCell.contentEditable = "true"; // Make cells editable
-                        }
-                    }
-                });
-            }
-    
-            function handleDateClick(event) {
-                const clickedDate = event.target.textContent;
-                const selectedDateDisplay = document.getElementById('selectedDateDisplay');
-                selectedDateDisplay.textContent = 'Date sélectionnée : ' + clickedDate + ' ' + monthNames[currentMonth] + ' ' + currentYear;
-    
-                document.querySelectorAll('.clickable').forEach(dateElement => {
-                    dateElement.classList.remove('selected');
-                });
-    
-                event.target.classList.add('selected');
-                checkAndDisplayData(clickedDate + ' ' + monthNames[currentMonth] + ' ' + currentYear);
-            }
-        
-            function selectToday() {
-                const today = new Date();
-                const todayDate = today.getDate();
-                const todayMonth = today.getMonth();
-                const todayYear = today.getFullYear();
-        
-                if (todayMonth === currentMonth && todayYear === currentYear) {
-                    document.querySelectorAll('.clickable').forEach(dateElement => {
-                        if (parseInt(dateElement.textContent) === todayDate) {
-                            dateElement.classList.add('selected');
-                            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
-                            selectedDateDisplay.textContent = 'Date sélectionnée : ' + todayDate + ' ' + monthNames[todayMonth] + ' ' + todayYear;
-                            checkAndDisplayData(todayDate + ' ' + monthNames[todayMonth] + ' ' + todayYear);
-                        }
-                    });
-                }
-            }
-        
-            window.onload = function() {
-                generateCalendar(currentMonth, currentYear);
-                selectToday();
-                fetchCommitMessage(); // Appel pour récupérer le message de commit
-            };
-        </script>
         <div class="new-event">
             <h2>Nuevo evento</h2>
             <!-- Formulaire pour ajouter un nouvel événement -->
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTableData();
+
+            document.getElementById('journalierTable').addEventListener('input', function(event) {
+                const lastRow = document.querySelector('#journalierTable tbody tr:last-child');
+                const isEmpty = Array.from(lastRow.cells).every(cell => cell.textContent.trim() === '');
+
+                if (!isEmpty) {
+                    addEmptyRow();
+                }
+            });
+        });
+
+        function loadTableData() {
+            // Simuler le chargement des données depuis une base de données
+            const data = [
+                { fecha: '2024-09-19', hora: '10', min: '30', telefono: '123456789', nombre: 'John Doe', lugar: 'Office', precio: '100', trabajo: 'Meeting', user_id: '1' },
+                // Ajoutez d'autres lignes ici
+            ];
+
+            const tbody = document.querySelector('#journalierTable tbody');
+            data.forEach(rowData => {
+                const row = tbody.insertRow();
+                Object.values(rowData).forEach(text => {
+                    const cell = row.insertCell();
+                    cell.textContent = text;
+                    cell.contentEditable = "true";
+                });
+            });
+
+            addEmptyRow();
+        }
+
+        function addEmptyRow() {
+            const tbody = document.querySelector('#journalierTable tbody');
+            const row = tbody.insertRow();
+            for (let i = 0; i < 9; i++) {
+                const cell = row.insertCell();
+                cell.contentEditable = "true";
+            }
+        }
+    </script>
 </body>
 </html>

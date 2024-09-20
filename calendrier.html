@@ -112,6 +112,7 @@
       <input type="text" id="Lugar" placeholder="Lieu">
       <input type="number" id="Precio" placeholder="Prix">
       <input type="text" id="Trabajo" placeholder="Travail">
+      <input type="number" id="user_id" placeholder="user_id">
       <button type="submit">Ajouter</button>
     </form>
   
@@ -121,6 +122,7 @@
     <table id="editable-table">
         <thead>
             <tr>
+                <th>Fecha</th>
                 <th>Hora</th>
                 <th>Min</th>
                 <th>Telefono</th>
@@ -128,6 +130,7 @@
                 <th>Lugar</th>
                 <th>Precio</th>
                 <th>Trabajo</th>
+                <th>user_id</th>
             </tr>
         </thead>
         <tbody>
@@ -139,26 +142,12 @@
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
-            </tr>
-            <tr>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
             </tr>
             <tr>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-            </tr>
-            <tr>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
@@ -175,13 +164,6 @@
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
-            </tr>
-            <tr>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
             </tr>
@@ -193,6 +175,19 @@
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+            </tr>
+            <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
             </tr>
             <tr>
                 <td contenteditable="true"></td>
@@ -202,8 +197,34 @@
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
             </tr>
             <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+            </tr>
+            <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+            </tr>
+            <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
@@ -340,13 +361,15 @@
             rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
                 const rowData = {
-                    hora: cells[0].textContent,
-                    min: cells[1].textContent,
-                    telefono: cells[2].textContent,
-                    nombre: cells[3].textContent,
-                    lugar: cells[4].textContent,
-                    precio: cells[5].textContent,
-                    travail: cells[6].textContent
+                    fecha: cells[0].textContent,
+                    hora: cells[1].textContent,
+                    min: cells[2].textContent,
+                    telefono: cells[3].textContent,
+                    nombre: cells[4].textContent,
+                    lugar: cells[5].textContent,
+                    precio: cells[6].textContent,
+                    travail: cells[7].textContent,
+                    user_id: cells[8].textContent
                 };
                 events[selectedDate].push(rowData);
 
@@ -361,6 +384,7 @@
             const dataTable2 = document.querySelector('#dataTable2 tbody');
             const row = document.createElement('tr');
             row.innerHTML = `
+                <td>${eventData.fecha}</td>
                 <td>${eventData.hora}</td>
                 <td>${eventData.min}</td>
                 <td>${eventData.telefono}</td>
@@ -368,6 +392,7 @@
                 <td>${eventData.lugar}</td>
                 <td>${eventData.precio}</td>
                 <td>${eventData.travail}</td>
+                <td>${eventData.user_id}</td>
             `;
             dataTable2.appendChild(row);
         }

@@ -1,52 +1,31 @@
-// server.js
-const express = require('express');
-const mongoose = require('mongoose');
+//const express = require('express');
+const { createClient } = require('@supabase/supabase-js');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-// Middleware pour parser le JSON
 app.use(express.json());
 
-// Connexion à MongoDB
-mongoose.connect('mongodb://localhost:27017/agenda', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('Could not connect to MongoDB', err));
+const supabaseUrl = 'https://mngggybayjooqkzbhvqy.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZ2dneWJheWpvb3FremJodnF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY2MTU3NDgsImV4cCI6MjA0MjE5MTc0OH0.lnOqnq1AwN41g4xJ5O9oNIPBQqXYJkSrRhJ3osXtcsk';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Définir un modèle pour les événements
-const eventSchema = new mongoose.Schema({
-    fecha: String,
-    hora: String,
-    min: String,
-    telefono: String,
-    nombre: String,
-    lugar: String,
-    precio: String,
-    trabajo: String,
-    user_id: String
-});
-
-const Event = mongoose.model('Event', eventSchema);
-
-// Routes
 app.get('/events', async (req, res) => {
-    try {
-        const events = await Event.find();
-        res.send(events);
-    } catch (err) {
-        res.status(500).send({ message: 'Erreur lors de la récupération des événements', error: err });
-    }
+  const { data, error } = await supabase
+    .from('events')
+    .select('*');
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
 });
 
 app.post('/events', async (req, res) => {
-    try {
-        const event = new Event(req.body);
-        await event.save();
-        res.send(event);
-    } catch (err) {
-        res.status(500).send({ message: 'Erreur lors de l\'enregistrement de l\'événement', error: err });
-    }
+  const { date, event } = req.body;
+  const { data, error } = await supabase
+    .from('events')
+    .insert([{ date, event }]);
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).send('Event added');
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });

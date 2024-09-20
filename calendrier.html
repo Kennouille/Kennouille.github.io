@@ -202,7 +202,10 @@
         var currentYear = new Date().getFullYear();
         var events = {}; // Objet pour stocker les événements par date
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-
+        // Exemple de message de commit
+        const commitMessage = ""; // Remplacez ceci par la méthode pour récupérer le vrai message de commit
+        // Afficher le message de commit
+        document.getElementById('commitMessage').textContent = commitMessage;
         function generateCalendar(month, year) {
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');

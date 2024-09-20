@@ -7,5 +7,7 @@ http {
     location / {
       try_files $uri $uri/ /index.html;
     }
+    error_log /app/logs/error.log;
+    access_log /app/logs/access.log;
   }
 }

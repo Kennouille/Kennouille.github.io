@@ -202,10 +202,16 @@
         var currentYear = new Date().getFullYear();
         var events = {}; // Objet pour stocker les événements par date
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-        // Exemple de message de commit
-        const commitMessage = ""; // Remplacez ceci par la méthode pour récupérer le vrai message de commit
-        // Afficher le message de commit
-        document.getElementById('commitMessage').textContent = commitMessage;
+        
+        function fetchCommitMessage() {
+            fetch('commitMessage.txt')
+                .then(response => response.text())
+                .then(text => {
+                    document.getElementById('commitMessage').textContent = text;
+                })
+                .catch(error => console.error('Erreur lors de la récupération du message de commit:', error));
+        }
+
         function generateCalendar(month, year) {
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');
@@ -221,7 +227,7 @@
                 </tr>
             `;
 
-            const firstDay = new Date(year, month).getDay();
+            const firstDay = (new Date(year, month).getDay() + 6) % 7; // Ajustement pour commencer par lundi
             const daysInMonth = 32 - new Date(year, month, 32).getDate();
             let date = 1;
 
@@ -241,6 +247,9 @@
                         let cellText = document.createTextNode(date);
                         cell.classList.add('clickable');
                         cell.addEventListener('click', handleDateClick);
+                        if (date === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
+                            cell.classList.add('today');
+                        }
                         cell.appendChild(cellText);
                         row.appendChild(cell);
                         date++;
@@ -253,22 +262,43 @@
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
 
+
+
         function handleDateClick(event) {
             const clickedDate = event.target.textContent;
-            console.log('Date cliquée :', clickedDate); // Log pour vérifier la date cliquée
-
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
             selectedDateDisplay.textContent = 'Date sélectionnée : ' + clickedDate + ' ' + monthNames[currentMonth] + ' ' + currentYear;
-            console.log('Date affichée :', selectedDateDisplay.textContent); // Log pour vérifier la date affichée
 
-            // Supprimer la classe 'selected' des autres dates
             document.querySelectorAll('.clickable').forEach(dateElement => {
                 dateElement.classList.remove('selected');
             });
 
-            // Ajouter la classe 'selected' à la date cliquée
             event.target.classList.add('selected');
         }
+
+        function selectToday() {
+            const today = new Date();
+            const todayDate = today.getDate();
+            const todayMonth = today.getMonth();
+            const todayYear = today.getFullYear();
+
+            if (todayMonth === currentMonth && todayYear === currentYear) {
+                document.querySelectorAll('.clickable').forEach(dateElement => {
+                    if (parseInt(dateElement.textContent) === todayDate) {
+                        dateElement.classList.add('selected');
+                        const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+                        selectedDateDisplay.textContent = 'Date sélectionnée : ' + todayDate + ' ' + monthNames[todayMonth] + ' ' + todayYear;
+                    }
+                });
+            }
+        }
+
+        window.onload = function() {
+            generateCalendar(currentMonth, currentYear);
+            selectToday();
+        };
+
+
 
         function changeMonth(direction) {
             currentMonth += direction;

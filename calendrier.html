@@ -115,7 +115,29 @@
       <input type="number" id="user_id" placeholder="user_id">
       <button type="submit">Ajouter</button>
     </form>
-  
+    
+    <script type="module">
+        import { insertData } from './supabaseClient.js';
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = {
+                Fecha: formData.get('Fecha'),
+                Hora: formData.get('Hora'),
+                Min: formData.get('Min'),
+                Telefono: formData.get('Telefono'),
+                Nombre: formData.get('Nombre'),
+                Lugar: formData.get('Lugar'),
+                Precio: formData.get('Precio'),
+                Trabajo: formData.get('Trabajo'),
+                user_id: formData.get('user_id')
+            };
+            await insertData(data);
+        }
+
+        document.getElementById('eventForm').addEventListener('submit', handleSubmit);
+    </script>
     <script src="calendar.js"></script>
 
     <!-- Tableau modifiable -->

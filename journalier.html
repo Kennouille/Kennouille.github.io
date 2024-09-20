@@ -12,18 +12,93 @@
         <table>
             <thead>
                 <tr>
+                    <th>Fecha</th>
                     <th>Hora</th>
                     <th>Min</th>
-                    <th>Teléfono</th>
-                    <th>Nombre/Lugar</th>
+                    <th>Telefono</th>
+                    <th>Nombre</th>
+                    <th>Lugar</th>
                     <th>Precio</th>
                     <th>Trabajo</th>
+                    <th>user_id</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- Ajoute plus de lignes ici -->
+                <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <!-- Répétez cette ligne pour plus de lignes -->
             </tbody>
         </table>
+        <script>
+            var currentMonth = new Date().getMonth();
+            var currentYear = new Date().getFullYear();
+            const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+    
+            function checkAndDisplayData(selectedDate) {
+                const rows = document.querySelectorAll('table tbody tr');
+                const agendaTable = document.getElementById('editable-table').getElementsByTagName('tbody')[0];
+                agendaTable.innerHTML = ''; // Clear existing rows
+    
+                rows.forEach(row => {
+                    const fechaCell = row.cells[0].textContent.trim();
+                    if (fechaCell === selectedDate) {
+                        const newRow = agendaTable.insertRow();
+                        for (let i = 1; i <= 7; i++) { // Columns from Hora to Trabajo
+                            const newCell = newRow.insertCell();
+                            newCell.textContent = row.cells[i].textContent.trim();
+                            newCell.contentEditable = "true"; // Make cells editable
+                        }
+                    }
+                });
+            }
+    
+            function handleDateClick(event) {
+                const clickedDate = event.target.textContent;
+                const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+                selectedDateDisplay.textContent = 'Date sélectionnée : ' + clickedDate + ' ' + monthNames[currentMonth] + ' ' + currentYear;
+    
+                document.querySelectorAll('.clickable').forEach(dateElement => {
+                    dateElement.classList.remove('selected');
+                });
+    
+                event.target.classList.add('selected');
+                checkAndDisplayData(clickedDate + ' ' + monthNames[currentMonth] + ' ' + currentYear);
+            }
+        
+            function selectToday() {
+                const today = new Date();
+                const todayDate = today.getDate();
+                const todayMonth = today.getMonth();
+                const todayYear = today.getFullYear();
+        
+                if (todayMonth === currentMonth && todayYear === currentYear) {
+                    document.querySelectorAll('.clickable').forEach(dateElement => {
+                        if (parseInt(dateElement.textContent) === todayDate) {
+                            dateElement.classList.add('selected');
+                            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+                            selectedDateDisplay.textContent = 'Date sélectionnée : ' + todayDate + ' ' + monthNames[todayMonth] + ' ' + todayYear;
+                            checkAndDisplayData(todayDate + ' ' + monthNames[todayMonth] + ' ' + todayYear);
+                        }
+                    });
+                }
+            }
+        
+            window.onload = function() {
+                generateCalendar(currentMonth, currentYear);
+                selectToday();
+                fetchCommitMessage(); // Appel pour récupérer le message de commit
+            };
+        </script>
         <div class="new-event">
             <h2>Nuevo evento</h2>
             <!-- Formulaire pour ajouter un nouvel événement -->

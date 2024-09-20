@@ -99,6 +99,24 @@
     <button class="button" onclick="createEvents()">Crear evento</button>
     <div id="eventsList"></div>
 
+    <input type="date" id="calendar">
+    <div id="agenda"></div>
+  
+    <!-- Formulaire pour ajouter un événement -->
+    <form id="eventForm">
+      <input type="date" id="Fecha" required>
+      <input type="time" id="Hora" required>
+      <input type="number" id="Min" required>
+      <input type="text" id="Telefono" placeholder="Téléphone">
+      <input type="text" id="Nombre" placeholder="Nom" required>
+      <input type="text" id="Lugar" placeholder="Lieu">
+      <input type="number" id="Precio" placeholder="Prix">
+      <input type="text" id="Trabajo" placeholder="Travail">
+      <button type="submit">Ajouter</button>
+    </form>
+  
+    <script src="calendar.js"></script>
+
     <!-- Tableau modifiable -->
     <table id="editable-table">
         <thead>

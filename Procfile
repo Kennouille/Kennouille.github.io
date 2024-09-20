@@ -1,1 +1,1 @@
-web: bin/start-nginx
+web: nginx -c /app/config/nginx.conf.erb

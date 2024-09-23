@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Journalier</title>
     <link rel="stylesheet" href="styles.css">
-    <script type="module" src="supabaseClient.js"></script>
+    <script type="module" src="supabaseClientAgendaJour.js"></script>
 </head>
 <body>
     <div class="agenda">
@@ -33,7 +33,7 @@
         </div>
     </div>
     <script type="module">
-        import { supabase } from './supabaseClient.js';
+        import { supabase } from './supabaseClientAgendaJour.js';
 
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();

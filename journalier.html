@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Journalier</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.35.6/dist/umd/supabase.min.js"></script>
-    <script src="supabaseClient.js" defer></script>
+    <script type="module" src="supabaseClient.js"></script>
 </head>
 <body>
     <div class="agenda">
@@ -33,7 +32,9 @@
             <!-- Formulaire pour ajouter un nouvel événement -->
         </div>
     </div>
-    <script>
+    <script type="module">
+        import { supabase } from './supabaseClient.js';
+
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
 
@@ -49,9 +50,6 @@
 
         async function loadTableData() {
             try {
-                const supabase = require('./supabaseClient.js');
-                console.log('Supabase client loaded:', supabase);
-
                 const { data, error } = await supabase
                     .from('event_quot')
                     .select('*');

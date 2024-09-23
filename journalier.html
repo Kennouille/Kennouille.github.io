@@ -30,7 +30,17 @@
         </table>
         <div class="new-event">
             <h2>Nuevo evento</h2>
-            <!-- Formulaire pour ajouter un nouvel événement -->
+            <form id="newEventForm">
+                <input type="date" id="fecha" required>
+                <input type="number" id="hora" required>
+                <input type="number" id="min" required>
+                <input type="text" id="telefono" required>
+                <input type="text" id="nombre" required>
+                <input type="text" id="lugar" required>
+                <input type="text" id="precio" required>
+                <input type="text" id="trabajo" required>
+                <button type="button" id="addEventButton">Ajouter</button>
+            </form>
         </div>
     </div>
     <script type="module">
@@ -45,6 +55,30 @@
 
                 if (!isEmpty) {
                     addEmptyRow();
+                }
+            });
+
+            document.getElementById('addEventButton').addEventListener('click', async function() {
+                const newEvent = {
+                    fecha: document.getElementById('fecha').value,
+                    hora: document.getElementById('hora').value,
+                    min: document.getElementById('min').value,
+                    telefono: document.getElementById('telefono').value,
+                    nombre: document.getElementById('nombre').value,
+                    lugar: document.getElementById('lugar').value,
+                    precio: document.getElementById('precio').value,
+                    trabajo: document.getElementById('trabajo').value
+                };
+
+                const { error } = await supabase
+                    .from('event_quot')
+                    .insert([newEvent]);
+
+                if (error) {
+                    console.error('Erreur lors de l\'insertion des données :', error);
+                } else {
+                    console.log('Données insérées avec succès');
+                    loadTableData(); // Recharger les données pour afficher le nouvel événement
                 }
             });
         });
@@ -63,12 +97,15 @@
                 console.log('Data fetched from Supabase:', data);
 
                 const tbody = document.querySelector('#journalierTable tbody');
+                tbody.innerHTML = ''; // Effacer les anciennes lignes
                 data.forEach(rowData => {
                     const row = tbody.insertRow();
-                    Object.values(rowData).forEach(text => {
+                    Object.entries(rowData).forEach(([key, value]) => {
                         const cell = row.insertCell();
-                        cell.textContent = text;
+                        cell.textContent = value;
                         cell.contentEditable = "true";
+                        cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
+                        cell.dataset.id = rowData.id; // Ajouter un attribut pour identifier la ligne
                     });
                 });
 
@@ -86,6 +123,26 @@
                 cell.contentEditable = "true";
             }
         }
+
+        document.getElementById('journalierTable').addEventListener('focusout', async function(event) {
+            const cell = event.target;
+            const column = cell.dataset.column;
+            const id = cell.dataset.id;
+            const newValue = cell.textContent.trim();
+
+            if (column && id) {
+                const { error } = await supabase
+                    .from('event_quot')
+                    .update({ [column]: newValue })
+                    .eq('id', id);
+
+                if (error) {
+                    console.error('Erreur lors de la mise à jour des données :', error);
+                } else {
+                    console.log('Données mises à jour avec succès');
+                }
+            }
+        });
     </script>
 </body>
 </html>

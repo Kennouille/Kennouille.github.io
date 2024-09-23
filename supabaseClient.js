@@ -18,16 +18,16 @@ export async function insertData(data) {
 }
 
 export async function fetchData() {
-    console.log('Début de la récupération des données...');
+    console.log('Envoi de la requête à Supabase...');
     const { data, error } = await supabase
-        .from('tableData')
-        .select('*');
-
+      .from('tableData')
+      .select('*');
+  
     if (error) {
-        console.error('Erreur lors de la récupération des données :', error);
-        return [];
+      console.error('Erreur lors de la récupération des données :', error);
+      return [];
     }
-
-    console.log('Données récupérées depuis Supabase :', data);
+  
+    console.log('Données récupérées :', data);
     return data;
-}
+  }

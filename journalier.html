@@ -31,14 +31,14 @@
         <div class="new-event">
             <h2>Nuevo evento</h2>
             <form id="newEventForm">
-                <input type="date" id="fecha" required>
-                <input type="number" id="hora" required>
-                <input type="number" id="min" required>
-                <input type="text" id="telefono" required>
-                <input type="text" id="nombre" required>
-                <input type="text" id="lugar" required>
-                <input type="text" id="precio" required>
-                <input type="text" id="trabajo" required>
+                <input type="date" id="Fecha" required>
+                <input type="number" id="Hora" required>
+                <input type="number" id="Min" required>
+                <input type="text" id="Telefono" required>
+                <input type="text" id="Nombre" required>
+                <input type="text" id="Lugar" required>
+                <input type="text" id="Precio" required>
+                <input type="text" id="Trabajo" required>
                 <button type="button" id="addEventButton">Ajouter</button>
             </form>
         </div>
@@ -60,14 +60,14 @@
 
             document.getElementById('addEventButton').addEventListener('click', async function() {
                 const newEvent = {
-                    fecha: document.getElementById('fecha').value,
-                    hora: document.getElementById('hora').value,
-                    min: document.getElementById('min').value,
-                    telefono: document.getElementById('telefono').value,
-                    nombre: document.getElementById('nombre').value,
-                    lugar: document.getElementById('lugar').value,
-                    precio: document.getElementById('precio').value,
-                    trabajo: document.getElementById('trabajo').value
+                    Fecha: document.getElementById('Fecha').value,
+                    Hora: document.getElementById('Hora').value,
+                    Min: document.getElementById('Min').value,
+                    Telefono: document.getElementById('Telefono').value,
+                    Nombre: document.getElementById('Nombre').value,
+                    Lugar: document.getElementById('Lugar').value,
+                    Precio: document.getElementById('Precio').value,
+                    Trabajo: document.getElementById('Trabajo').value
                 };
 
                 const { error } = await supabase

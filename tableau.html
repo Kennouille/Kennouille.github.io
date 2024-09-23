@@ -38,7 +38,7 @@
     console.log('Début du chargement des données depuis Supabase...');
     const { data, error } = await supabase
         .from('tableData')
-        .select('*');
+        .insert([data]);
 
     if (error) {
         console.error('Erreur lors du chargement des données :', error);

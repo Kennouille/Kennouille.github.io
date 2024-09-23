@@ -43,14 +43,14 @@
                     const row = document.createElement('tr');
 
                     row.innerHTML = `
-                        <td>${rowData.Fecha}</td>
-                        <td>${rowData.Hora}</td>
-                        <td>${rowData.Min}</td>
-                        <td>${rowData.Telefono}</td>
-                        <td>${rowData.Nombre}</td>
-                        <td>${rowData.Lugar}</td>
-                        <td>${rowData.Precio}</td>
-                        <td>${rowData.Trabajo}</td>
+                        <td>${rowData.Fecha || ''}</td>
+                        <td>${rowData.Hora || ''}</td>
+                        <td>${rowData.Min || ''}</td>
+                        <td>${rowData.Telefono || ''}</td>
+                        <td>${rowData.Nombre || ''}</td>
+                        <td>${rowData.Lugar || ''}</td>
+                        <td>${rowData.Precio || ''}</td>
+                        <td>${rowData.Trabajo || ''}</td>
                     `;
                     tableBody.appendChild(row);
                 });

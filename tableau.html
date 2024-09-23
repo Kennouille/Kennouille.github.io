@@ -35,61 +35,43 @@
         const supabase = createClient(supabaseUrl, supabaseKey);
 
         async function loadDataFromSupabase() {
-    console.log('Début du chargement des données depuis Supabase...');
-    const { data, error } = await supabase
-        .from('tableData')
-        .insert([data]);
+            console.log('Début du chargement des données depuis Supabase...');
+            const { data, error } = await supabase
+                .from('tableData')
+                .select('*');
 
-    if (error) {
-        console.error('Erreur lors du chargement des données :', error);
-        return;
-    }
-
-    console.log('Données récupérées :', data); // Affiche les données dans la console du navigateur
-    if (data && data.length > 0) {
-        const tableBody = document.querySelector('#data-table tbody');
-        tableBody.innerHTML = ''; // Clear previous data
-        data.forEach(rowData => {
-            console.log('Traitement de la ligne de données :', rowData);
-            const row = document.createElement('tr');
-
-            row.innerHTML = `
-                <td>${rowData.Fecha}</td>
-                <td>${rowData.Hora}</td>
-                <td>${rowData.Min}</td>
-                <td>${rowData.Telefono}</td>
-                <td>${rowData.Nombre}</td>
-                <td>${rowData.Lugar}</td>
-                <td>${rowData.Precio}</td>
-                <td>${rowData.Trabajo}</td>
-            `;
-            tableBody.appendChild(row);
-        });
-    } else {
-        console.log('Aucune donnée trouvée.');
-    }
-}
-
-        function setupPagination() {
-            const pagination = document.querySelector('.pagination');
-            pagination.innerHTML = `
-                <button onclick="changePage('prev')">Précédent</button>
-                <button onclick="changePage('next')">Suivant</button>
-            `;
-        }
-
-        function changePage(direction) {
-            if (direction === 'next') {
-                currentPage++;
-            } else if (direction === 'prev' && currentPage > 1) {
-                currentPage--;
+            if (error) {
+                console.error('Erreur lors du chargement des données :', error);
+                return;
             }
-            loadDataFromSupabase(currentPage);
+
+            console.log('Données récupérées :', data); // Affiche les données dans la console du navigateur
+            if (data && data.length > 0) {
+                const tableBody = document.querySelector('#data-table tbody');
+                tableBody.innerHTML = ''; // Clear previous data
+                data.forEach(rowData => {
+                    console.log('Traitement de la ligne de données :', rowData);
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${rowData.Fecha}</td>
+                        <td>${rowData.Hora}</td>
+                        <td>${rowData.Min}</td>
+                        <td>${rowData.Telefono}</td>
+                        <td>${rowData.Nombre}</td>
+                        <td>${rowData.Lugar}</td>
+                        <td>${rowData.Precio}</td>
+                        <td>${rowData.Trabajo}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                console.log('Aucune donnée trouvée.');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             loadDataFromSupabase();
-            setupPagination();
         });
     </script>
 </head>

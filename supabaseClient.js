@@ -5,6 +5,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function insertData(data) {
+    console.log('Insertion des données :', data);
     const { error } = await supabase
         .from('tableData')
         .insert([data]);
@@ -17,6 +18,7 @@ export async function insertData(data) {
 }
 
 export async function fetchData() {
+    console.log('Début de la récupération des données...');
     const { data, error } = await supabase
         .from('tableData')
         .select('*');
@@ -26,5 +28,6 @@ export async function fetchData() {
         return [];
     }
 
+    console.log('Données récupérées depuis Supabase :', data);
     return data;
 }

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Journalier</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.35.6/dist/umd/supabase.min.js"></script>
+    <script src="supabaseClient.js" defer></script>
 </head>
 <body>
     <div class="agenda">
@@ -45,12 +47,17 @@
             });
         });
 
-        function loadTableData() {
-            // Simuler le chargement des données depuis une base de données
-            const data = [
-                { fecha: '2024-09-19', hora: '10', min: '30', telefono: '123456789', nombre: 'John Doe', lugar: 'Office', precio: '100', trabajo: 'Meeting', user_id: '1' },
-                // Ajoutez d'autres lignes ici
-            ];
+        async function loadTableData() {
+            const supabase = await import('./supabaseClient.js');
+
+            const { data, error } = await supabase
+                .from('event_quot')
+                .select('*');
+
+            if (error) {
+                console.error('Error fetching data:', error);
+                return;
+            }
 
             const tbody = document.querySelector('#journalierTable tbody');
             data.forEach(rowData => {
@@ -68,7 +75,7 @@
         function addEmptyRow() {
             const tbody = document.querySelector('#journalierTable tbody');
             const row = tbody.insertRow();
-            for (let i = 0; i < 9; i++) {
+            for (let i = 0; i < 8; i++) { // 8 colonnes dans votre tableau
                 const cell = row.insertCell();
                 cell.contentEditable = "true";
             }

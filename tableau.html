@@ -30,51 +30,65 @@
         console.log('Tentative de connexion à Supabase avec l\'URL:', supabaseUrl);
         console.log('Utilisation de la clé API:', supabaseKey);
 
-        async function insertData(data) {
-            const { error } = await supabase
+        async function loadDataFromSupabase() {
+            console.log('Début du chargement des données depuis Supabase...');
+            const { data, error } = await supabase
                 .from('tableData')
-                .insert([data]);
+                .select('*');
 
             if (error) {
-                console.error('Erreur lors de l\'insertion des données :', error);
+                console.error('Erreur lors du chargement des données :', error);
+                return;
+            }
+
+            console.log('Données récupérées :', data); // Affiche les données dans la console du navigateur
+            if (data && data.length > 0) {
+                const tableBody = document.querySelector('#data-table tbody');
+                tableBody.innerHTML = ''; // Clear previous data
+                data.forEach(rowData => {
+                    console.log('Traitement de la ligne de données :', rowData);
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${rowData['First Name']}</td>
+                        <td>${rowData.Ind}</td>
+                        <td>${rowData['Mobile Phone']}</td>
+                        <td>${rowData.Link}</td>
+                        <td>${rowData.Lugar}</td>
+                        <td>${rowData.Fecha}</td>
+                        <td>${rowData.Trabajo}</td>
+                        <td>${rowData.Precio}</td>
+                        <td>${rowData.user_id}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
             } else {
-                console.log('Données insérées avec succès');
+                console.log('Aucune donnée trouvée.');
             }
         }
 
-        async function handleSubmit(event_quot) {
-            event_quot.preventDefault();
-            const formData = new FormData(event_quot.target);
-            const data = {
-                Fecha: formData.get('Fecha'),
-                Hora: formData.get('Hora'),
-                Min: formData.get('Min'),
-                Telefono: formData.get('Telefono'),
-                Nombre: formData.get('Nombre'),
-                Lugar: formData.get('Lugar'),
-                Precio: formData.get('Precio'),
-                Trabajo: formData.get('Trabajo'),
-            };
-            await insertData(data);
-        }
-
-        document.addEvent_quotListener('DOMContentLoaded', () => {
-            document.getElementById('event_quotForm').addEvent_quotListener('submit', handleSubmit);
-        });
+        document.addEventListener('DOMContentLoaded', loadDataFromSupabase);
     </script>
 </head>
 <body>
     <h1>Tableau de Données</h1>
-    <form id="event_quotForm">
-        <input type="date" id="Fecha" name="Fecha" required>
-        <input type="number" id="Hora" name="Hora" required>
-        <input type="number" id="Min" name="Min" required>
-        <input type="number" id="Telefono" name="Telefono" placeholder="Téléphone">
-        <input type="text" id="Nombre" name="Nombre" placeholder="Nom" required>
-        <input type="text" id="Lugar" name="Lugar" placeholder="Lieu">
-        <input type="number" id="Precio" name="Precio" placeholder="Prix">
-        <input type="text" id="Trabajo" name="Trabajo" placeholder="Travail">
-        <button type="submit">Ajouter</button>
-    </form>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Ind</th>
+                <th>Mobile Phone</th>
+                <th>Link</th>
+                <th>Lugar</th>
+                <th>Fecha</th>
+                <th>Trabajo</th>
+                <th>Precio</th>
+                <th>User ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les données seront insérées ici -->
+        </tbody>
+    </table>
 </body>
 </html>

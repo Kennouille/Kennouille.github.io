@@ -34,45 +34,41 @@
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZ2dneWJheWpvb3FremJodnF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY2MTU3NDgsImV4cCI6MjA0MjE5MTc0OH0.lnOqnq1AwN41g4xJ5O9oNIPBQqXYJkSrRhJ3osXtcsk';
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        let currentPage = 1;
-        const rowsPerPage = 100;
+        async function loadDataFromSupabase() {
+    console.log('Début du chargement des données depuis Supabase...');
+    const { data, error } = await supabase
+        .from('tableData')
+        .select('*');
 
-        async function loadDataFromSupabase(page = 1) {
-            console.log('Début du chargement des données depuis Supabase...');
-            const { data, error } = await supabase
-                .from('tableData')
-                .select('*')
-                .range((page - 1) * rowsPerPage, page * rowsPerPage - 1);
+    if (error) {
+        console.error('Erreur lors du chargement des données :', error);
+        return;
+    }
 
-            if (error) {
-                console.error('Erreur lors du chargement des données :', error);
-                return;
-            }
+    console.log('Données récupérées :', data); // Affiche les données dans la console du navigateur
+    if (data && data.length > 0) {
+        const tableBody = document.querySelector('#data-table tbody');
+        tableBody.innerHTML = ''; // Clear previous data
+        data.forEach(rowData => {
+            console.log('Traitement de la ligne de données :', rowData);
+            const row = document.createElement('tr');
 
-            console.log('Données récupérées :', data); // Affiche les données dans la console du navigateur
-            if (data && data.length > 0) {
-                const tableBody = document.querySelector('#data-table tbody');
-                tableBody.innerHTML = ''; // Clear previous data
-                data.forEach(rowData => {
-                    console.log('Traitement de la ligne de données :', rowData);
-                    const row = document.createElement('tr');
-
-                    row.innerHTML = `
-                        <td>${rowData.Fecha}</td>
-                        <td>${rowData.Hora}</td>
-                        <td>${rowData.Min}</td>
-                        <td>${rowData.Telefono}</td>
-                        <td>${rowData.Nombre}</td>
-                        <td>${rowData.Lugar}</td>
-                        <td>${rowData.Precio}</td>
-                        <td>${rowData.Trabajo}</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } else {
-                console.log('Aucune donnée trouvée.');
-            }
-        }
+            row.innerHTML = `
+                <td>${rowData.Fecha}</td>
+                <td>${rowData.Hora}</td>
+                <td>${rowData.Min}</td>
+                <td>${rowData.Telefono}</td>
+                <td>${rowData.Nombre}</td>
+                <td>${rowData.Lugar}</td>
+                <td>${rowData.Precio}</td>
+                <td>${rowData.Trabajo}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } else {
+        console.log('Aucune donnée trouvée.');
+    }
+}
 
         function setupPagination() {
             const pagination = document.querySelector('.pagination');
@@ -98,7 +94,7 @@
     </script>
 </head>
 <body>
-    <h1>Tableau de Données</h1>
+    <h1>Datos de contactos</h1>
     <table id="data-table">
         <thead>
             <tr>

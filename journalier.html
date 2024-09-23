@@ -48,28 +48,35 @@
         });
 
         async function loadTableData() {
-            const supabase = await import('./supabaseClient.js');
+            try {
+                const supabase = require('./supabaseClient.js');
+                console.log('Supabase client loaded:', supabase);
 
-            const { data, error } = await supabase
-                .from('event_quot')
-                .select('*');
+                const { data, error } = await supabase
+                    .from('event_quot')
+                    .select('*');
 
-            if (error) {
-                console.error('Error fetching data:', error);
-                return;
-            }
+                if (error) {
+                    console.error('Error fetching data:', error);
+                    return;
+                }
 
-            const tbody = document.querySelector('#journalierTable tbody');
-            data.forEach(rowData => {
-                const row = tbody.insertRow();
-                Object.values(rowData).forEach(text => {
-                    const cell = row.insertCell();
-                    cell.textContent = text;
-                    cell.contentEditable = "true";
+                console.log('Data fetched from Supabase:', data);
+
+                const tbody = document.querySelector('#journalierTable tbody');
+                data.forEach(rowData => {
+                    const row = tbody.insertRow();
+                    Object.values(rowData).forEach(text => {
+                        const cell = row.insertCell();
+                        cell.textContent = text;
+                        cell.contentEditable = "true";
+                    });
                 });
-            });
 
-            addEmptyRow();
+                addEmptyRow();
+            } catch (err) {
+                console.error('Error loading Supabase client:', err);
+            }
         }
 
         function addEmptyRow() {

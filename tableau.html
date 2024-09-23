@@ -58,15 +58,15 @@
                     const row = document.createElement('tr');
 
                     row.innerHTML = `
-                        <td>${rowData['First Name']}</td>
-                        <td>${rowData.Ind}</td>
-                        <td>${rowData['Mobile Phone']}</td>
-                        <td>${rowData.Link}</td>
-                        <td>${rowData.Lugar}</td>
                         <td>${rowData.Fecha}</td>
+                        <td>${rowData.Hora}</td>
+                        <td>${rowData.Min}</td>
+                        <td>${rowData.Telefono}</td>
+                        <td>${rowData.Nombre}</td>
+                        <td>${rowData.Lugar}</td>
                         <td>${rowData.Trabajo}</td>
                         <td>${rowData.Precio}</td>
-                        <td>${rowData.user_id}</td>
+                        <td>${rowData.Trabajo}</td>
                     `;
                     tableBody.appendChild(row);
                 });
@@ -103,15 +103,15 @@
     <table id="data-table">
         <thead>
             <tr>
-                <th>First Name</th>
-                <th>Ind</th>
-                <th>Mobile Phone</th>
-                <th>Link</th>
-                <th>Lugar</th>
                 <th>Fecha</th>
+                <th>Hora</th>
+                <th>Min</th>
+                <th>Telefono</th>
+                <th>Nombre</th>
+                <th>Lugar</th>
                 <th>Trabajo</th>
                 <th>Precio</th>
-                <th>User ID</th>
+                <th>Trabajo</th>
             </tr>
         </thead>
         <tbody>

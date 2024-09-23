@@ -99,7 +99,9 @@
                         cell.textContent = value;
                         cell.contentEditable = "true";
                         cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
-                        cell.dataset.id = rowData.id; // Ajouter un attribut pour identifier la ligne
+                        if (key === 'Telefono') {
+                            cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
+                        }
                     });
 
                     // Ajouter le bouton "Appliquer"
@@ -123,12 +125,12 @@
                             }
                         });
 
-                        const id = row.cells[0].dataset.id; // Supposons que la première cellule contient l'ID
+                        const telefono = row.querySelector('[data-telefono]').dataset.telefono;
 
                         const { error } = await supabase
                             .from('event_quot')
                             .update(updatedEvent)
-                            .eq('id', id);
+                            .eq('Telefono', telefono);
 
                         if (error) {
                             console.error('Erreur lors de la mise à jour des données :', error);

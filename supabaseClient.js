@@ -18,10 +18,10 @@ export async function insertData(data) {
 }
 
 export async function fetchData() {
-    console.log('Envoi de la requête à Supabase...');
-    const { data, error } = await supabase
+    console.log('Envoi de la requête :', supabase
       .from('tableData')
-      .select('*');
+      .select('*')
+      .toString());
   
     if (error) {
       console.error('Erreur lors de la récupération des données :', error);

@@ -3,7 +3,7 @@ import supabase from './supabaseClient';
 // Fonction pour ajouter un événement
 export async function addEvent(event) {
   const { data, error } = await supabase
-    .from('events')
+    .from('event_quot')
     .insert([event]);
 
   if (error) {
@@ -14,14 +14,14 @@ export async function addEvent(event) {
 }
 
 // Fonction pour récupérer les événements pour une date donnée
-export async function getEventsForDate(date) {
+export async function getEvent_quotForDate(date) {
   const { data, error } = await supabase
-    .from('events')
+    .from('event_quot')
     .select('*')
     .eq('Fecha', date);
 
   if (error) {
-    console.error('Error fetching events:', error);
+    console.error('Error fetching event_quot:', error);
     return [];
   }
   return data;

@@ -1,11 +1,11 @@
-import { addEvent, getEventsForDate } from './events';
+import { addEvent, getEvent_quotForDate } from './event_quot';
 
 // Fonction pour afficher les événements dans l'agenda quotidien
-function displayEvents(events) {
+function displayEvent_quot(event_quot) {
   const agenda = document.getElementById('agenda');
   agenda.innerHTML = ''; // Vider l'agenda
 
-  events.forEach(event => {
+  event_quot.forEach(event => {
     const eventElement = document.createElement('div');
     eventElement.textContent = `${event.Hora}:${event.Min} - ${event.Nombre} @ ${event.Lugar}`;
     agenda.appendChild(eventElement);
@@ -14,8 +14,8 @@ function displayEvents(events) {
 
 // Fonction pour gérer le changement de date
 async function onDateChange(newDate) {
-  const events = await getEventsForDate(newDate);
-  displayEvents(events);
+  const event_quot = await getEvent_quotForDate(newDate);
+  displayEvent_quot(event_quot);
 }
 
 // Gérer la soumission du formulaire pour ajouter un événement
@@ -31,7 +31,6 @@ document.getElementById('eventForm').addEventListener('submit', async (e) => {
     Lugar: document.getElementById('Lugar').value,
     Precio: parseFloat(document.getElementById('Precio').value),
     Trabajo: document.getElementById('Trabajo').value,
-    user_id: 'some-unique-user-id' // Remplacez par l'ID utilisateur approprié
   };
 
   await addEvent(event);
@@ -52,6 +51,6 @@ document.getElementById('calendar').addEventListener('change', (e) => {
 // Charger les événements pour la date actuelle au chargement de la page
 document.addEventListener('DOMContentLoaded', async () => {
   const today = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
-  const events = await getEventsForDate(today);
-  displayEvents(events);
+  const event_quot = await getEvent_quotForDate(today);
+  displayEvent_quot(event_quot);
 });

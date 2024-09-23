@@ -18,6 +18,14 @@
             background-color: #f2f2f2;
             color: #333;
         }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+        }
     </style>
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
@@ -26,15 +34,15 @@
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZ2dneWJheWpvb3FremJodnF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY2MTU3NDgsImV4cCI6MjA0MjE5MTc0OH0.lnOqnq1AwN41g4xJ5O9oNIPBQqXYJkSrRhJ3osXtcsk';
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        // Vérification de la connexion
-        console.log('Tentative de connexion à Supabase avec l\'URL:', supabaseUrl);
-        console.log('Utilisation de la clé API:', supabaseKey);
+        let currentPage = 1;
+        const rowsPerPage = 100;
 
-        async function loadDataFromSupabase() {
+        async function loadDataFromSupabase(page = 1) {
             console.log('Début du chargement des données depuis Supabase...');
             const { data, error } = await supabase
                 .from('tableData')
-                .select('*');
+                .select('*')
+                .range((page - 1) * rowsPerPage, page * rowsPerPage - 1);
 
             if (error) {
                 console.error('Erreur lors du chargement des données :', error);
@@ -67,7 +75,27 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadDataFromSupabase);
+        function setupPagination() {
+            const pagination = document.querySelector('.pagination');
+            pagination.innerHTML = `
+                <button onclick="changePage('prev')">Précédent</button>
+                <button onclick="changePage('next')">Suivant</button>
+            `;
+        }
+
+        function changePage(direction) {
+            if (direction === 'next') {
+                currentPage++;
+            } else if (direction === 'prev' && currentPage > 1) {
+                currentPage--;
+            }
+            loadDataFromSupabase(currentPage);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDataFromSupabase();
+            setupPagination();
+        });
     </script>
 </head>
 <body>
@@ -90,5 +118,8 @@
             <!-- Les données seront insérées ici -->
         </tbody>
     </table>
+    <div class="pagination">
+        <!-- Les boutons de pagination seront insérés ici -->
+    </div>
 </body>
 </html>

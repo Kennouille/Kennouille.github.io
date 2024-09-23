@@ -42,9 +42,9 @@
             }
         }
 
-        async function handleSubmit(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
+        async function handleSubmit(event_quot) {
+            event_quot.preventDefault();
+            const formData = new FormData(event_quot.target);
             const data = {
                 Fecha: formData.get('Fecha'),
                 Hora: formData.get('Hora'),
@@ -54,23 +54,22 @@
                 Lugar: formData.get('Lugar'),
                 Precio: formData.get('Precio'),
                 Trabajo: formData.get('Trabajo'),
-                user_id: 'some-unique-user-id' // Remplacez par l'ID utilisateur approprié
             };
             await insertData(data);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('eventForm').addEventListener('submit', handleSubmit);
+        document.addEvent_quotListener('DOMContentLoaded', () => {
+            document.getElementById('event_quotForm').addEvent_quotListener('submit', handleSubmit);
         });
     </script>
 </head>
 <body>
     <h1>Tableau de Données</h1>
-    <form id="eventForm">
+    <form id="event_quotForm">
         <input type="date" id="Fecha" name="Fecha" required>
-        <input type="time" id="Hora" name="Hora" required>
+        <input type="number" id="Hora" name="Hora" required>
         <input type="number" id="Min" name="Min" required>
-        <input type="text" id="Telefono" name="Telefono" placeholder="Téléphone">
+        <input type="number" id="Telefono" name="Telefono" placeholder="Téléphone">
         <input type="text" id="Nombre" name="Nombre" placeholder="Nom" required>
         <input type="text" id="Lugar" name="Lugar" placeholder="Lieu">
         <input type="number" id="Precio" name="Precio" placeholder="Prix">

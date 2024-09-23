@@ -307,7 +307,7 @@
                         let cell = document.createElement('td');
                         let cellText = document.createTextNode(date);
                         cell.classList.add('clickable');
-                        cell.addEventListener('click', handleDateClick);
+                        cell.addEvent_quotListener('click', handleDateClick);
                         if (date === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
                             cell.classList.add('today');
                         }
@@ -325,8 +325,8 @@
 
 
 
-        function handleDateClick(event) {
-            const clickedDate = event.target.textContent;
+        function handleDateClick(event_quot) {
+            const clickedDate = event_quot.target.textContent;
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
             selectedDateDisplay.textContent = 'Date sélectionnée : ' + clickedDate + ' ' + monthNames[currentMonth] + ' ' + currentYear;
 
@@ -334,7 +334,7 @@
                 dateElement.classList.remove('selected');
             });
 
-            event.target.classList.add('selected');
+            event_quot.target.classList.add('selected');
         }
 
         function selectToday() {
@@ -402,19 +402,18 @@
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
 
-        function addToDataTable2(eventData) {
+        function addToDataTable2(event_quotData) {
             const dataTable2 = document.querySelector('#dataTable2 tbody');
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${eventData.fecha}</td>
-                <td>${eventData.hora}</td>
-                <td>${eventData.min}</td>
-                <td>${eventData.telefono}</td>
-                <td>${eventData.nombre}</td>
-                <td>${eventData.lugar}</td>
-                <td>${eventData.precio}</td>
-                <td>${eventData.travail}</td>
-                <td>${eventData.user_id}</td>
+                <td>${event_quotData.fecha}</td>
+                <td>${event_quotData.hora}</td>
+                <td>${event_quotData.min}</td>
+                <td>${event_quotData.telefono}</td>
+                <td>${event_quotData.nombre}</td>
+                <td>${event_quotData.lugar}</td>
+                <td>${event_quotData.precio}</td>
+                <td>${event_quotData.travail}</td>
             `;
             dataTable2.appendChild(row);
         }

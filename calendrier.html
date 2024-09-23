@@ -96,8 +96,8 @@
     </table>
     <p id="selectedDateDisplay"></p>
     <button class="button" onclick="saveDate()">Mostrar la fecha</button>
-    <button class="button" onclick="createEvent_quot()">Crear evento</button>
-    <div id="event_quotList"></div>
+    <button class="button" onclick="createEvent()">Crear evento</button>
+    <div id="eventList"></div>
 
     <input type="date" id="calendar">
     <div id="agenda"></div>
@@ -105,14 +105,13 @@
     <!-- Formulaire pour ajouter un événement -->
     <form id="eventForm">
       <input type="date" id="Fecha" required>
-      <input type="time" id="Hora" required>
+      <input type="number" id="Hora" required>
       <input type="number" id="Min" required>
-      <input type="text" id="Telefono" placeholder="Téléphone">
+      <input type="number" id="Telefono" placeholder="Téléphone">
       <input type="text" id="Nombre" placeholder="Nom" required>
       <input type="text" id="Lugar" placeholder="Lieu">
       <input type="number" id="Precio" placeholder="Prix">
       <input type="text" id="Trabajo" placeholder="Travail">
-      <input type="number" id="user_id" placeholder="user_id">
       <button type="submit">Ajouter</button>
     </form>
 
@@ -261,7 +260,7 @@
     <script>
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
-        var event_quot = {}; // Objet pour stocker les événements par date
+        var event = {}; // Objet pour stocker les événements par date
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
         
         function fetchCommitMessage() {
@@ -307,7 +306,7 @@
                         let cell = document.createElement('td');
                         let cellText = document.createTextNode(date);
                         cell.classList.add('clickable');
-                        cell.addEvent_quotListener('click', handleDateClick);
+                        cell.addEventListener('click', handleDateClick);
                         if (date === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
                             cell.classList.add('today');
                         }
@@ -325,8 +324,8 @@
 
 
 
-        function handleDateClick(event_quot) {
-            const clickedDate = event_quot.target.textContent;
+        function handleDateClick(event) {
+            const clickedDate = event.target.textContent;
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
             selectedDateDisplay.textContent = 'Date sélectionnée : ' + clickedDate + ' ' + monthNames[currentMonth] + ' ' + currentYear;
 
@@ -334,7 +333,7 @@
                 dateElement.classList.remove('selected');
             });
 
-            event_quot.target.classList.add('selected');
+            event.target.classList.add('selected');
         }
 
         function selectToday() {
@@ -379,7 +378,7 @@
             const tableBody = document.querySelector('#editable-table tbody');
             const rows = tableBody.querySelectorAll('tr');
 
-            event_quot[selectedDate] = [];
+            event[selectedDate] = [];
             rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
                 const rowData = {
@@ -393,7 +392,7 @@
                     travail: cells[7].textContent,
                     user_id: cells[8].textContent
                 };
-                event_quot[selectedDate].push(rowData);
+                event[selectedDate].push(rowData);
 
                 // Appel de la fonction addToDataTable2 pour ajouter l'événement à dataTable2
                 addToDataTable2(rowData);
@@ -402,18 +401,18 @@
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
 
-        function addToDataTable2(event_quotData) {
+        function addToDataTable2(eventData) {
             const dataTable2 = document.querySelector('#dataTable2 tbody');
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${event_quotData.fecha}</td>
-                <td>${event_quotData.hora}</td>
-                <td>${event_quotData.min}</td>
-                <td>${event_quotData.telefono}</td>
-                <td>${event_quotData.nombre}</td>
-                <td>${event_quotData.lugar}</td>
-                <td>${event_quotData.precio}</td>
-                <td>${event_quotData.travail}</td>
+                <td>${eventData.fecha}</td>
+                <td>${eventData.hora}</td>
+                <td>${eventData.min}</td>
+                <td>${eventData.telefono}</td>
+                <td>${eventData.nombre}</td>
+                <td>${eventData.lugar}</td>
+                <td>${eventData.precio}</td>
+                <td>${eventData.travail}</td>
             `;
             dataTable2.appendChild(row);
         }

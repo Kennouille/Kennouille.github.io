@@ -28,40 +28,39 @@
         }
     </style>
     <script type="module">
-        import { fetchData } from './supabaseClient.js';
+        import { supabase } from './supabaseClient.js';
 
-        async function loadDataFromSupabase() {
-            console.log('Début du chargement des données depuis Supabase...');
-            const data = await fetchData();
+        async function loadTableData() {
+            const { data, error } = await supabase
+                .from('tableData1')
+                .select('*');
 
-            console.log('Données récupérées :', data); // Affiche les données dans la console du navigateur
-            if (data && data.length > 0) {
-                const tableBody = document.querySelector('#data-table tbody');
-                tableBody.innerHTML = ''; // Clear previous data
-                data.forEach(rowData => {
-                    console.log('Traitement de la ligne de données :', rowData);
-                    const row = document.createElement('tr');
-
-                    row.innerHTML = `
-                        <td>${rowData.Telefono || ''}</td>
-                        <td>${rowData.Nombre || ''}</td>
-                        <td>${rowData.Fecha || ''}</td>
-                        <td>${rowData.Hora || ''}</td>
-                        <td>${rowData.Min || ''}</td>
-                        <td>${rowData.Lugar || ''}</td>
-                        <td>${rowData.Precio || ''}</td>
-                        <td>${rowData.Trabajo || ''}</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } else {
-                console.log('Aucune donnée trouvée.');
+            if (error) {
+                console.error('Erreur lors du chargement des données :', error);
+                return;
             }
+
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = '';
+
+            data.forEach(rowData => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${rowData.Telefono || ''}</td>
+                    <td>${rowData.Nombre || ''}</td>
+                    <td>${rowData.Fecha || ''}</td>
+                    <td>${rowData.Hora || ''}</td>
+                    <td>${rowData.Min || ''}</td>
+                    <td>${rowData.Lugar || ''}</td>
+                    <td>${rowData.Precio || ''}</td>
+                    <td>${rowData.Trabajo || ''}</td>
+                `;
+                tableBody.appendChild(row);
+            });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Document chargé, lancement du chargement des données...');
-            loadDataFromSupabase();
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTableData();
         });
     </script>
 </head>

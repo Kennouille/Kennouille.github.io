@@ -103,17 +103,20 @@
     <!-- div id="agenda"></div-->
   
     <!-- Formulaire pour ajouter un événement -->
-    <form id="eventForm">
-      <input type="number" id="Telefono" placeholder="Téléphone">
-      <input type="text" id="Nombre" placeholder="Nom" required>
-      <input type="date" id="Fecha" required>
-      <input type="number" id="Hora" required>
-      <input type="number" id="Min" required>
-      <input type="text" id="Lugar" placeholder="Lieu">
-      <input type="number" id="Precio" placeholder="Prix">
-      <input type="text" id="Trabajo" placeholder="Travail">
-      <button type="submit">Ajouter</button>
-    </form>
+    <div class="new-event">
+        <h2>Nuevo evento</h2>
+        <form id="newEventForm">
+            <input type="date" id="Fecha" required>
+            <input type="number" id="Hora" required>
+            <input type="number" id="Min" required>
+            <input type="text" id="Telefono" required>
+            <input type="text" id="Nombre" required>
+            <input type="text" id="Lugar" required>
+            <input type="text" id="Precio" required>
+            <input type="text" id="Trabajo" required>
+            <button type="button" id="addEventButton">Ajouter</button>
+        </form>
+    </div>
 
     <script type="module">
         import { insertData } from './supabaseClient.js';

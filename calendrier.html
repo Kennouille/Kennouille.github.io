@@ -106,11 +106,11 @@
     <div class="new-event">
         <h2>Nuevo evento</h2>
         <form id="newEventForm">
+            <input type="text" id="Telefono" required>
+            <input type="text" id="Nombre" required>
             <input type="date" id="Fecha" required>
             <input type="number" id="Hora" required>
             <input type="number" id="Min" required>
-            <input type="text" id="Telefono" required>
-            <input type="text" id="Nombre" required>
             <input type="text" id="Lugar" required>
             <input type="text" id="Precio" required>
             <input type="text" id="Trabajo" required>
@@ -132,8 +132,7 @@
                 Min: formData.get('Min'),
                 Lugar: formData.get('Lugar'),
                 Precio: formData.get('Precio'),
-                Trabajo: formData.get('Trabajo'),
-                user_id: formData.get('user_id')
+                Trabajo: formData.get('Trabajo')
             };
             await insertData(data);
         }

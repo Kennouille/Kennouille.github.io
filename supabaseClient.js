@@ -7,7 +7,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export async function insertData(data) {
     console.log('Insertion des données :', data);
     const { error } = await supabase
-        .from('tableData')
+        .from('tableData1')
         .insert([data]);
 
     if (error) {
@@ -19,7 +19,7 @@ export async function insertData(data) {
 
 export async function fetchData() {
     console.log('Envoi de la requête :', supabase
-      .from('tableData')
+      .from('tableData1')
       .select('*')
       .toString());
   

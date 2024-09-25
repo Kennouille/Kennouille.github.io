@@ -43,11 +43,11 @@
                     const row = document.createElement('tr');
 
                     row.innerHTML = `
+                        <td>${rowData.Telefono || ''}</td>
+                        <td>${rowData.Nombre || ''}</td>
                         <td>${rowData.Fecha || ''}</td>
                         <td>${rowData.Hora || ''}</td>
                         <td>${rowData.Min || ''}</td>
-                        <td>${rowData.Telefono || ''}</td>
-                        <td>${rowData.Nombre || ''}</td>
                         <td>${rowData.Lugar || ''}</td>
                         <td>${rowData.Precio || ''}</td>
                         <td>${rowData.Trabajo || ''}</td>
@@ -70,11 +70,11 @@
     <table id="data-table">
         <thead>
             <tr>
+                <th>Telefono</th>
+                <th>Nombre</th>
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Min</th>
-                <th>Telefono</th>
-                <th>Nombre</th>
                 <th>Lugar</th>
                 <th>Precio</th>
                 <th>Trabajo</th>

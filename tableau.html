@@ -18,37 +18,21 @@
             background-color: #f2f2f2;
             color: #333;
         }
-        .pagination {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .pagination button {
-            margin: 0 5px;
-            padding: 5px 10px;
-        }
     </style>
     <script type="module" src="supabaseClient.js"></script>
     <script type="module">
         import { supabase } from './supabaseClient.js';
 
-        let currentPage = 1;
-        const rowsPerPage = 500;
-
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
-            setupPagination();
             getTotalRowCount();
         });
 
-        async function loadTableData(page = 1) {
+        async function loadTableData() {
             try {
-                const start = (page - 1) * rowsPerPage;
-                const end = start + rowsPerPage - 1;
-
                 const { data, error } = await supabase
                     .from('tableData1')
-                    .select('*')
-                    .range(start, end);
+                    .select('*');
 
                 if (error) {
                     console.error('Error fetching data:', error);
@@ -105,7 +89,7 @@
                             console.error('Erreur lors de la mise à jour des données :', error);
                         } else {
                             console.log('Données mises à jour avec succès');
-                            loadTableData(currentPage); // Recharger les données après la mise à jour
+                            loadTableData(); // Recharger les données après la mise à jour
                         }
                     });
                 });
@@ -132,31 +116,6 @@
             } catch (err) {
                 console.error('Error fetching total row count:', err);
             }
-        }
-
-        function setupPagination() {
-            const paginationContainer = document.createElement('div');
-            paginationContainer.classList.add('pagination');
-
-            const prevButton = document.createElement('button');
-            prevButton.textContent = 'Précédent';
-            prevButton.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    loadTableData(currentPage);
-                }
-            });
-
-            const nextButton = document.createElement('button');
-            nextButton.textContent = 'Suivant';
-            nextButton.addEventListener('click', () => {
-                currentPage++;
-                loadTableData(currentPage);
-            });
-
-            paginationContainer.appendChild(prevButton);
-            paginationContainer.appendChild(nextButton);
-            document.body.appendChild(paginationContainer);
         }
     </script>
 </head>

@@ -78,8 +78,8 @@
                         Array.from(row.cells).forEach(cell => {
                             if (cell.dataset.column) {
                                 let value = cell.textContent.trim();
-                                if (cell.dataset.column === 'Fecha' && value === '') {
-                                    value = null; // Remplacer les chaînes vides par null pour les dates
+                                if ((cell.dataset.column === 'Fecha' || cell.dataset.column === 'Hora' || cell.dataset.column === 'Min' || cell.dataset.column === 'Precio') && value === '') {
+                                    value = null; // Remplacer les chaînes vides par null pour les dates et les types numériques
                                 }
                                 updatedEvent[cell.dataset.column] = value;
                             }

@@ -1,4 +1,4 @@
-<!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -69,8 +69,34 @@
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
                 });
-            } catch (error) {
-                console.error('Erreur lors du chargement des données :', error);
+
+                // Ajouter des écouteurs d'événements aux boutons "Appliquer"
+                document.querySelectorAll('.apply-button').forEach(button => {
+                    button.addEventListener('click', async function() {
+                        const row = button.closest('tr');
+                        const updatedEvent = {};
+                        Array.from(row.cells).forEach(cell => {
+                            if (cell.dataset.column) {
+                                updatedEvent[cell.dataset.column] = cell.textContent.trim();
+                            }
+                        });
+
+                        const telefono = row.querySelector('[data-telefono]').dataset.telefono;
+
+                        const { error } = await supabase
+                            .from('tableData1')
+                            .update(updatedEvent)
+                            .eq('Telefono', telefono);
+
+                        if (error) {
+                            console.error('Erreur lors de la mise à jour des données :', error);
+                        } else {
+                            console.log('Données mises à jour avec succès');
+                        }
+                    });
+                });
+            } catch (err) {
+                console.error('Error loading Supabase client:', err);
             }
         }
     </script>

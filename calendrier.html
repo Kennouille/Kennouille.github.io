@@ -384,27 +384,57 @@
                 event[selectedDate].push(rowData);
 
                 // Appel de la fonction addToDataTable2 pour ajouter l'événement à dataTable2
-                addEventToJournalier(rowData);
+                addToDataTable2(rowData);
             });
 
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
 
-        async function addEventToJournalier(eventData) {
-            const { data, error } = await supabase
-                .from('event_quot')
-                .insert([eventData]);
+            document.getElementById('addEventButton').addEventListener('click', async function() {
+                const newEvent = {
+                    Fecha: document.getElementById('Fecha').value,
+                    Hora: document.getElementById('Hora').value,
+                    Min: document.getElementById('Min').value,
+                    Telefono: document.getElementById('Telefono').value,
+                    Nombre: document.getElementById('Nombre').value,
+                    Lugar: document.getElementById('Lugar').value,
+                    Precio: document.getElementById('Precio').value,
+                    Trabajo: document.getElementById('Trabajo').value
+                };
 
-            if (error) {
-                console.error('Erreur lors de l\'insertion des données :', error);
-            } else {
-                console.log('Données insérées avec succès :', data);
-            }
+                console.log('Nouvel événement à ajouter :', newEvent);
+
+                const { data, error } = await supabase
+                    .from('event_quot')
+                    .insert([newEvent]);
+
+                if (error) {
+                    console.error('Erreur lors de l\'insertion des données :', error);
+                } else {
+                    console.log('Données insérées avec succès :', data);
+                    addToDataTable2(newEvent); // Ajouter l'événement au tableau
+                }
+            });
+
+        function addToDataTable2(eventData) {
+            const dataTable2 = document.querySelector('#dataTable2 tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${eventData.Telefono}</td>
+                <td>${eventData.Nombre}</td>
+                <td>${eventData.Fecha}</td>
+                <td>${eventData.Hora}</td>
+                <td>${eventData.Min}</td>
+                <td>${eventData.Lugar}</td>
+                <td>${eventData.Precio}</td>
+                <td>${eventData.Trabajo}</td>
+            `;
+            dataTable2.appendChild(row);
         }
-
 
         // Générer le calendrier pour le mois et l'année actuels
         generateCalendar(currentMonth, currentYear);
+
     </script>
 </body>
 </html>

@@ -47,17 +47,49 @@
             data.forEach(rowData => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${rowData.Telefono || ''}</td>
-                    <td>${rowData.Nombre || ''}</td>
-                    <td>${rowData.Fecha || ''}</td>
-                    <td>${rowData.Hora || ''}</td>
-                    <td>${rowData.Min || ''}</td>
-                    <td>${rowData.Lugar || ''}</td>
-                    <td>${rowData.Precio || ''}</td>
-                    <td>${rowData.Trabajo || ''}</td>
+                    <td contenteditable="true">${rowData.Telefono || ''}</td>
+                    <td contenteditable="true">${rowData.Nombre || ''}</td>
+                    <td contenteditable="true">${rowData.Fecha || ''}</td>
+                    <td contenteditable="true">${rowData.Hora || ''}</td>
+                    <td contenteditable="true">${rowData.Min || ''}</td>
+                    <td contenteditable="true">${rowData.Lugar || ''}</td>
+                    <td contenteditable="true">${rowData.Precio || ''}</td>
+                    <td contenteditable="true">${rowData.Trabajo || ''}</td>
+                    <td><button class="applyButton" data-id="${rowData.id}">Appliquer</button></td>
                 `;
                 tableBody.appendChild(row);
             });
+
+            document.querySelectorAll('.applyButton').forEach(button => {
+                button.addEventListener('click', async function() {
+                    const row = this.closest('tr');
+                    const updatedData = {
+                        Telefono: row.cells[0].innerText,
+                        Nombre: row.cells[1].innerText,
+                        Fecha: row.cells[2].innerText,
+                        Hora: row.cells[3].innerText,
+                        Min: row.cells[4].innerText,
+                        Lugar: row.cells[5].innerText,
+                        Precio: row.cells[6].innerText,
+                        Trabajo: row.cells[7].innerText
+                    };
+                    const id = this.getAttribute('data-id');
+                    await updateData('tableData1', id, updatedData);
+                });
+            });
+        }
+
+        async function updateData(tableName, id, updatedData) {
+            const { error } = await supabase
+                .from(tableName)
+                .update(updatedData)
+                .eq('id', id);
+
+            if (error) {
+                console.error('Erreur lors de la mise à jour des données :', error);
+            } else {
+                console.log('Données mises à jour avec succès');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -78,6 +110,7 @@
                 <th>Lugar</th>
                 <th>Precio</th>
                 <th>Trabajo</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>

@@ -104,11 +104,11 @@
   
     <!-- Formulaire pour ajouter un événement -->
     <form id="eventForm">
+      <input type="number" id="Telefono" placeholder="Téléphone">
+      <input type="text" id="Nombre" placeholder="Nom" required>
       <input type="date" id="Fecha" required>
       <input type="number" id="Hora" required>
       <input type="number" id="Min" required>
-      <input type="number" id="Telefono" placeholder="Téléphone">
-      <input type="text" id="Nombre" placeholder="Nom" required>
       <input type="text" id="Lugar" placeholder="Lieu">
       <input type="number" id="Precio" placeholder="Prix">
       <input type="text" id="Trabajo" placeholder="Travail">
@@ -122,11 +122,11 @@
             event.preventDefault();
             const formData = new FormData(event.target);
             const data = {
+                Telefono: formData.get('Telefono'),
+                Nombre: formData.get('Nombre'),
                 Fecha: formData.get('Fecha'),
                 Hora: formData.get('Hora'),
                 Min: formData.get('Min'),
-                Telefono: formData.get('Telefono'),
-                Nombre: formData.get('Nombre'),
                 Lugar: formData.get('Lugar'),
                 Precio: formData.get('Precio'),
                 Trabajo: formData.get('Trabajo'),
@@ -143,15 +143,14 @@
     <table id="editable-table">
         <thead>
             <tr>
+                <th>Telefono</th>
+                <th>Nombre</th>
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Min</th>
-                <th>Telefono</th>
-                <th>Nombre</th>
                 <th>Lugar</th>
                 <th>Precio</th>
                 <th>Trabajo</th>
-                <th>user_id</th>
             </tr>
         </thead>
         <tbody>
@@ -164,21 +163,8 @@
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
             </tr>
             <tr>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-            </tr>
-            <tr>
-                <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
@@ -197,21 +183,8 @@
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
             </tr>
             <tr>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-            </tr>
-            <tr>
-                <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
@@ -230,6 +203,15 @@
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
+            </tr>
+            <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
             </tr>
             <tr>
@@ -241,10 +223,18 @@
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
             </tr>
             <tr>
                 <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+            </tr>
+            <tr>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
                 <td contenteditable="true"></td>
@@ -382,15 +372,14 @@
             rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
                 const rowData = {
-                    fecha: cells[0].textContent,
-                    hora: cells[1].textContent,
-                    min: cells[2].textContent,
-                    telefono: cells[3].textContent,
-                    nombre: cells[4].textContent,
+                    telefono: cells[0].textContent,
+                    nombre: cells[1].textContent,
+                    fecha: cells[2].textContent,
+                    hora: cells[3].textContent,
+                    min: cells[4].textContent,
                     lugar: cells[5].textContent,
                     precio: cells[6].textContent,
-                    travail: cells[7].textContent,
-                    user_id: cells[8].textContent
+                    travail: cells[7].textContent
                 };
                 event[selectedDate].push(rowData);
 
@@ -405,11 +394,11 @@
             const dataTable2 = document.querySelector('#dataTable2 tbody');
             const row = document.createElement('tr');
             row.innerHTML = `
+                <td>${eventData.telefono}</td>
+                <td>${eventData.nombre}</td>
                 <td>${eventData.fecha}</td>
                 <td>${eventData.hora}</td>
                 <td>${eventData.min}</td>
-                <td>${eventData.telefono}</td>
-                <td>${eventData.nombre}</td>
                 <td>${eventData.lugar}</td>
                 <td>${eventData.precio}</td>
                 <td>${eventData.travail}</td>

@@ -77,7 +77,11 @@
                         const updatedEvent = {};
                         Array.from(row.cells).forEach(cell => {
                             if (cell.dataset.column) {
-                                updatedEvent[cell.dataset.column] = cell.textContent.trim();
+                                let value = cell.textContent.trim();
+                                if (cell.dataset.column === 'Fecha' && value === '') {
+                                    value = null; // Remplacer les chaînes vides par null pour les dates
+                                }
+                                updatedEvent[cell.dataset.column] = value;
                             }
                         });
 

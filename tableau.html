@@ -53,6 +53,9 @@
 
                 console.log('Data fetched from Supabase:', allData);
 
+                // Trier les données selon l'ordre défini dans Supabase
+                allData.sort((a, b) => a.Nombre.localeCompare(b.Nombre));
+
                 const tbody = document.querySelector('#data-table tbody');
                 tbody.innerHTML = ''; // Effacer les anciennes lignes
                 allData.forEach(rowData => {
@@ -112,6 +115,7 @@
                 console.error('Error loading Supabase client:', err);
             }
         }
+
 
         async function getTotalRowCount() {
             try {

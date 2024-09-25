@@ -69,7 +69,9 @@
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
                 });
-
+                // Afficher le nombre de lignes créées dans le log
+                console.log(`Nombre de lignes créées : ${data.length}`);
+                
                 // Ajouter des écouteurs d'événements aux boutons "Appliquer"
                 document.querySelectorAll('.apply-button').forEach(button => {
                     button.addEventListener('click', async function() {

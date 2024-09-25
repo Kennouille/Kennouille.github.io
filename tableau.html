@@ -37,6 +37,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
             setupPagination();
+            getTotalRowCount();
         });
 
         async function loadTableData(page = 1) {
@@ -108,10 +109,27 @@
                     });
                 });
 
-                // Afficher le nombre de lignes créées dans le log
+                // Afficher le nombre de lignes affichées dans le log
                 console.log(`Nombre de lignes affichées : ${data.length}`);
             } catch (err) {
                 console.error('Error loading Supabase client:', err);
+            }
+        }
+
+        async function getTotalRowCount() {
+            try {
+                const { count, error } = await supabase
+                    .from('tableData1')
+                    .select('*', { count: 'exact', head: true });
+
+                if (error) {
+                    console.error('Error fetching total row count:', error);
+                    return;
+                }
+
+                console.log(`Nombre total de lignes dans tableData1 : ${count}`);
+            } catch (err) {
+                console.error('Error fetching total row count:', err);
             }
         }
 

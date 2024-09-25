@@ -1,4 +1,4 @@
-﻿Fecha;Hora;Min;Telefono;Nombre;Lugar;Precio;Trabajo
-2/10/2024;9;45;8118981720;Sabine;Nicolas Bravo 227, Col Independencia, Puerto Vallarta;234;1 King - 1 Ind
-11/10/2024;10;30;8118594482;Kenny;Hacienda del Pitillal 108, Col Ex Hacienda, Puerto Vallarta;643;1 tapt - 1 sala
-5/10/2024;14;15;8118597903;Delinda;Calle Javier Mina 24, Col Indepedencia, Puerto Vallarta;245;1 coche
+﻿Telefono;Nombre;Fecha;Hora;Min;Lugar;Precio;Trabajo
+8118981720;Sabine;2/10/2024;9;45;Nicolas Bravo 227, Col Independencia, Puerto Vallarta;234;1 King - 1 Ind
+8118594482;Kenny;11/10/2024;10;30;Hacienda del Pitillal 108, Col Ex Hacienda, Puerto Vallarta;643;1 tapt - 1 sala
+8118597903;Delinda;5/10/2024;14;15;Calle Javier Mina 24, Col Indepedencia, Puerto Vallarta;245;1 coche

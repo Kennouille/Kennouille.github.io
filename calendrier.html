@@ -328,7 +328,7 @@
                 console.log('Nouvel événement à ajouter :', newEvent);
 
                 const { data, error } = await supabase
-                    .from('event_quot')
+                    .from('event_quot1')
                     .insert([newEvent]);
 
                 if (error) {

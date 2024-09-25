@@ -65,7 +65,7 @@
                 console.log('Nouvel événement à ajouter :', newEvent);
 
                 const { data, error } = await supabase
-                    .from('event_quot')
+                    .from('event_quot1')
                     .insert([newEvent]);
 
                 if (error) {
@@ -80,7 +80,7 @@
         async function loadTableData() {
             try {
                 const { data, error } = await supabase
-                    .from('event_quot')
+                    .from('event_quot1')
                     .select('*');
 
                 if (error) {
@@ -128,7 +128,7 @@
                         const telefono = row.querySelector('[data-telefono]').dataset.telefono;
 
                         const { error } = await supabase
-                            .from('event_quot')
+                            .from('event_quot1')
                             .update(updatedEvent)
                             .eq('Telefono', telefono);
 

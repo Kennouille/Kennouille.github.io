@@ -384,27 +384,24 @@
                 event[selectedDate].push(rowData);
 
                 // Appel de la fonction addToDataTable2 pour ajouter l'événement à dataTable2
-                addToDataTable2(rowData);
+                addEventToJournalier(rowData);
             });
 
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
 
-        function addToDataTable2(eventData) {
-            const dataTable2 = document.querySelector('#dataTable2 tbody');
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${eventData.telefono}</td>
-                <td>${eventData.nombre}</td>
-                <td>${eventData.fecha}</td>
-                <td>${eventData.hora}</td>
-                <td>${eventData.min}</td>
-                <td>${eventData.lugar}</td>
-                <td>${eventData.precio}</td>
-                <td>${eventData.travail}</td>
-            `;
-            dataTable2.appendChild(row);
+        async function addEventToJournalier(eventData) {
+            const { data, error } = await supabase
+                .from('event_quot')
+                .insert([eventData]);
+
+            if (error) {
+                console.error('Erreur lors de l\'insertion des données :', error);
+            } else {
+                console.log('Données insérées avec succès :', data);
+            }
         }
+
 
         // Générer le calendrier pour le mois et l'année actuels
         generateCalendar(currentMonth, currentYear);

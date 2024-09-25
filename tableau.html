@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -33,32 +33,6 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
-
-            document.getElementById('addEventButton').addEventListener('click', async function() {
-                const newEvent = {
-                    Fecha: document.getElementById('Fecha').value,
-                    Hora: document.getElementById('Hora').value,
-                    Min: document.getElementById('Min').value,
-                    Telefono: document.getElementById('Telefono').value,
-                    Nombre: document.getElementById('Nombre').value,
-                    Lugar: document.getElementById('Lugar').value,
-                    Precio: document.getElementById('Precio').value,
-                    Trabajo: document.getElementById('Trabajo').value
-                };
-
-                console.log('Nouvel événement à ajouter :', newEvent);
-
-                const { data, error } = await supabase
-                    .from('tableData1')
-                    .insert([newEvent]);
-
-                if (error) {
-                    console.error('Erreur lors de l\'insertion des données :', error);
-                } else {
-                    console.log('Données insérées avec succès :', data);
-                    loadTableData(); // Recharger les données pour afficher le nouvel événement
-                }
-            });
         });
 
         async function loadTableData() {
@@ -95,48 +69,21 @@
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
                 });
-
-                // Ajouter des écouteurs d'événements aux boutons "Appliquer"
-                document.querySelectorAll('.apply-button').forEach(button => {
-                    button.addEventListener('click', async function() {
-                        const row = button.closest('tr');
-                        const updatedEvent = {};
-                        Array.from(row.cells).forEach(cell => {
-                            if (cell.dataset.column) {
-                                updatedEvent[cell.dataset.column] = cell.textContent.trim();
-                            }
-                        });
-
-                        const telefono = row.querySelector('[data-telefono]').dataset.telefono;
-
-                        const { error } = await supabase
-                            .from('tableData1')
-                            .update(updatedEvent)
-                            .eq('Telefono', telefono);
-
-                        if (error) {
-                            console.error('Erreur lors de la mise à jour des données :', error);
-                        } else {
-                            console.log('Données mises à jour avec succès');
-                        }
-                    });
-                });
-            } catch (err) {
-                console.error('Error loading Supabase client:', err);
+            } catch (error) {
+                console.error('Erreur lors du chargement des données :', error);
             }
         }
     </script>
 </head>
 <body>
-    <h1>Datos de contactos</h1>
     <table id="data-table">
         <thead>
             <tr>
-                <th>Telefono</th>
-                <th>Nombre</th>
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Min</th>
+                <th>Telefono</th>
+                <th>Nombre</th>
                 <th>Lugar</th>
                 <th>Precio</th>
                 <th>Trabajo</th>
@@ -147,8 +94,5 @@
             <!-- Les données seront insérées ici -->
         </tbody>
     </table>
-    <div class="pagination">
-        <!-- Les boutons de pagination seront insérés ici -->
-    </div>
 </body>
 </html>

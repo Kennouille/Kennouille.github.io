@@ -22,6 +22,7 @@
                     <th>Lugar</th>
                     <th>Precio</th>
                     <th>Trabajo</th>
+                    <th>user_id</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -29,20 +30,7 @@
                 <!-- Les lignes seront ajoutées ici par JavaScript -->
             </tbody>
         </table>
-        <div class="new-event">
-            <h2>Nuevo evento</h2>
-            <form id="newEventForm">
-                <input type="text" id="Telefono" required>
-                <input type="text" id="Nombre" required>
-                <input type="date" id="Fecha" required>
-                <input type="number" id="Hora" required>
-                <input type="number" id="Min" required>
-                <input type="text" id="Lugar" required>
-                <input type="text" id="Precio" required>
-                <input type="text" id="Trabajo" required>
-                <button type="button" id="addEventButton">Ajouter</button>
-            </form>
-        </div>
+        
     </div>
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
@@ -59,7 +47,8 @@
                     Min: document.getElementById('Min').value,
                     Lugar: document.getElementById('Lugar').value,
                     Precio: document.getElementById('Precio').value,
-                    Trabajo: document.getElementById('Trabajo').value
+                    Trabajo: document.getElementById('Trabajo').value,
+                    user_id: document.getElementById('user_id').value
                 };
 
                 console.log('Nouvel événement à ajouter :', newEvent);

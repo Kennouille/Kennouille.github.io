@@ -83,6 +83,7 @@
                 tbody.innerHTML = ''; // Effacer les anciennes lignes
                 data.forEach(rowData => {
                     const row = tbody.insertRow();
+                    row.dataset.userId = rowData.user_id; // Ajouter l'attribut data-user-id
                     Object.entries(rowData).forEach(([key, value]) => {
                         const cell = row.insertCell();
                         cell.textContent = value;
@@ -114,12 +115,12 @@
                             }
                         });
 
-                        const telefono = row.querySelector('[data-telefono]').dataset.telefono;
+                        const userId = row.dataset.userId;
 
                         const { error } = await supabase
                             .from('event_quot1')
                             .update(updatedEvent)
-                            .eq('Telefono', telefono);
+                            .eq('user_id', userId);
 
                         if (error) {
                             console.error('Erreur lors de la mise à jour des données :', error);
@@ -133,6 +134,7 @@
             }
         }
 
+        // Fonction pour ajouter une ligne vide
         function addEmptyRow() {
             const tbody = document.querySelector('#journalierTable tbody');
             const row = tbody.insertRow();
@@ -141,6 +143,7 @@
                 cell.contentEditable = "true";
             }
         }
+
     </script>
 </body>
 </html>

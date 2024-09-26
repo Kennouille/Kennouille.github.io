@@ -103,7 +103,7 @@
         });
 
         // Fonction pour charger les données de la table
-                async function loadTableData() {
+        async function loadTableData() {
             try {
                 const { data, error } = await supabase
                     .from('event_quot1')
@@ -117,70 +117,27 @@
                 console.log('Data fetched from Supabase:', data);
 
                 const tbody = document.querySelector('#journalierTable tbody');
-                tbody.innerHTML = ''; // Effacer les anciennes lignes
-                data.forEach(rowData => {
-                    const row = tbody.insertRow();
-                    row.dataset.userId = rowData.user_id; // Ajouter l'attribut data-user-id
-                    Object.entries(rowData).forEach(([key, value]) => {
-                        const cell = row.insertCell();
-                        cell.textContent = value;
-                        cell.contentEditable = "true";
-                        cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
-                        if (key === 'Telefono') {
-                            cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
-                        }
-                    });
-
-                    // Ajouter le bouton "Appliquer"
-                    const applyCell = row.insertCell();
-                    const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Appliquer';
-                    applyButton.classList.add('apply-button');
-                    applyCell.appendChild(applyButton);
-                });
-
-                addEmptyRow();
-
-                // Ajouter des écouteurs d'événements aux boutons "Appliquer"
-                document.querySelectorAll('.apply-button').forEach(button => {
-                    button.addEventListener('click', async function() {
-                        const row = button.closest('tr');
-                        const updatedEvent = {};
-                        Array.from(row.cells).forEach(cell => {
-                            if (cell.dataset.column) {
-                                updatedEvent[cell.dataset.column] = cell.textContent.trim();
+                if (tbody) {
+                    tbody.innerHTML = ''; // Effacer les anciennes lignes
+                    data.forEach(rowData => {
+                        const row = tbody.insertRow();
+                        Object.entries(rowData).forEach(([key, value]) => {
+                            const cell = row.insertCell();
+                            cell.textContent = value;
+                            cell.contentEditable = "true";
+                            cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
+                            if (key === 'Telefono') {
+                                cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
                             }
                         });
-
-                        const userId = row.dataset.userId;
-
-                        const { error } = await supabase
-                            .from('event_quot1')
-                            .update(updatedEvent)
-                            .eq('user_id', userId);
-
-                        if (error) {
-                            console.error('Erreur lors de la mise à jour des données :', error);
-                        } else {
-                            console.log('Données mises à jour avec succès');
-                        }
                     });
-                });
-            } catch (err) {
-                console.error('Error loading Supabase client:', err);
+                } else {
+                    console.error('Element with ID "journalierTable" not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
         }
-
-        // Fonction pour ajouter une ligne vide
-        function addEmptyRow() {
-            const tbody = document.querySelector('#journalierTable tbody');
-            const row = tbody.insertRow();
-            for (let i = 0; i < 8; i++) { // 8 colonnes dans votre tableau
-                const cell = row.insertCell();
-                cell.contentEditable = "true";
-            }
-        }
-
     </script>
 
     <!-- Tableau modifiable -->

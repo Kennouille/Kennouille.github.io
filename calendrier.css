@@ -118,10 +118,10 @@ div {
 }
 
 #calendarTable {
-    width: 40%; /* Réduire la taille du calendrier */
+    width: 20%; /* Réduire la taille du calendrier */
 }
 
 .form-container {
-    width: 35%; /* Ajuster la taille du formulaire */
+    width: 25%; /* Ajuster la taille du formulaire */
     margin-left: 20px;
 }

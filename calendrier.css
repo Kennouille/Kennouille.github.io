@@ -96,3 +96,31 @@ div {
 .form-container h2 {
     text-align: center;
 }
+
+/* Styles pour la nouvelle disposition */
+.navigation-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#selectedDateDisplay {
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.calendar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#calendarTable {
+    width: 60%; /* Réduire la taille du calendrier */
+}
+
+.form-container {
+    width: 35%; /* Ajuster la taille du formulaire */
+    margin-left: 20px;
+}

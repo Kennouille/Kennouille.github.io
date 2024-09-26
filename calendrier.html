@@ -126,7 +126,6 @@
 
             document.getElementById('addEventButton').addEventListener('click', async function() {
                 const newEvent = {
-                    user_id: generateUniqueId(), // Générer un ID unique
                     Telefono: document.getElementById('Telefono').value,
                     Nombre: document.getElementById('Nombre').value,
                     Fecha: document.getElementById('Fecha').value,
@@ -134,7 +133,8 @@
                     Min: document.getElementById('Min').value,
                     Lugar: document.getElementById('Lugar').value,
                     Precio: document.getElementById('Precio').value,
-                    Trabajo: document.getElementById('Trabajo').value
+                    Trabajo: document.getElementById('Trabajo').value,
+                    user_id: generateUniqueId() // Générer un ID unique
                 };
 
                 console.log('Nouvel événement à ajouter :', newEvent);

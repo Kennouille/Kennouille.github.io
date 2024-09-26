@@ -183,29 +183,6 @@
         }
     </script>
 
-    <script type="module">
-        import { insertData } from './supabaseClient.js';
-
-        async function handleSubmit(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const data = {
-                Telefono: formData.get('Telefono'),
-                Nombre: formData.get('Nombre'),
-                Fecha: formData.get('Fecha'),
-                Hora: formData.get('Hora'),
-                Min: formData.get('Min'),
-                Lugar: formData.get('Lugar'),
-                Precio: formData.get('Precio'),
-                Trabajo: formData.get('Trabajo')
-            };
-            await insertData(data);
-        }
-
-        document.getElementById('eventForm').addEventListener('submit', handleSubmit);
-    </script>
-    <script src="calendar.js"></script>
-
     <!-- Tableau modifiable -->
     <table id="editable-table">
         <thead>

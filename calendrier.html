@@ -148,6 +148,32 @@
                     loadTableData(); // Recharger les données pour afficher le nouvel événement
                 }
             });
+            document.getElementById('Telefono').addEventListener('input', async function() {
+                const telefono = this.value;
+
+                if (telefono) {
+                    const { data, error } = await supabase
+                        .from('tableData1')
+                        .select('Nombre, Lugar')
+                        .eq('Telefono', telefono);
+
+                    if (error) {
+                        console.error('Erreur lors de la récupération des données :', error);
+                    } else if (data.length > 0) {
+                        const { Nombre, Lugar } = data[0];
+                        document.getElementById('Nombre').value = Nombre;
+                        document.getElementById('Lugar').value = Lugar;
+                    } else {
+                        // Si aucun résultat n'est trouvé, vider les champs
+                        document.getElementById('Nombre').value = '';
+                        document.getElementById('Lugar').value = '';
+                    }
+                } else {
+                    // Si le champ de téléphone est vide, vider les champs
+                    document.getElementById('Nombre').value = '';
+                    document.getElementById('Lugar').value = '';
+                }
+            });
         });
 
         async function loadTableData() {

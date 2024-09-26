@@ -90,7 +90,7 @@ div {
     display: block;
     margin: 10px auto;
     padding: 8px;
-    width: 80%;
+    width: 60%;
 }
 
 .form-container h2 {
@@ -102,7 +102,7 @@ div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 #selectedDateDisplay {
@@ -114,11 +114,11 @@ div {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 20px; /* Ajouter un espace entre le calendrier et le formulaire */
+    gap: 15px; /* Ajouter un espace entre le calendrier et le formulaire */
 }
 
 #calendarTable {
-    width: 60%; /* Réduire la taille du calendrier */
+    width: 40%; /* Réduire la taille du calendrier */
 }
 
 .form-container {

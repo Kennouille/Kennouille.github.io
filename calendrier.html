@@ -123,7 +123,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
 
-            // Écouteur d'événements pour le bouton d'ajout d'événement
             document.getElementById('addEventButton').addEventListener('click', async function() {
                 const newEvent = {
                     Telefono: document.getElementById('Telefono').value,
@@ -151,7 +150,6 @@
                 }
             });
 
-            // Écouteur d'événements pour le champ de numéro de téléphone
             document.getElementById('Telefono').addEventListener('input', async function() {
                 const telefono = this.value;
 
@@ -221,6 +219,7 @@
                 console.error('Error fetching data:', error);
             }
         }
+
 
 
     </script>

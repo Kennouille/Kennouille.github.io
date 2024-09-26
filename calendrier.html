@@ -120,6 +120,9 @@
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
+        // Assurez-vous que la bibliothèque uuid est incluse
+// <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js">
+
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
 
@@ -133,7 +136,7 @@
                     Lugar: document.getElementById('Lugar').value,
                     Precio: document.getElementById('Precio').value,
                     Trabajo: document.getElementById('Trabajo').value,
-                    user_id: generateUniqueId() // Générer un ID unique
+                    user_id: uuid.v4() // Générer un UUID valide
                 };
 
                 console.log('Nouvel événement à ajouter :', newEvent);
@@ -178,11 +181,6 @@
             });
         });
 
-        // Fonction pour générer un ID unique
-        function generateUniqueId() {
-            return 'user-' + Math.random().toString(36).substr(2, 9);
-        }
-
         // Fonction pour charger les données de la table
         async function loadTableData() {
             try {
@@ -219,7 +217,6 @@
                 console.error('Error fetching data:', error);
             }
         }
-
 
 
     </script>

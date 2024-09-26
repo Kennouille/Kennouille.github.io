@@ -118,7 +118,9 @@
             <button type="button" id="addEventButton">Ajouter</button>
         </form>
     </div>
-    <script>
+    <script type="module">
+        import { supabase } from './supabaseClientAgendaJour.js';
+
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
 

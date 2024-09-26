@@ -121,9 +121,9 @@
         import { supabase } from './supabaseClientAgendaJour.js';
 
         document.addEventListener('DOMContentLoaded', function() {
-            loadJournalierContent();
             loadTableData();
 
+            // Écouteur d'événements pour le bouton d'ajout d'événement
             document.getElementById('addEventButton').addEventListener('click', async function() {
                 const newEvent = {
                     Telefono: document.getElementById('Telefono').value,
@@ -151,6 +151,7 @@
                 }
             });
 
+            // Écouteur d'événements pour le champ de numéro de téléphone
             document.getElementById('Telefono').addEventListener('input', async function() {
                 const telefono = this.value;
 
@@ -183,6 +184,44 @@
         function generateUniqueId() {
             return 'user-' + Math.random().toString(36).substr(2, 9);
         }
+
+        // Fonction pour charger les données de la table
+        async function loadTableData() {
+            try {
+                const { data, error } = await supabase
+                    .from('event_quot1')
+                    .select('*');
+
+                if (error) {
+                    console.error('Error fetching data:', error);
+                    return;
+                }
+
+                console.log('Data fetched from Supabase:', data);
+
+                const tbody = document.querySelector('#journalierTable tbody');
+                if (tbody) {
+                    tbody.innerHTML = ''; // Effacer les anciennes lignes
+                    data.forEach(rowData => {
+                        const row = tbody.insertRow();
+                        Object.entries(rowData).forEach(([key, value]) => {
+                            const cell = row.insertCell();
+                            cell.textContent = value;
+                            cell.contentEditable = "true";
+                            cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
+                            if (key === 'Telefono') {
+                                cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
+                            }
+                        });
+                    });
+                } else {
+                    console.error('Element with ID "journalierTable" not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
 
     </script>
 

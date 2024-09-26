@@ -11,7 +11,7 @@ h1 {
 
 table {
     border-collapse: separate;
-    width: 50%; /* Réduire la taille du calendrier */
+    width: 30%; /* Réduire la taille du calendrier */
     margin: 0 auto; /* Centrer le calendrier */
     border-radius: 12px;
     overflow: hidden;

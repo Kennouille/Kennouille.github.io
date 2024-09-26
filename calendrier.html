@@ -117,6 +117,71 @@
             <button type="button" id="addEventButton">Ajouter</button>
         </form>
     </div>
+    <script type="module">
+        import { supabase } from './supabaseClientAgendaJour.js';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTableData();
+
+            document.getElementById('addEventButton').addEventListener('click', async function() {
+                const newEvent = {
+                    Telefono: document.getElementById('Telefono').value,
+                    Nombre: document.getElementById('Nombre').value,
+                    Fecha: document.getElementById('Fecha').value,
+                    Hora: document.getElementById('Hora').value,
+                    Min: document.getElementById('Min').value,
+                    Lugar: document.getElementById('Lugar').value,
+                    Precio: document.getElementById('Precio').value,
+                    Trabajo: document.getElementById('Trabajo').value
+                };
+
+                console.log('Nouvel événement à ajouter :', newEvent);
+
+                const { data, error } = await supabase
+                    .from('event_quot1')
+                    .insert([newEvent]);
+
+                if (error) {
+                    console.error('Erreur lors de l\'insertion des données :', error);
+                } else {
+                    console.log('Données insérées avec succès :', data);
+                    loadTableData(); // Recharger les données pour afficher le nouvel événement
+                }
+            });
+        });
+
+        async function loadTableData() {
+            try {
+                const { data, error } = await supabase
+                    .from('event_quot1')
+                    .select('*');
+
+                if (error) {
+                    console.error('Error fetching data:', error);
+                    return;
+                }
+            
+                console.log('Data fetched from Supabase:', data);
+        
+                const tbody = document.querySelector('#journalierTable tbody');
+                tbody.innerHTML = ''; // Effacer les anciennes lignes
+                data.forEach(rowData => {
+                    const row = tbody.insertRow();
+                    Object.entries(rowData).forEach(([key, value]) => {
+                        const cell = row.insertCell();
+                        cell.textContent = value;
+                        cell.contentEditable = "true";
+                        cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
+                        if (key === 'Telefono') {
+                            cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+    </script>
 
     <script type="module">
         import { insertData } from './supabaseClient.js';
@@ -179,6 +244,26 @@
             <!-- Ajoutez plus de lignes si nécessaire -->
         </tbody>
     </table>
+
+    <!-- Tableau pour afficher les événements -->
+    <table id="dataTable2">
+        <thead>
+            <tr>
+                <th>Telefono</th>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Min</th>
+                <th>Lugar</th>
+                <th>Precio</th>
+                <th>Trabajo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les lignes seront ajoutées dynamiquement ici -->
+        </tbody>
+    </table>
+
     <script>
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
@@ -235,8 +320,6 @@
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
 
-
-
         function handleDateClick(event) {
             const clickedDate = event.target.textContent;
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
@@ -270,8 +353,6 @@
             generateCalendar(currentMonth, currentYear);
             selectToday();
         };
-
-
 
         function changeMonth(direction) {
             currentMonth += direction;
@@ -313,51 +394,24 @@
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
 
-            document.getElementById('addEventButton').addEventListener('click', async function() {
-                const newEvent = {
-                    Telefono: document.getElementById('Telefono').value,
-                    Nombre: document.getElementById('Nombre').value,
-                    Fecha: document.getElementById('Fecha').value,
-                    Hora: document.getElementById('Hora').value,
-                    Min: document.getElementById('Min').value,
-                    Lugar: document.getElementById('Lugar').value,
-                    Precio: document.getElementById('Precio').value,
-                    Trabajo: document.getElementById('Trabajo').value
-                };
-
-                console.log('Nouvel événement à ajouter :', newEvent);
-
-                const { data, error } = await supabase
-                    .from('event_quot1')
-                    .insert([newEvent]);
-
-                if (error) {
-                    console.error('Erreur lors de l\'insertion des données :', error);
-                } else {
-                    console.log('Données insérées avec succès :', data);
-                    addToDataTable2(newEvent); // Ajouter l'événement au tableau
-                }
-            });
-
         function addToDataTable2(eventData) {
             const dataTable2 = document.querySelector('#dataTable2 tbody');
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${eventData.Telefono}</td>
-                <td>${eventData.Nombre}</td>
-                <td>${eventData.Fecha}</td>
-                <td>${eventData.Hora}</td>
-                <td>${eventData.Min}</td>
-                <td>${eventData.Lugar}</td>
-                <td>${eventData.Precio}</td>
-                <td>${eventData.Trabajo}</td>
+                <td>${eventData.telefono}</td>
+                <td>${eventData.nombre}</td>
+                <td>${eventData.fecha}</td>
+                <td>${eventData.hora}</td>
+                <td>${eventData.min}</td>
+                <td>${eventData.lugar}</td>
+                <td>${eventData.precio}</td>
+                <td>${eventData.travail}</td>
             `;
             dataTable2.appendChild(row);
         }
 
         // Générer le calendrier pour le mois et l'année actuels
         generateCalendar(currentMonth, currentYear);
-
     </script>
 </body>
 </html>

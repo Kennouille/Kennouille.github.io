@@ -123,7 +123,6 @@
   
     <!-- Formulaire pour ajouter un événement -->
     <div class="new-event">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <h2>Nuevo evento</h2>
         <form id="newEventForm">
             <input type="text" id="Telefono" required>
@@ -137,12 +136,7 @@
             <button type="button" id="addEventButton">Ajouter</button>
         </form>
     </div>
-    <script type="module">
-        import { supabase } from './supabaseClientAgendaJour.js';
-
-        document.addEventListener('DOMContentLoaded', function() {
-            loadTableData();
-
+        <script type="module">
             document.getElementById('addEventButton').addEventListener('click', async function() {
                 const newEvent = {
                     Telefono: document.getElementById('Telefono').value,
@@ -157,6 +151,16 @@
 
                 console.log('Nouvel événement à ajouter :', newEvent);
 
+                // Envoyer les données à journalier.html via une requête POST
+                await fetch('journalier.html', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newEvent)
+                });
+
+                // Insérer les données dans Supabase
                 const { data, error } = await supabase
                     .from('event_quot1')
                     .insert([newEvent]);
@@ -168,7 +172,6 @@
                     loadTableData(); // Recharger les données pour afficher le nouvel événement
                 }
             });
-        });
 
         async function loadTableData() {
             try {

@@ -126,7 +126,7 @@
 
             document.getElementById('addEventButton').addEventListener('click', async function() {
                 const newEvent = {
-                    id: generateUniqueId(), // Générer un ID unique
+                    user_id: generateUniqueId(), // Générer un ID unique
                     Telefono: document.getElementById('Telefono').value,
                     Nombre: document.getElementById('Nombre').value,
                     Fecha: document.getElementById('Fecha').value,
@@ -179,55 +179,9 @@
             });
         });
 
-        async function loadJournalierContent() {
-            try {
-                const response = await fetch('journalier.html');
-                const text = await response.text();
-                document.getElementById('journalierContent').innerHTML = text;
-            } catch (error) {
-                console.error('Erreur lors du chargement du contenu de journalier.html :', error);
-            }
-        }
-
-        async function loadTableData() {
-            try {
-                const { data, error } = await supabase
-                    .from('event_quot1')
-                    .select('*');
-
-                if (error) {
-                    console.error('Error fetching data:', error);
-                    return;
-                }
-
-                console.log('Data fetched from Supabase:', data);
-
-                const tbody = document.querySelector('#journalierTable tbody');
-                if (tbody) {
-                    tbody.innerHTML = ''; // Effacer les anciennes lignes
-                    data.forEach(rowData => {
-                        const row = tbody.insertRow();
-                        Object.entries(rowData).forEach(([key, value]) => {
-                            const cell = row.insertCell();
-                            cell.textContent = value;
-                            cell.contentEditable = "true";
-                            cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
-                            if (key === 'Telefono') {
-                                cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
-                            }
-                        });
-                    });
-                } else {
-                    console.error('Element with ID "journalierTable" not found.');
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-
         // Fonction pour générer un ID unique
         function generateUniqueId() {
-            return 'id-' + Math.random().toString(36).substr(2, 9);
+            return 'user-' + Math.random().toString(36).substr(2, 9);
         }
 
     </script>

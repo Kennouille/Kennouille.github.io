@@ -296,7 +296,8 @@
 
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
-function handleDateClick(event) {
+
+        function handleDateClick(event) {
             const clickedDate = event.target.textContent;
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
             selectedDateDisplay.textContent = 'Date sélectionnée : ' + clickedDate + ' ' + monthNames[currentMonth] + ' ' + currentYear;
@@ -329,8 +330,6 @@ function handleDateClick(event) {
             generateCalendar(currentMonth, currentYear);
             selectToday();
         };
-
-
 
         function changeMonth(direction) {
             currentMonth += direction;
@@ -372,9 +371,24 @@ function handleDateClick(event) {
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
 
+        function addToDataTable2(eventData) {
+            const dataTable2 = document.querySelector('#dataTable2 tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${eventData.telefono}</td>
+                <td>${eventData.nombre}</td>
+                <td>${eventData.fecha}</td>
+                <td>${eventData.hora}</td>
+                <td>${eventData.min}</td>
+                <td>${eventData.lugar}</td>
+                <td>${eventData.precio}</td>
+                <td>${eventData.travail}</td>
+            `;
+            dataTable2.appendChild(row);
+        }
+
         // Générer le calendrier pour le mois et l'année actuels
         generateCalendar(currentMonth, currentYear);
-
     </script>
 </body>
 </html>

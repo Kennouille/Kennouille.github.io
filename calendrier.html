@@ -331,6 +331,10 @@
             });
 
             event.target.classList.add('selected');
+
+            // Mettre à jour le champ de date du formulaire
+            const selectedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(clickedDate).padStart(2, '0')}`;
+            document.getElementById('Fecha').value = selectedDate;
         }
 
         function selectToday() {
@@ -345,6 +349,9 @@
                         dateElement.classList.add('selected');
                         const selectedDateDisplay = document.getElementById('selectedDateDisplay');
                         selectedDateDisplay.textContent = 'Date sélectionnée : ' + todayDate + ' ' + monthNames[todayMonth] + ' ' + todayYear;
+                        // Mettre à jour le champ de date du formulaire
+                        const selectedDate = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
+                        document.getElementById('Fecha').value = selectedDate;
                     }
                 });
             }

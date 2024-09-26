@@ -4,81 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendrier et Agenda Quotidien</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        table {
-            border-collapse: separate;
-            width: 50%; /* Réduire la taille du calendrier */
-            margin: 0 auto; /* Centrer le calendrier */
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        th, td {
-            border: 1px solid blue;
-            text-align: center;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .today {
-            background-color: #d3d3d3; /* Couleur gris clair pour la date du jour */
-        }
-        .clickable {
-            cursor: pointer;
-        }
-        .selected {
-            background-color: #add8e6;
-        }
-        .button {
-            font-family: 'Lobster', cursive;
-            border: 4px solid blue;
-            background-color: #5DADE2;
-            color: white;
-            padding: 6px 10px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 11px;
-            margin: 4px 1px;
-            cursor: pointer;
-            border-radius: 12px;
-        }
-        .button:hover {
-            background-color: #5DADE2;
-        }
-        #monthYear {
-            font-weight: bold;
-        }
-        th:first-child {
-            border-top-left-radius: 12px;
-        }
-        th:last-child {
-            border-top-right-radius: 12px;
-        }
-        td:first-child:last-child {
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-        }
-        div {
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="calendrier.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
 </head>
 <body>
     <h1>Calendrier et Agenda Quotidien</h1>
-    <p id="commitMessage" style="font-size: 10px;"></p>
     <div>
         <button class="button" onclick="changeMonth(-1)">Precedente</button>
         <span id="monthYear"></span>
@@ -96,27 +26,20 @@
         </tr>
     </table>
     <p id="selectedDateDisplay"></p>
-    <button class="button" onclick="saveDate()">Mostrar la fecha</button>
-    <button class="button" onclick="createEvent()">Crear evento</button>
     <div id="eventList"></div>
 
-    <!-- input type="date" id="calendar"-->
-    <!-- div id="agenda"></div-->
-  
-    <!-- Formulaire pour ajouter un événement -->
-    <div class="new-event">
+    <!-- Formulaire pour ajouter un nouvel événement -->
+    <div class="form-container">
         <h2>Nuevo evento</h2>
-        <form id="newEventForm">
-            <input type="text" id="Telefono" required>
-            <input type="text" id="Nombre" required>
-            <input type="date" id="Fecha" required>
-            <input type="number" id="Hora" required>
-            <input type="number" id="Min" required>
-            <input type="text" id="Lugar" required>
-            <input type="text" id="Precio" required>
-            <input type="text" id="Trabajo" required>
-            <button type="button" id="addEventButton">Ajouter</button>
-        </form>
+        <input type="text" id="Telefono" placeholder="Telefono">
+        <input type="text" id="Nombre" placeholder="Nombre">
+        <input type="date" id="Fecha">
+        <input type="number" id="Hora" placeholder="Hora">
+        <input type="number" id="Min" placeholder="Min">
+        <input type="text" id="Lugar" placeholder="Lugar">
+        <input type="number" id="Precio" placeholder="Precio">
+        <input type="text" id="Trabajo" placeholder="Trabajo">
+        <button id="addEventButton" class="button">Ajouter un événement</button>
     </div>
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
@@ -392,22 +315,6 @@
             });
 
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
-        }
-
-        function addToDataTable2(eventData) {
-            const dataTable2 = document.querySelector('#dataTable2 tbody');
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${eventData.telefono}</td>
-                <td>${eventData.nombre}</td>
-                <td>${eventData.fecha}</td>
-                <td>${eventData.hora}</td>
-                <td>${eventData.min}</td>
-                <td>${eventData.lugar}</td>
-                <td>${eventData.precio}</td>
-                <td>${eventData.travail}</td>
-            `;
-            dataTable2.appendChild(row);
         }
 
         // Générer le calendrier pour le mois et l'année actuels

@@ -100,9 +100,20 @@ div {
 /* Styles pour la nouvelle disposition */
 .navigation-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 40px;
+    width: 100%;
+    max-width: 600px; /* Ajuste cette valeur selon la largeur de ton calendrier */
+    margin-bottom: 10px;
+}
+
+.navigation-container .button {
+    margin: 0 10px; /* Ajoute un espace entre les boutons et le titre */
+}
+
+#monthYear {
+    flex-grow: 1;
+    text-align: center;
 }
 
 #selectedDateDisplay {

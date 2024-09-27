@@ -3,6 +3,7 @@
 /* Style global du corps */
 body {
     font-family: Arial, sans-serif; /* Police de caractères */
+    font-weight: bold; /* Met le texte en gras */
 }
 
 /* Style du titre principal */

@@ -161,6 +161,25 @@
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
+        async function fetchEventsByDate(date) {
+            try {
+                const { data, error } = await supabase
+                    .from('event_quot1')
+                    .select('*')
+                    .eq('Fecha', date);
+
+                if (error) {
+                    console.error('Erreur lors de la récupération des événements :', error);
+                    return [];
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Erreur lors de la récupération des événements :', error);
+                return [];
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
 
@@ -314,21 +333,39 @@
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
 
-        function handleDateClick(event) {
+
+        async function handleDateClick(event) {
             const clickedDate = event.target.textContent;
-            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
-            selectedDateDisplay.textContent = 'Date sélectionnée : ' + clickedDate + ' ' + monthNames[currentMonth] + ' ' + currentYear;
-
-            document.querySelectorAll('.clickable').forEach(dateElement => {
-                dateElement.classList.remove('selected');
-            });
-
-            event.target.classList.add('selected');
-
-            // Mettre à jour le champ de date du formulaire
             const selectedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(clickedDate).padStart(2, '0')}`;
             document.getElementById('Fecha').value = selectedDate;
+
+            // Mettre à jour l'affichage de la date sélectionnée
+            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+            selectedDateDisplay.textContent = `Date sélectionnée : ${new Date(selectedDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+
+            // Récupérer les événements pour la date sélectionnée
+            const events = await fetchEventsByDate(selectedDate);
+
+            // Afficher les événements dans le tableau editable-table
+            const tableBody = document.querySelector('#editable-table tbody');
+            tableBody.innerHTML = ''; // Effacer les anciennes lignes
+
+            events.forEach(event => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td contenteditable="true">${event.Telefono}</td>
+                    <td contenteditable="true">${event.Nombre}</td>
+                    <td contenteditable="true">${event.Fecha}</td>
+                    <td contenteditable="true">${event.Hora}</td>
+                    <td contenteditable="true">${event.Min}</td>
+                    <td contenteditable="true">${event.Lugar}</td>
+                    <td contenteditable="true">${event.Precio}</td>
+                    <td contenteditable="true">${event.Trabajo}</td>
+                `;
+                tableBody.appendChild(row);
+            });
         }
+
 
         function selectToday() {
             const today = new Date();

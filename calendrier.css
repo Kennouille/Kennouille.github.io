@@ -20,7 +20,7 @@ h1 {
 
 /* Partie gauche */
 .left-container {
-    flex: 1; /* Prend 50% de la largeur */
+    flex: 0 0 50%; /* Prend 50% de la largeur */
     display: flex; /* Utilise flexbox pour aligner les éléments */
     flex-direction: column; /* Aligne les éléments en colonne */
     align-items: center; /* Centre les éléments horizontalement */
@@ -30,7 +30,7 @@ h1 {
 
 /* Partie droite */
 .right-container {
-    flex: 1; /* Prend 50% de la largeur */
+    flex: 0 0 50%; /* Prend 50% de la largeur */
     display: flex; /* Utilise flexbox pour aligner les éléments */
     flex-direction: column; /* Aligne les éléments en colonne */
     align-items: center; /* Centre les éléments horizontalement */

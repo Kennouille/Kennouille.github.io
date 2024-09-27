@@ -120,7 +120,7 @@ div {
 /* Centrer les boutons et le titre */
 .calendar-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     max-width: 600px; /* Ajuste cette valeur selon la largeur de ton calendrier */
     margin-bottom: 10px;
@@ -132,7 +132,7 @@ div {
 }
 
 .calendar-header .nav-button {
-    flex-shrink: 0;
+    margin: 0 10px; /* Ajoute un espace entre les boutons et le titre */
 }
 
 #calendarTable {

@@ -121,8 +121,8 @@ div {
 .calendar-header {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    max-width: 600px; /* Ajuste cette valeur selon la largeur de ton calendrier */
+    width: 80%;
+    max-width: 300px; /* Ajuste cette valeur selon la largeur de ton calendrier */
     margin-bottom: 10px;
 }
 

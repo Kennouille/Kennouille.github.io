@@ -164,8 +164,8 @@ h1 {
 
 /* Style des champs de formulaire */
 .form-container input {
-    margin-bottom: 10px; /* Ajoute un espace en bas */
-    padding: 5px; /* Ajoute un espace intérieur */
+    margin-bottom: 8px; /* Ajoute un espace en bas */
+    padding: 4px; /* Ajoute un espace intérieur */
     width: 100%; /* Prend toute la largeur disponible */
 }
 
@@ -200,5 +200,5 @@ td:first-child:last-child {
 
 /* Style global pour les marges des div */
 div {
-    margin-bottom: 20px; /* Ajoute un espace en bas */
+    margin-bottom: 10px; /* Ajoute un espace en bas */
 }

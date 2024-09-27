@@ -1,90 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
+/* Style global du corps */
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif; /* Police de caractères */
 }
 
+/* Style du titre principal */
 h1 {
-    text-align: center;
-    margin-bottom: 20px;
+    text-align: center; /* Centre le texte */
+    margin-bottom: 20px; /* Ajoute un espace en bas */
 }
 
-table {
-    border-collapse: separate;
-    width: 30%; /* Réduire la taille du calendrier */
-    margin: 0 auto; /* Centrer le calendrier */
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-th, td {
-    border: 1px solid blue;
-    text-align: center;
-    padding: 8px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-.today {
-    background-color: #d3d3d3; /* Couleur gris clair pour la date du jour */
-}
-
-.clickable {
-    cursor: pointer;
-}
-
-.selected {
-    background-color: #add8e6;
-}
-
-.button {
-    font-family: 'Lobster', cursive;
-    border: 4px solid blue;
-    background-color: #5DADE2;
-    color: white;
-    padding: 6px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 11px;
-    margin: 4px 1px;
-    cursor: pointer;
-    border-radius: 12px;
-}
-
-.button:hover {
-    background-color: #5DADE2;
-}
-
-#monthYear {
-    font-weight: bold;
-}
-
-th:first-child {
-    border-top-left-radius: 12px;
-}
-
-th:last-child {
-    border-top-right-radius: 12px;
-}
-
-td:first-child:last-child {
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-
-div {
-    margin-bottom: 20px;
-}
-
-/* Conteneur principal pour centrer les éléments */
+/* Conteneur principal pour diviser l'écran en deux parties égales */
 .main-container {
+    display: flex; /* Utilise flexbox pour aligner les éléments */
+    width: 100%; /* Prend toute la largeur disponible */
+    height: 100vh; /* Prend toute la hauteur de la fenêtre */
+}
+
+/* Partie gauche */
+.left-container {
+    flex: 1; /* Prend 50% de la largeur */
     display: flex; /* Utilise flexbox pour aligner les éléments */
     flex-direction: column; /* Aligne les éléments en colonne */
     align-items: center; /* Centre les éléments horizontalement */
-} /* centré */
+    justify-content: flex-start; /* Aligne les éléments en haut */
+    padding: 20px; /* Ajoute un espace intérieur */
+}
+
+/* Partie droite */
+.right-container {
+    flex: 1; /* Prend 50% de la largeur */
+    display: flex; /* Utilise flexbox pour aligner les éléments */
+    flex-direction: column; /* Aligne les éléments en colonne */
+    align-items: center; /* Centre les éléments horizontalement */
+    justify-content: flex-start; /* Aligne les éléments en haut */
+    padding: 20px; /* Ajoute un espace intérieur */
+}
 
 /* Conteneur de navigation pour les boutons et le titre */
 .navigation-container {
@@ -92,65 +44,93 @@ div {
     justify-content: center; /* Centre les éléments horizontalement */
     align-items: center; /* Centre les éléments verticalement */
     width: 100%; /* Prend toute la largeur disponible */
-    max-width: 600px; /* Limite la largeur maximale */
     margin-bottom: 10px; /* Ajoute un espace en bas */
-} /* centré */
+}
 
 /* Style des boutons de navigation */
 .navigation-container .button {
     margin: 0 10px; /* Ajoute un espace entre les boutons et le titre */
-} /* centré */
+    font-family: 'Lobster', cursive; /* Police de caractères */
+    border: 4px solid blue; /* Bordure */
+    background-color: #5DADE2; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    padding: 6px 10px; /* Ajoute un espace intérieur */
+    text-align: center; /* Centre le texte */
+    text-decoration: none; /* Supprime la décoration du texte */
+    display: inline-block; /* Affiche en ligne */
+    font-size: 11px; /* Taille de la police */
+    cursor: pointer; /* Change le curseur au survol */
+    border-radius: 12px; /* Bordure arrondie */
+}
+
+/* Style des boutons de navigation au survol */
+.navigation-container .button:hover {
+    background-color: #5DADE2; /* Change la couleur de fond au survol */
+}
 
 /* Style du titre du mois et de l'année */
 #monthYear {
     flex-grow: 1; /* Permet au titre de prendre tout l'espace disponible */
-    text-align: left; /* Centre le texte */
-} /* centré */
+    text-align: center; /* Centre le texte */
+    font-weight: bold; /* Met le texte en gras */
+}
 
-/* Conteneur du calendrier aligné à gauche */
+/* Conteneur du calendrier */
 .calendar-container {
-    display: flex; /* Utilise flexbox pour aligner les éléments */
-    flex-direction: column; /* Aligne les éléments en colonne */
-    align-items: flex-start; /* Aligne les éléments à gauche */
-    width: 50%; /* Prend toute la largeur disponible */
+    width: 100%; /* Prend toute la largeur disponible */
     max-width: 600px; /* Limite la largeur maximale */
-} /* gauche */
+}
 
 /* Style de la table du calendrier */
 #calendarTable {
     width: 100%; /* Prend toute la largeur disponible */
-    border-collapse: collapse; /* Fusionne les bordures des cellules */
-} /* gauche */
+    border-collapse: separate; /* Sépare les bordures des cellules */
+    border-radius: 12px; /* Bordure arrondie */
+    overflow: hidden; /* Masque le débordement */
+}
 
 /* Style des en-têtes de la table */
 #calendarTable th {
     background-color: #f2f2f2; /* Couleur de fond des en-têtes */
     padding: 10px; /* Ajoute un espace intérieur */
     text-align: center; /* Centre le texte */
-} /* centré */
+    border: 1px solid blue; /* Bordure */
+}
 
 /* Style des cellules de la table */
 #calendarTable td {
     padding: 10px; /* Ajoute un espace intérieur */
     text-align: center; /* Centre le texte */
-    border: 1px solid #ddd; /* Ajoute une bordure */
-} /* centré */
+    border: 1px solid blue; /* Bordure */
+}
+
+/* Style pour la date du jour */
+.today {
+    background-color: #d3d3d3; /* Couleur gris clair pour la date du jour */
+}
+
+/* Style pour les cellules cliquables */
+.clickable {
+    cursor: pointer; /* Change le curseur au survol */
+}
+
+/* Style pour la cellule sélectionnée */
+.selected {
+    background-color: #add8e6; /* Couleur bleu clair pour la sélection */
+}
 
 /* Conteneur du formulaire aligné à droite */
 .form-container {
-    display: flex; /* Utilise flexbox pour aligner les éléments */
-    flex-direction: column; /* Aligne les éléments en colonne */
-    align-items: flex-start; /* Aligne les éléments à gauche */
-    margin-left: 20px; /* Ajoute un espace à gauche */
-} /* droite */
+    width: 100%; /* Prend toute la largeur disponible */
+    max-width: 300px; /* Limite la largeur maximale */
+}
 
 /* Style des champs de formulaire */
 .form-container input {
     margin-bottom: 10px; /* Ajoute un espace en bas */
     padding: 5px; /* Ajoute un espace intérieur */
     width: 100%; /* Prend toute la largeur disponible */
-    max-width: 300px; /* Limite la largeur maximale */
-} /* droite */
+}
 
 /* Style du bouton d'ajout d'événement */
 .form-container .button {
@@ -159,9 +139,29 @@ div {
     color: white; /* Couleur du texte */
     border: none; /* Supprime la bordure */
     cursor: pointer; /* Change le curseur au survol */
-} /* droite */
+}
 
 /* Style du bouton d'ajout d'événement au survol */
 .form-container .button:hover {
     background-color: #45a049; /* Change la couleur de fond au survol */
-} /* droite */
+}
+
+/* Style des coins arrondis pour les en-têtes de la table */
+th:first-child {
+    border-top-left-radius: 12px; /* Bordure arrondie en haut à gauche */
+}
+
+th:last-child {
+    border-top-right-radius: 12px; /* Bordure arrondie en haut à droite */
+}
+
+/* Style des coins arrondis pour les cellules de la table */
+td:first-child:last-child {
+    border-bottom-left-radius: 12px; /* Bordure arrondie en bas à gauche */
+    border-bottom-right-radius: 12px; /* Bordure arrondie en bas à droite */
+}
+
+/* Style global pour les marges des div */
+div {
+    margin-bottom: 20px; /* Ajoute un espace en bas */
+}

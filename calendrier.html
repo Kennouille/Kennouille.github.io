@@ -183,6 +183,13 @@
                 `;
                 tableBody.appendChild(row);
             });
+            // Retirer la classe 'selected' de toutes les dates
+            document.querySelectorAll('.clickable').forEach(cell => {
+                cell.classList.remove('selected');
+            });
+
+            // Ajouter la classe 'selected' à la date cliquée
+            event.target.classList.add('selected');
         }
 
         function getHourOrder(hour) {

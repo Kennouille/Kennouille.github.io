@@ -79,86 +79,89 @@ div {
     margin-bottom: 20px;
 }
 
-/* Style pour le formulaire de nouvel événement */
-.form-container {
-    text-align: center;
-    margin: 20px auto;
-    width: 50%;
-}
-
-.form-container input {
-    display: block;
-    margin: 40px auto;
-    padding: 8px;
-    width: 60%;
-}
-
-.form-container h2 {
-    text-align: center;
-}
-
-/* Styles pour la nouvelle disposition */
+/* Conteneur principal pour centrer les éléments */
 .main-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    display: flex; /* Utilise flexbox pour aligner les éléments */
+    flex-direction: column; /* Aligne les éléments en colonne */
+    align-items: center; /* Centre les éléments horizontalement */
+} /* centré */
 
+/* Conteneur de navigation pour les boutons et le titre */
 .navigation-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 600px; /* Ajuste cette valeur selon la largeur de ton calendrier */
-    margin-bottom: 10px;
-}
+    display: flex; /* Utilise flexbox pour aligner les éléments */
+    justify-content: center; /* Centre les éléments horizontalement */
+    align-items: center; /* Centre les éléments verticalement */
+    width: 100%; /* Prend toute la largeur disponible */
+    max-width: 600px; /* Limite la largeur maximale */
+    margin-bottom: 10px; /* Ajoute un espace en bas */
+} /* centré */
 
+/* Style des boutons de navigation */
 .navigation-container .button {
     margin: 0 10px; /* Ajoute un espace entre les boutons et le titre */
-}
+} /* centré */
 
+/* Style du titre du mois et de l'année */
 #monthYear {
-    flex-grow: 1;
-    text-align: center;
-}
-
-#selectedDateDisplay {
-    margin-left: 20px;
-    font-weight: bold;
-}
+    flex-grow: 1; /* Permet au titre de prendre tout l'espace disponible */
+    text-align: center; /* Centre le texte */
+} /* centré */
 
 /* Conteneur du calendrier aligné à gauche */
 .calendar-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Aligne le calendrier à gauche */
-    width: 100%;
-    max-width: 600px; /* Ajuste cette valeur selon la largeur de ton calendrier */
-}
+    display: flex; /* Utilise flexbox pour aligner les éléments */
+    flex-direction: column; /* Aligne les éléments en colonne */
+    align-items: flex-start; /* Aligne les éléments à gauche */
+    width: 100%; /* Prend toute la largeur disponible */
+    max-width: 600px; /* Limite la largeur maximale */
+} /* gauche */
 
-/* Centrer les boutons et le titre */
-.calendar-header {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 600px; /* Ajuste cette valeur selon la largeur de ton calendrier */
-    margin-bottom: 10px;
-}
-
-.calendar-header .month-year {
-    flex-grow: 1;
-    text-align: center;
-}
-
-.calendar-header .nav-button {
-    margin: 0 10px; /* Ajoute un espace entre les boutons et le titre */
-}
-
+/* Style de la table du calendrier */
 #calendarTable {
-    width: 20%; /* Réduire la taille du calendrier */
-}
+    width: 100%; /* Prend toute la largeur disponible */
+    border-collapse: collapse; /* Fusionne les bordures des cellules */
+} /* gauche */
 
+/* Style des en-têtes de la table */
+#calendarTable th {
+    background-color: #f2f2f2; /* Couleur de fond des en-têtes */
+    padding: 10px; /* Ajoute un espace intérieur */
+    text-align: center; /* Centre le texte */
+} /* centré */
+
+/* Style des cellules de la table */
+#calendarTable td {
+    padding: 10px; /* Ajoute un espace intérieur */
+    text-align: center; /* Centre le texte */
+    border: 1px solid #ddd; /* Ajoute une bordure */
+} /* centré */
+
+/* Conteneur du formulaire aligné à droite */
 .form-container {
-    width: 25%; /* Ajuster la taille du formulaire */
-    margin-left: 20px;
-}
+    display: flex; /* Utilise flexbox pour aligner les éléments */
+    flex-direction: column; /* Aligne les éléments en colonne */
+    align-items: flex-start; /* Aligne les éléments à gauche */
+    margin-left: 20px; /* Ajoute un espace à gauche */
+} /* droite */
+
+/* Style des champs de formulaire */
+.form-container input {
+    margin-bottom: 10px; /* Ajoute un espace en bas */
+    padding: 5px; /* Ajoute un espace intérieur */
+    width: 100%; /* Prend toute la largeur disponible */
+    max-width: 300px; /* Limite la largeur maximale */
+} /* droite */
+
+/* Style du bouton d'ajout d'événement */
+.form-container .button {
+    padding: 10px 20px; /* Ajoute un espace intérieur */
+    background-color: #4CAF50; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    border: none; /* Supprime la bordure */
+    cursor: pointer; /* Change le curseur au survol */
+} /* droite */
+
+/* Style du bouton d'ajout d'événement au survol */
+.form-container .button:hover {
+    background-color: #45a049; /* Change la couleur de fond au survol */
+} /* droite */

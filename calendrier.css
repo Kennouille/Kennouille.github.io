@@ -82,13 +82,13 @@ div {
 /* Style pour le formulaire de nouvel événement */
 .form-container {
     text-align: center;
-    margin: 10px auto;
+    margin: 20px auto;
     width: 50%;
 }
 
 .form-container input {
     display: block;
-    margin: 10px auto;
+    margin: 40px auto;
     padding: 8px;
     width: 60%;
 }
@@ -102,11 +102,11 @@ div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
 }
 
 #selectedDateDisplay {
-    margin-left: 10px;
+    margin-left: 20px;
     font-weight: bold;
 }
 
@@ -121,7 +121,7 @@ div {
 .calendar-header {
     display: flex;
     justify-content: space-between;
-    width: 80%;
+    width: 60%;
     max-width: 300px; /* Ajuste cette valeur selon la largeur de ton calendrier */
     margin-bottom: 10px;
 }

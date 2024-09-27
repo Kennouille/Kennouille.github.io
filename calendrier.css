@@ -104,7 +104,7 @@ div {
 /* Style du titre du mois et de l'année */
 #monthYear {
     flex-grow: 1; /* Permet au titre de prendre tout l'espace disponible */
-    text-align: center; /* Centre le texte */
+    text-align: left; /* Centre le texte */
 } /* centré */
 
 /* Conteneur du calendrier aligné à gauche */

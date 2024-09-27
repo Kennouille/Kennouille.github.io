@@ -86,7 +86,7 @@ h1 {
 /* Conteneur du calendrier */
 .calendar-container {
     width: 100%; /* Prend toute la largeur disponible */
-    max-width: 600px; /* Limite la largeur maximale */
+    max-width: 400px; /* Limite la largeur maximale */
 }
 
 /* Style de la table du calendrier */
@@ -115,7 +115,7 @@ h1 {
 /* Conteneur du editable */
 .editable-container {
     width: 100%; /* Prend toute la largeur disponible */
-    max-width: 600px; /* Limite la largeur maximale */
+    max-width: 400px; /* Limite la largeur maximale */
 }
 
 /* Style de la table du editable */
@@ -159,7 +159,7 @@ h1 {
 /* Conteneur du formulaire aligné à droite */
 .form-container {
     width: 100%; /* Prend toute la largeur disponible */
-    max-width: 400px; /* Limite la largeur maximale */
+    max-width: 300px; /* Limite la largeur maximale */
 }
 
 /* Style des champs de formulaire */

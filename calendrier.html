@@ -33,7 +33,7 @@
         </div>
         <!-- Partie droite -->
         <div class="right-container">
-            <p id="selectedDateDisplay">Date sélectionnée : 27 Septembre 2024</p>
+            <p id="selectedDateDisplay">Date sélectionnée : ""</p>
             <div class="form-container">
                 <h2>Nuevo evento</h2>
                 <input type="text" id="Telefono" placeholder="Telefono">
@@ -72,86 +72,6 @@
                             <td contenteditable="true"></td>
                             <td contenteditable="true"></td>
                         </tr>
-                        <tr>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                        </tr>
-                        <tr>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                        </tr>
                         <!-- Ajoutez plus de lignes si nécessaire -->
                     </tbody>
                 </table>
@@ -166,9 +86,7 @@
         var event = {}; // Objet pour stocker les événements par date
 
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-        
 
-        // Fonction pour récupérer les événements par date
         async function fetchEventsByDate(date) {
             try {
                 const { data, error } = await supabase
@@ -188,7 +106,6 @@
             }
         }
 
-        // Fonction pour charger les données de la table
         async function loadTableData() {
             try {
                 const { data, error } = await supabase
@@ -200,32 +117,28 @@
                     return;
                 }
 
-                console.log('Data fetched from Supabase:', data);
+                const tableBody = document.querySelector('#editable-table tbody');
+                tableBody.innerHTML = ''; // Clear existing table data
 
-                const tbody = document.querySelector('#journalierTable tbody');
-                if (tbody) {
-                    tbody.innerHTML = ''; // Effacer les anciennes lignes
-                    data.forEach(rowData => {
-                        const row = tbody.insertRow();
-                        Object.entries(rowData).forEach(([key, value]) => {
-                            const cell = row.insertCell();
-                            cell.textContent = value;
-                            cell.contentEditable = "true";
-                            cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
-                            if (key === 'Telefono') {
-                                cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
-                            }
-                        });
-                    });
-                } else {
-                    console.error('Element with ID "journalierTable" not found.');
-                }
+                data.forEach(event => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td contenteditable="true">${event.Telefono}</td>
+                        <td contenteditable="true">${event.Nombre}</td>
+                        <td contenteditable="true">${event.Fecha}</td>
+                        <td contenteditable="true">${event.Hora}</td>
+                        <td contenteditable="true">${event.Min}</td>
+                        <td contenteditable="true">${event.Lugar}</td>
+                        <td contenteditable="true">${event.Precio}</td>
+                        <td contenteditable="true">${event.Trabajo}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Erreur lors du chargement des données :', error);
             }
         }
 
-        // Fonction pour gérer le clic sur une date
         async function handleDateClick(event) {
             const clickedDate = event.target.textContent;
             const selectedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(clickedDate).padStart(2, '0')}`;
@@ -328,6 +241,11 @@
             }
         }
 
+        window.onload = function() {
+            generateCalendar(currentMonth, currentYear);
+            selectToday();
+        };
+
         function changeMonth(direction) {
             currentMonth += direction;
             if (currentMonth < 0) {
@@ -367,6 +285,9 @@
 
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
+
+        // Générer le calendrier pour le mois et l'année actuels
+        generateCalendar(currentMonth, currentYear);
 
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
@@ -428,15 +349,6 @@
         });
     });
 
-    window.onload = function() {
-            generateCalendar(currentMonth, currentYear);
-            selectToday();
-        };
-        
-
-    // Générer le calendrier pour le mois et l'année actuels
-    generateCalendar(currentMonth, currentYear);
-    
     </script>
 </body>
 </html>

@@ -33,13 +33,24 @@
         </div>
         <!-- Partie droite -->
         <div class="right-container">
-            <p id="selectedDateDisplay">Date sélectionnée : ""</p>
+            <p id="selectedDateDisplay">Date sélectionnée : </p>
             <div class="form-container">
                 <h2>Nuevo evento</h2>
                 <input type="text" id="Telefono" placeholder="Telefono">
                 <input type="text" id="Nombre" placeholder="Nombre">
                 <input type="date" id="Fecha">
-                <input type="number" id="Hora" placeholder="Hora">
+                <select id="Hora">
+                    <option value="9am">9am</option>
+                    <option value="10am">10am</option>
+                    <option value="11am">11am</option>
+                    <option value="12pm">12pm</option>
+                    <option value="1pm">1pm</option>
+                    <option value="2pm">2pm</option>
+                    <option value="3pm">3pm</option>
+                    <option value="4pm">4pm</option>
+                    <option value="5pm">5pm</option>
+                    <option value="otro">Otro</option>
+                </select>
                 <input type="number" id="Min" placeholder="Min">
                 <input type="text" id="Lugar" placeholder="Lugar">
                 <input type="number" id="Precio" placeholder="Precio">
@@ -151,6 +162,9 @@
             // Récupérer les événements pour la date sélectionnée
             const events = await fetchEventsByDate(selectedDate);
 
+            // Trier les événements par heure
+            events.sort((a, b) => getHourOrder(a.Hora) - getHourOrder(b.Hora));
+
             // Afficher les événements dans le tableau editable-table
             const tableBody = document.querySelector('#editable-table tbody');
             tableBody.innerHTML = ''; // Effacer les anciennes lignes
@@ -169,6 +183,22 @@
                 `;
                 tableBody.appendChild(row);
             });
+        }
+
+        function getHourOrder(hour) {
+            const hourOrder = {
+                "9am": 1,
+                "10am": 2,
+                "11am": 3,
+                "12pm": 4,
+                "1pm": 5,
+                "2pm": 6,
+                "3pm": 7,
+                "4pm": 8,
+                "5pm": 9,
+                "otro": 10
+            };
+            return hourOrder[hour] || 11; // Retourne 11 pour les heures non définies
         }
 
         function generateCalendar(month, year) {

@@ -161,6 +161,7 @@
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
+        // Fonction pour récupérer les événements par date
         async function fetchEventsByDate(date) {
             try {
                 const { data, error } = await supabase
@@ -334,6 +335,8 @@
         }
 
 
+
+        // Fonction pour gérer le clic sur une date
         async function handleDateClick(event) {
             const clickedDate = event.target.textContent;
             const selectedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(clickedDate).padStart(2, '0')}`;

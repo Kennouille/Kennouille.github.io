@@ -102,11 +102,11 @@ div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
 #selectedDateDisplay {
-    margin-left: 20px;
+    margin-left: 10px;
     font-weight: bold;
 }
 

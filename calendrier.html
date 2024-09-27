@@ -9,9 +9,9 @@
 </head>
 <body>
     <div class="main-container">
+        <h1>Calendrier et Agenda Quotidien</h1>
         <!-- Partie gauche -->
         <div class="left-container">
-            <h1>Calendrier et Agenda Quotidien</h1>
             <div class="navigation-container">
                 <button class="button" onclick="changeMonth(-1)">Precedente</button>
                 <span id="monthYear"></span>
@@ -28,6 +28,46 @@
                         <th>Sa</th>
                         <th>Do</th>
                     </tr>
+                </table>
+            </div>
+                <!-- Tableau modifiable -->
+            <div class="editable-container">
+                <table id="editable-table">
+                    <thead>
+                        <tr>
+                            <th>Telefono</th>
+                            <th>Nombre</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Min</th>
+                            <th>Lugar</th>
+                            <th>Precio</th>
+                            <th>Trabajo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <!-- Ajoutez plus de lignes si nécessaire -->
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -146,45 +186,6 @@
             }
         }
     </script>
-
-    <!-- Tableau modifiable -->
-    <table id="editable-table">
-        <thead>
-            <tr>
-                <th>Telefono</th>
-                <th>Nombre</th>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Min</th>
-                <th>Lugar</th>
-                <th>Precio</th>
-                <th>Trabajo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-            </tr>
-            <tr>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-            </tr>
-            <!-- Ajoutez plus de lignes si nécessaire -->
-        </tbody>
-    </table>
 
     <script>
         var currentMonth = new Date().getMonth();

@@ -82,13 +82,13 @@ div {
 /* Style pour le formulaire de nouvel événement */
 .form-container {
     text-align: center;
-    margin: 20px auto;
+    margin: 10px auto;
     width: 50%;
 }
 
 .form-container input {
     display: block;
-    margin: 40px auto;
+    margin: 10px auto;
     padding: 8px;
     width: 60%;
 }

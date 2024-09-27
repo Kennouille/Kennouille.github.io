@@ -98,6 +98,12 @@ div {
 }
 
 /* Styles pour la nouvelle disposition */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .navigation-container {
     display: flex;
     justify-content: center;
@@ -121,11 +127,13 @@ div {
     font-weight: bold;
 }
 
-/* Centrer le conteneur du calendrier */
+/* Conteneur du calendrier aligné à gauche */
 .calendar-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start; /* Aligne le calendrier à gauche */
+    width: 100%;
+    max-width: 600px; /* Ajuste cette valeur selon la largeur de ton calendrier */
 }
 
 /* Centrer les boutons et le titre */

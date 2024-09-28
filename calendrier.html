@@ -86,6 +86,10 @@
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
+        var currentMonth = new Date().getMonth();
+        var currentYear = new Date().getFullYear();
+        var event = {}; // Objet pour stocker les événements par date
+        
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
 
@@ -144,10 +148,6 @@
             });
         });
 
-        var currentMonth = new Date().getMonth();
-        var currentYear = new Date().getFullYear();
-        var event = {}; // Objet pour stocker les événements par date
-
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
         
         function generateCalendar(month, year) {
@@ -199,7 +199,7 @@
 
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
-        
+
         async function fetchEventsByDate(date) {
             try {
                 const { data, error } = await supabase

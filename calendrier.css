@@ -3,8 +3,6 @@
 /* Style global du corps */
 body {
     font-family: Arial, sans-serif; /* Police de caractères */
-    font-weight: bold; /* Met le texte en gras */
-    font-size: 1.5em; /* Ajustez la taille selon vos besoins */
 }
 
 /* Style du titre principal */
@@ -209,4 +207,9 @@ td:first-child:last-child {
 /* Style global pour les marges des div */
 div {
     margin-bottom: 10px; /* Ajoute un espace en bas */
+}
+
+#selectedDateDisplay {
+font-weight: bold; /* Met le texte en gras */
+font-size: 1.5em; /* Ajustez la taille selon vos besoins */
 }

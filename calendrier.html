@@ -86,12 +86,12 @@
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
+        var currentMonth = new Date().getMonth();
+        var currentYear = new Date().getFullYear();
         var event = {}; // Objet pour stocker les événements par date
 
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-
+        
         function generateCalendar(month, year) {
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');

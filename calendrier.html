@@ -89,7 +89,7 @@
         var currentYear = new Date().getFullYear();
         var event = {}; // Objet pour stocker les événements par date
 
-        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
         async function fetchEventsByDate(date) {
             try {
@@ -146,8 +146,6 @@
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
                 });
-
-                addEmptyRow(); // Ajouter une ligne vide
 
                 // Ajouter des écouteurs d'événements aux boutons "Appliquer"
                 document.querySelectorAll('.apply-button').forEach(button => {

@@ -252,13 +252,10 @@
 
             // Mettre à jour l'affichage de la date sélectionnée
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
-            selectedDateDisplay.textContent = `Fecha seleccionada : ${new Date(selectedDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+            selectedDateDisplay.textContent = `Date sélectionnée : ${new Date(selectedDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
 
             // Récupérer les événements pour la date sélectionnée
             const events = await fetchEventsByDate(selectedDate);
-
-            // Trier les événements par heure
-            events.sort((a, b) => getHourOrder(a.Hora) - getHourOrder(b.Hora));
 
             // Afficher les événements dans le tableau editable-table
             const tableBody = document.querySelector('#editable-table tbody');
@@ -266,16 +263,15 @@
 
             events.forEach(event => {
                 const row = document.createElement('tr');
-                row.dataset.userId = event.user_id; // Assurez-vous que l'ID utilisateur est défini
                 row.innerHTML = `
-                    <td contenteditable="true" data-column="Telefono">${event.Telefono}</td>
-                    <td contenteditable="true" data-column="Nombre">${event.Nombre}</td>
-                    <td contenteditable="true" data-column="Fecha">${event.Fecha}</td>
-                    <td contenteditable="true" data-column="Hora">${event.Hora}</td>
-                    <td contenteditable="true" data-column="Min">${event.Min}</td>
-                    <td contenteditable="true" data-column="Lugar">${event.Lugar}</td>
-                    <td contenteditable="true" data-column="Precio">${event.Precio}</td>
-                    <td contenteditable="true" data-column="Trabajo">${event.Trabajo}</td>
+                    <td contenteditable="true">${event.Telefono}</td>
+                    <td contenteditable="true">${event.Nombre}</td>
+                    <td contenteditable="true">${event.Fecha}</td>
+                    <td contenteditable="true">${event.Hora}</td>
+                    <td contenteditable="true">${event.Min}</td>
+                    <td contenteditable="true">${event.Lugar}</td>
+                    <td contenteditable="true">${event.Precio}</td>
+                    <td contenteditable="true">${event.Trabajo}</td>
                 `;
                 tableBody.appendChild(row);
 

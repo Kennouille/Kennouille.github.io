@@ -11,7 +11,7 @@
     <div class="main-container">
         <!-- Partie gauche -->
         <div class="left-container">
-            <h1>Calendrier et Agenda Quotidien</h1>
+            <h1>Calendario y Agenda</h1>
             <div class="navigation-container">
                 <button class="button" onclick="changeMonth(-1)">Precedente</button>
                 <span id="monthYear"></span>
@@ -33,7 +33,7 @@
         </div>
         <!-- Partie droite -->
         <div class="right-container">
-            <p id="selectedDateDisplay">Date sélectionnée : </p>
+            <p id="selectedDateDisplay">Fecha seleccionada : </p>
             <div class="editable-container">
                 <table id="editable-table">
                     <thead>
@@ -84,7 +84,7 @@
                 <input type="text" id="Lugar" placeholder="Lugar">
                 <input type="number" id="Precio" placeholder="Precio">
                 <input type="text" id="Trabajo" placeholder="Trabajo">
-                <button id="addEventButton" class="button">Ajouter un événement</button>
+                <button id="addEventButton" class="button">Adjuntar un evento</button>
             </div>
         </div>
     </div>
@@ -95,7 +95,7 @@
         var currentYear = new Date().getFullYear();
         var event = {}; // Objet pour stocker les événements par date
 
-        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
         async function fetchEventsByDate(date) {
             try {
@@ -148,7 +148,7 @@
                     // Ajouter le bouton "Appliquer"
                     const applyCell = row.insertCell();
                     const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Appliquer';
+                    applyButton.textContent = 'Aplicar';
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
                 });
@@ -223,7 +223,7 @@
                 // Ajouter le bouton "Appliquer"
                 const applyCell = row.insertCell();
                 const applyButton = document.createElement('button');
-                applyButton.textContent = 'Appliquer';
+                applyButton.textContent = 'Aplicar';
                 applyButton.classList.add('apply-button');
                 applyCell.appendChild(applyButton);
             });
@@ -341,7 +341,7 @@
 
             // Mettre à jour l'affichage de la date sélectionnée
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
-            selectedDateDisplay.textContent = `Date sélectionnée : ${new Date(selectedDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+            selectedDateDisplay.textContent = `Fecha seleccionada : ${new Date(selectedDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
 
             // Récupérer et afficher les événements du jour
             fetchEventsByDate(selectedDate).then(events => {
@@ -369,7 +369,7 @@
                     // Ajouter le bouton "Appliquer"
                     const applyCell = row.insertCell();
                     const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Appliquer';
+                    applyButton.textContent = 'Aplicar';
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
                 });

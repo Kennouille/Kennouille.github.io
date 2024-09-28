@@ -48,6 +48,14 @@ h1 {
     margin-bottom: 10px; /* Ajoute un espace en bas */
 }
 
+.editable-container {
+    display: flex; /* Utilise flexbox pour aligner les éléments */
+    justify-content: center; /* Centre les éléments horizontalement */
+    align-items: center; /* Centre les éléments verticalement */
+    width: 100%; /* Prend toute la largeur disponible */
+    margin-bottom: 10px; /* Ajoute un espace en bas */
+}
+
 /* Style des boutons de navigation */
 .navigation-container .button {
     margin: 0 10px; /* Ajoute un espace entre les boutons et le titre */
@@ -113,7 +121,7 @@ h1 {
 /* Conteneur du editable */
 .editable-container {
     width: 100%; /* Prend toute la largeur disponible */
-    overflow-x: auto;
+    max-width: 400px; /* Limite la largeur maximale */
 }
 
 /* Style de la table du editable */
@@ -156,9 +164,8 @@ h1 {
 
 /* Conteneur du formulaire aligné à droite */
 .form-container {
-    display: flex;
-    width: 100%;
-    margin-top: 20px;
+    width: 100%; /* Prend toute la largeur disponible */
+    max-width: 300px; /* Limite la largeur maximale */
 }
 
 /* Style des champs de formulaire */
@@ -200,9 +207,4 @@ td:first-child:last-child {
 /* Style global pour les marges des div */
 div {
     margin-bottom: 10px; /* Ajoute un espace en bas */
-}
-
-.left-form, .right-form {
-    flex: 1;
-    padding: 10px;
 }

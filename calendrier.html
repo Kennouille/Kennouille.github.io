@@ -86,6 +86,121 @@
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTableData();
+
+            document.getElementById('addEventButton').addEventListener('click', async function() {
+                const newEvent = {
+                    Telefono: document.getElementById('Telefono').value,
+                    Nombre: document.getElementById('Nombre').value,
+                    Fecha: document.getElementById('Fecha').value,
+                    Hora: document.getElementById('Hora').value,
+                    Min: document.getElementById('Min').value,
+                    Lugar: document.getElementById('Lugar').value,
+                    Precio: document.getElementById('Precio').value,
+                    Trabajo: document.getElementById('Trabajo').value,
+                    user_id: uuid.v4() // Générer un UUID valide
+                };
+
+                console.log('Nouvel événement à ajouter :', newEvent);
+
+                const { data, error } = await supabase
+                    .from('event_quot1')
+                    .insert([newEvent]);
+
+                if (error) {
+                    console.error('Erreur lors de l\'insertion des données :', error);
+                } else {
+                    console.log('Données insérées avec succès :', data);
+                    loadTableData(); // Recharger les données pour afficher le nouvel événement
+                }
+            });
+
+            document.getElementById('Telefono').addEventListener('input', async function() {
+                const telefono = this.value;
+
+                if (telefono) {
+                    const { data, error } = await supabase
+                        .from('tableData1')
+                        .select('Nombre, Lugar')
+                        .eq('Telefono', telefono);
+
+                    if (error) {
+                        console.error('Erreur lors de la récupération des données :', error);
+                    } else if (data.length > 0) {
+                        const { Nombre, Lugar } = data[0];
+                        document.getElementById('Nombre').value = Nombre;
+                        document.getElementById('Lugar').value = Lugar;
+                    } else {
+                        // Si aucun résultat n'est trouvé, vider les champs
+                        document.getElementById('Nombre').value = '';
+                        document.getElementById('Lugar').value = '';
+                    }
+                } else {
+                    // Si le champ de téléphone est vide, vider les champs
+                    document.getElementById('Nombre').value = '';
+                    document.getElementById('Lugar').value = '';
+                }
+            });
+        });
+
+        async function fetchEventsByDate(date) {
+            try {
+                const { data, error } = await supabase
+                    .from('event_quot1')
+                    .select('*')
+                    .eq('Fecha', date);
+
+                if (error) {
+                    console.error('Erreur lors de la récupération des événements :', error);
+                    return [];
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Erreur lors de la récupération des événements :', error);
+                return [];
+            }
+        }
+
+        // Fonction pour charger les données de la table
+        async function loadTableData() {
+            try {
+                const { data, error } = await supabase
+                    .from('event_quot1')
+                    .select('*');
+
+                if (error) {
+                    console.error('Error fetching data:', error);
+                    return;
+                }
+                console.log('Data fetched from Supabase:', data);
+
+                const tbody = document.querySelector('#journalierTable tbody');
+                if (tbody) {
+                    tbody.innerHTML = ''; // Effacer les anciennes lignes
+                    data.forEach(rowData => {
+                        const row = tbody.insertRow();
+                        Object.entries(rowData).forEach(([key, value]) => {
+                            const cell = row.insertCell();
+                            cell.textContent = value;
+                            cell.contentEditable = "true";
+                            cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
+                            if (key === 'Telefono') {
+                                cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
+                            }
+                        });
+                    });
+                } else {
+                    console.error('Element with ID "journalierTable" not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+    </script>
+
+    <script>
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
         var event = {}; // Objet pour stocker les événements par date
@@ -142,109 +257,6 @@
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
 
-        function changeMonth(direction) {
-            currentMonth += direction;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            } else if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
-            generateCalendar(currentMonth, currentYear);
-        }
-
-        // Initialisation du calendrier
-        console.log("Initializing calendar with month:", currentMonth, "year:", currentYear);
-        generateCalendar(currentMonth, currentYear);
-
-        async function fetchEventsByDate(date) {
-            try {
-                const { data, error } = await supabase
-                    .from('event_quot1')
-                    .select('*')
-                    .eq('Fecha', date);
-
-                if (error) {
-                    console.error('Erreur lors de la récupération des événements :', error);
-                    return [];
-                }
-
-                return data;
-            } catch (error) {
-                console.error('Erreur lors de la récupération des événements :', error);
-                return [];
-            }
-        }
-
-        async function loadTableData() {
-            try {
-                const { data, error } = await supabase
-                    .from('event_quot1')
-                    .select('*');
-
-                if (error) {
-                    console.error('Error fetching data:', error);
-                    return;
-                }
-
-                const tableBody = document.querySelector('#editable-table tbody');
-                tableBody.innerHTML = ''; // Clear existing table data
-
-                data.forEach(event => {
-                    const row = document.createElement('tr');
-                    row.dataset.userId = event.user_id; // Assurez-vous que l'ID utilisateur est défini
-                    row.innerHTML = `
-                        <td contenteditable="true" data-column="Telefono">${event.Telefono}</td>
-                        <td contenteditable="true" data-column="Nombre">${event.Nombre}</td>
-                        <td contenteditable="true" data-column="Fecha">${event.Fecha}</td>
-                        <td contenteditable="true" data-column="Hora">${event.Hora}</td>
-                        <td contenteditable="true" data-column="Min">${event.Min}</td>
-                        <td contenteditable="true" data-column="Lugar">${event.Lugar}</td>
-                        <td contenteditable="true" data-column="Precio">${event.Precio}</td>
-                        <td contenteditable="true" data-column="Trabajo">${event.Trabajo}</td>
-                    `;
-                    tableBody.appendChild(row);
-
-                    // Ajouter le bouton "Appliquer"
-                    const applyCell = row.insertCell();
-                    const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Aplicar';
-                    applyButton.classList.add('apply-button');
-                    applyCell.appendChild(applyButton);
-                });
-
-                // Ajouter des écouteurs d'événements aux boutons "Appliquer"
-                document.querySelectorAll('.apply-button').forEach(button => {
-                    button.addEventListener('click', async function() {
-                        const row = button.closest('tr');
-                        const updatedEvent = {};
-                        Array.from(row.cells).forEach(cell => {
-                            if (cell.dataset.column) {
-                                updatedEvent[cell.dataset.column] = cell.textContent.trim();
-                            }
-                        });
-
-                        const userId = row.dataset.userId;
-
-                        const { error } = await supabase
-                            .from('event_quot1')
-                            .update(updatedEvent)
-                            .eq('user_id', userId);
-
-                        if (error) {
-                            console.error('Erreur lors de la mise à jour des données :', error);
-                        } else {
-                            console.log('Données mises à jour avec succès');
-                        }
-                    });
-                });
-            } catch (err) {
-                console.error('Error loading Supabase client:', err);
-            }
-        }
-
-
         async function handleDateClick(event) {
             const clickedDate = event.target.textContent;
             const selectedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(clickedDate).padStart(2, '0')}`;
@@ -274,65 +286,7 @@
                     <td contenteditable="true">${event.Trabajo}</td>
                 `;
                 tableBody.appendChild(row);
-
-                // Ajouter le bouton "Appliquer"
-                const applyCell = row.insertCell();
-                const applyButton = document.createElement('button');
-                applyButton.textContent = 'Aplicar';
-                applyButton.classList.add('apply-button');
-                applyCell.appendChild(applyButton);
             });
-
-            // Ajouter des écouteurs d'événements aux boutons "Appliquer"
-            document.querySelectorAll('.apply-button').forEach(button => {
-                button.addEventListener('click', async function() {
-                    const row = button.closest('tr');
-                    const updatedEvent = {};
-                    Array.from(row.cells).forEach(cell => {
-                        if (cell.dataset.column) {
-                            updatedEvent[cell.dataset.column] = cell.textContent.trim();
-                        }
-                    });
-
-                    const userId = row.dataset.userId;
-
-                    const { error } = await supabase
-                        .from('event_quot1')
-                        .update(updatedEvent)
-                        .eq('user_id', userId);
-
-                    if (error) {
-                        console.error('Erreur lors de la mise à jour des données :', error);
-                    } else {
-                        console.log('Données mises à jour avec succès');
-                    }
-                });
-            });
-
-            // Retirer la classe 'selected' de toutes les dates
-            document.querySelectorAll('.clickable').forEach(cell => {
-                cell.classList.remove('selected');
-            });
-
-            // Ajouter la classe 'selected' à la date cliquée
-            event.target.classList.add('selected');
-        }
-
-
-        function getHourOrder(hour) {
-            const hourOrder = {
-                "9am": 1,
-                "10am": 2,
-                "11am": 3,
-                "12pm": 4,
-                "1pm": 5,
-                "2pm": 6,
-                "3pm": 7,
-                "4pm": 8,
-                "5pm": 9,
-                "otro": 10
-            };
-            return hourOrder[hour] || 11; // Retourne 11 pour les heures non définies
         }
 
         function selectToday() {
@@ -341,85 +295,36 @@
             const todayMonth = today.getMonth();
             const todayYear = today.getFullYear();
 
-            const selectedDate = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
-            document.getElementById('Fecha').value = selectedDate;
-
-            // Mettre à jour l'affichage de la date sélectionnée
-            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
-            selectedDateDisplay.textContent = `Fecha seleccionada : ${new Date(selectedDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
-
-            // Récupérer et afficher les événements du jour
-            fetchEventsByDate(selectedDate).then(events => {
-                // Trier les événements par heure
-                events.sort((a, b) => getHourOrder(a.Hora) - getHourOrder(b.Hora));
-
-                // Afficher les événements dans le tableau editable-table
-                const tableBody = document.querySelector('#editable-table tbody');
-                tableBody.innerHTML = ''; // Effacer les anciennes lignes
-
-                events.forEach(event => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td contenteditable="true">${event.Telefono}</td>
-                        <td contenteditable="true">${event.Nombre}</td>
-                        <td contenteditable="true">${event.Fecha}</td>
-                        <td contenteditable="true">${event.Hora}</td>
-                        <td contenteditable="true">${event.Min}</td>
-                        <td contenteditable="true">${event.Lugar}</td>
-                        <td contenteditable="true">${event.Precio}</td>
-                        <td contenteditable="true">${event.Trabajo}</td>
-                    `;
-                    tableBody.appendChild(row);
-
-                    // Ajouter le bouton "Appliquer"
-                    const applyCell = row.insertCell();
-                    const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Aplicar';
-                    applyButton.classList.add('apply-button');
-                    applyCell.appendChild(applyButton);
-                });
-
-
-                // Ajouter des écouteurs d'événements aux boutons "Appliquer"
-                document.querySelectorAll('.apply-button').forEach(button => {
-                    button.addEventListener('click', async function() {
-                        const row = button.closest('tr');
-                        const updatedEvent = {};
-                        Array.from(row.cells).forEach(cell => {
-                            if (cell.dataset.column) {
-                                updatedEvent[cell.dataset.column] = cell.textContent.trim();
-                            }
-                        });
-
-                        const userId = row.dataset.userId;
-
-                        const { error } = await supabase
-                            .from('event_quot1')
-                            .update(updatedEvent)
-                            .eq('user_id', userId);
-
-                            if (error) {
-                            console.error('Erreur lors de la mise à jour des données :', error);
-                        } else {
-                            console.log('Données mises à jour avec succès');
-                        }
-                    });
-                });
-
-                // Mettre en surbrillance la date du jour dans le calendrier
-                document.querySelectorAll('.clickable').forEach(cell => {
-                    if (parseInt(cell.textContent) === todayDate && todayMonth === currentMonth && todayYear === currentYear) {
-                        cell.classList.add('selected');
+            if (todayMonth === currentMonth && todayYear === currentYear) {
+                document.querySelectorAll('.clickable').forEach(dateElement => {
+                    if (parseInt(dateElement.textContent) === todayDate) {
+                        dateElement.classList.add('selected');
+                        const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+                        selectedDateDisplay.textContent = 'Date sélectionnée : ' + todayDate + ' ' + monthNames[todayMonth] + ' ' + todayYear;
+                        // Mettre à jour le champ de date du formulaire
+                        const selectedDate = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
+                        document.getElementById('Fecha').value = selectedDate;
                     }
                 });
-            });
+            }
         }
-
 
         window.onload = function() {
             generateCalendar(currentMonth, currentYear);
             selectToday();
         };
+
+        function changeMonth(direction) {
+            currentMonth += direction;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentMonth, currentYear);
+        }
 
         function saveDate() {
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
@@ -449,74 +354,8 @@
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            loadTableData();
-            generateCalendar(currentMonth, currentYear);
-            selectToday();
-
-        document.getElementById('addEventButton').addEventListener('click', async function() {
-            const newEvent = {
-                Telefono: document.getElementById('Telefono').value,
-                Nombre: document.getElementById('Nombre').value,
-                Fecha: document.getElementById('Fecha').value,
-                Hora: document.getElementById('Hora').value,
-                Min: document.getElementById('Min').value,
-                Lugar: document.getElementById('Lugar').value,
-                Precio: document.getElementById('Precio').value,
-                Trabajo: document.getElementById('Trabajo').value,
-                user_id: uuid.v4() // Générer un UUID valide
-            };
-
-            console.log('Nouvel événement à ajouter :', newEvent);
-
-            const { data, error } = await supabase
-                .from('event_quot1')
-                .insert([newEvent]);
-
-            if (error) {
-                console.error('Erreur lors de l\'insertion des données :', error);
-            } else {
-                console.log('Données insérées avec succès :', data);
-                document.getElementById('Telefono').value = '';
-                document.getElementById('Nombre').value = '';
-                document.getElementById('Fecha').value = '';
-                document.getElementById('Hora').value = '';
-                document.getElementById('Min').value = '';
-                document.getElementById('Lugar').value = '';
-                document.getElementById('Precio').value = '';
-                document.getElementById('Trabajo').value = '';
-                loadTableData(); // Recharger les données pour afficher le nouvel événement
-            }
-        });
-
-        document.getElementById('Telefono').addEventListener('input', async function() {
-            const telefono = this.value;
-
-            if (telefono) {
-                const { data, error } = await supabase
-                    .from('tableData1')
-                    .select('Nombre, Lugar')
-                    .eq('Telefono', telefono);
-
-                if (error) {
-                    console.error('Erreur lors de la récupération des données :', error);
-                } else if (data.length > 0) {
-                    const { Nombre, Lugar } = data[0];
-                    document.getElementById('Nombre').value = Nombre;
-                    document.getElementById('Lugar').value = Lugar;
-                } else {
-                    // Si aucun résultat n'est trouvé, vider les champs
-                    document.getElementById('Nombre').value = '';
-                    document.getElementById('Lugar').value = '';
-                }
-            } else {
-                // Si le champ de téléphone est vide, vider les champs
-                document.getElementById('Nombre').value = '';
-                document.getElementById('Lugar').value = '';
-            }
-        });
-    });
-
+        // Générer le calendrier pour le mois et l'année actuels
+        generateCalendar(currentMonth, currentYear);
     </script>
 </body>
 </html>

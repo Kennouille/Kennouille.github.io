@@ -4,6 +4,7 @@
 body {
     font-family: Arial, sans-serif; /* Police de caractères */
     font-weight: bold; /* Met le texte en gras */
+    font-size: 1.5em; /* Ajustez la taille selon vos besoins */
 }
 
 /* Style du titre principal */
@@ -85,8 +86,9 @@ h1 {
 }
 
 /* Style pour ajouter un espace entre Hora et Min */
-#Hora {
-    margin-right: 200px; /* Ajuste la valeur selon tes besoins */
+.hora-min-container {
+    display: flex;
+    gap: 10px; /* Ajoute un espace entre les éléments */
 }
 
 /* Conteneur du calendrier */

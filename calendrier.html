@@ -153,9 +153,10 @@
             generateCalendar(currentMonth, currentYear);
         }
 
-        // Générer le calendrier pour le mois et l'année actuels
+        // Initialisation du calendrier
+        console.log("Initializing calendar with month:", currentMonth, "year:", currentYear);
         generateCalendar(currentMonth, currentYear);
-        
+
         async function fetchEventsByDate(date) {
             try {
                 const { data, error } = await supabase

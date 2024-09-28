@@ -153,6 +153,9 @@
             generateCalendar(currentMonth, currentYear);
         }
 
+        // Générer le calendrier pour le mois et l'année actuels
+        generateCalendar(currentMonth, currentYear);
+        
         async function fetchEventsByDate(date) {
             try {
                 const { data, error } = await supabase
@@ -447,9 +450,6 @@
 
             alert('Agenda sauvegardé pour la date : ' + selectedDate);
         }
-
-        // Générer le calendrier pour le mois et l'année actuels
-        generateCalendar(currentMonth, currentYear);
 
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();

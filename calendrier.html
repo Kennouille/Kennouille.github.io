@@ -89,7 +89,7 @@
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
         var event = {}; // Objet pour stocker les événements par date
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
 
@@ -230,6 +230,7 @@
                     console.error('Error fetching data:', error);
                     return;
                 }
+
                 console.log('Data fetched from Supabase:', data);
 
                 const tbody = document.querySelector('#journalierTable tbody');
@@ -237,6 +238,7 @@
                     tbody.innerHTML = ''; // Effacer les anciennes lignes
                     data.forEach(rowData => {
                         const row = tbody.insertRow();
+                        row.dataset.userId = rowData.user_id; // Ajouter l'attribut data-user-id
                         Object.entries(rowData).forEach(([key, value]) => {
                             const cell = row.insertCell();
                             cell.textContent = value;
@@ -246,6 +248,12 @@
                                 cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
                             }
                         });
+                        // Ajouter un bouton "Appliquer" à la fin de chaque ligne
+                        const applyCell = row.insertCell();
+                        const applyButton = document.createElement('button');
+                        applyButton.textContent = 'Appliquer';
+                        applyButton.classList.add('apply-button');
+                        applyCell.appendChild(applyButton);
                     });
                 } else {
                     console.error('Element with ID "journalierTable" not found.');

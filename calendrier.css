@@ -88,12 +88,6 @@ h1 {
     font-size: 1.5em; /* Ajustez la taille selon vos besoins */
 }
 
-/* Style pour ajouter un espace entre Hora et Min */
-.hora-min-container {
-    display: flex;
-    gap: 10px; /* Ajoute un espace entre les éléments */
-}
-
 /* Conteneur du calendrier */
 .calendar-container {
     width: 100%; /* Prend toute la largeur disponible */

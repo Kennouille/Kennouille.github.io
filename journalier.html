@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Journalier</title>
+    <title>Agenda total</title>
     <link rel="stylesheet" href="styles1.css">
     <link rel="stylesheet" href="journalier.css">
     <script type="module" src="supabaseClientAgendaJour.js"></script>
 </head>
 <body>
     <div class="agenda">
-        <h1>Agenda Journalier</h1>
+        <h1>Agenda Total</h1>
         <table id="journalierTable">
             <thead>
                 <tr>
@@ -97,7 +97,7 @@
                     // Ajouter le bouton "Appliquer"
                     const applyCell = row.insertCell();
                     const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Appliquer';
+                    applyButton.textContent = 'Aplicar';
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
                 });

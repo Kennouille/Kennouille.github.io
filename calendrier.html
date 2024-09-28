@@ -144,61 +144,6 @@
             });
         });
 
-        async function fetchEventsByDate(date) {
-            try {
-                const { data, error } = await supabase
-                    .from('event_quot1')
-                    .select('*')
-                    .eq('Fecha', date);
-
-                if (error) {
-                    console.error('Erreur lors de la récupération des événements :', error);
-                    return [];
-                }
-
-                return data;
-            } catch (error) {
-                console.error('Erreur lors de la récupération des événements :', error);
-                return [];
-            }
-        }
-
-        // Fonction pour charger les données de la table
-        async function loadTableData() {
-            try {
-                const { data, error } = await supabase
-                    .from('event_quot1')
-                    .select('*');
-
-                if (error) {
-                    console.error('Error fetching data:', error);
-                    return;
-                }
-                console.log('Data fetched from Supabase:', data);
-
-                const tbody = document.querySelector('#journalierTable tbody');
-                if (tbody) {
-                    tbody.innerHTML = ''; // Effacer les anciennes lignes
-                    data.forEach(rowData => {
-                        const row = tbody.insertRow();
-                        Object.entries(rowData).forEach(([key, value]) => {
-                            const cell = row.insertCell();
-                            cell.textContent = value;
-                            cell.contentEditable = "true";
-                            cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
-                            if (key === 'Telefono') {
-                                cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
-                            }
-                        });
-                    });
-                } else {
-                    console.error('Element with ID "journalierTable" not found.');
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-        
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
         var event = {}; // Objet pour stocker les événements par date
@@ -253,6 +198,61 @@
             }
 
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
+        }
+        
+        async function fetchEventsByDate(date) {
+            try {
+                const { data, error } = await supabase
+                    .from('event_quot1')
+                    .select('*')
+                    .eq('Fecha', date);
+
+                if (error) {
+                    console.error('Erreur lors de la récupération des événements :', error);
+                    return [];
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Erreur lors de la récupération des événements :', error);
+                return [];
+            }
+        }
+
+        // Fonction pour charger les données de la table
+        async function loadTableData() {
+            try {
+                const { data, error } = await supabase
+                    .from('event_quot1')
+                    .select('*');
+
+                if (error) {
+                    console.error('Error fetching data:', error);
+                    return;
+                }
+                console.log('Data fetched from Supabase:', data);
+
+                const tbody = document.querySelector('#journalierTable tbody');
+                if (tbody) {
+                    tbody.innerHTML = ''; // Effacer les anciennes lignes
+                    data.forEach(rowData => {
+                        const row = tbody.insertRow();
+                        Object.entries(rowData).forEach(([key, value]) => {
+                            const cell = row.insertCell();
+                            cell.textContent = value;
+                            cell.contentEditable = "true";
+                            cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
+                            if (key === 'Telefono') {
+                                cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
+                            }
+                        });
+                    });
+                } else {
+                    console.error('Element with ID "journalierTable" not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         }
 
         async function handleDateClick(event) {

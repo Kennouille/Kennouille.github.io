@@ -84,6 +84,11 @@ h1 {
     font-weight: bold; /* Met le texte en gras */
 }
 
+/* Style pour ajouter un espace entre Hora et Min */
+#Hora {
+    margin-right: 10px; /* Ajuste la valeur selon tes besoins */
+}
+
 /* Conteneur du calendrier */
 .calendar-container {
     width: 100%; /* Prend toute la largeur disponible */
@@ -159,8 +164,31 @@ h1 {
 
 /* Conteneur du formulaire aligné à droite */
 .form-container {
-    width: 100%; /* Prend toute la largeur disponible */
-    max-width: 300px; /* Limite la largeur maximale */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px; /* Ajuste la valeur selon tes besoins */
+}
+
+.time-container {
+    display: flex;
+    align-items: center;
+}
+
+#selectedDateDisplay, .form-container h2, .editable-container {
+    text-align: center;
+    width: 100%;
 }
 
 /* Style des champs de formulaire */

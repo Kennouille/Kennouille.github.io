@@ -34,37 +34,6 @@
         <!-- Partie droite -->
         <div class="right-container">
             <p id="selectedDateDisplay">Date sélectionnée : </p>
-            <div class="form-container">
-                <h2>Nuevo evento</h2>
-                <div class="form-row">
-                    <div class="form-column">
-                        <input type="text" id="Telefono" placeholder="Telefono">
-                        <input type="text" id="Nombre" placeholder="Nombre">
-                        <input type="date" id="Fecha">
-                        <div class="time-container"></div>
-                            <select id="Hora">
-                                <option value="9am">9am</option>
-                                <option value="10am">10am</option>
-                                <option value="11am">11am</option>
-                                <option value="12pm">12pm</option>
-                                <option value="1pm">1pm</option>
-                                <option value="2pm">2pm</option>
-                                <option value="3pm">3pm</option>
-                                <option value="4pm">4pm</option>
-                                <option value="5pm">5pm</option>
-                                <option value="otro">Otro</option>
-                            </select>
-                            <input type="number" id="Min" placeholder="Min">
-                        </div>
-                    </div>
-                    <div class="form-column">    
-                        <input type="text" id="Lugar" placeholder="Lugar">
-                        <input type="number" id="Precio" placeholder="Precio">
-                        <input type="text" id="Trabajo" placeholder="Trabajo">
-                        <button id="addEventButton" class="button">Ajouter un événement</button>
-                    </div>
-                </div>                
-            </div>
             <!-- Tableau modifiable -->
             <div class="editable-container">
                 <table id="editable-table">
@@ -95,6 +64,33 @@
                     </tbody>
                 </table>
             </div>
+            <h2>Nuevo evento</h2>
+            <div class="left-container1"></div>
+                <div class="form-container">
+                    <input type="text" id="Telefono" placeholder="Telefono">
+                    <input type="text" id="Nombre" placeholder="Nombre">
+                    <input type="date" id="Fecha">
+                    <select id="Hora">
+                        <option value="9am">9am</option>
+                        <option value="10am">10am</option>
+                        <option value="11am">11am</option>
+                        <option value="12pm">12pm</option>
+                        <option value="1pm">1pm</option>
+                        <option value="2pm">2pm</option>
+                        <option value="3pm">3pm</option>
+                        <option value="4pm">4pm</option>
+                        <option value="5pm">5pm</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                    <input type="number" id="Min" placeholder="Min">
+                </div>
+                <div class="right-container1">
+                    <input type="text" id="Lugar" placeholder="Lugar">
+                    <input type="number" id="Precio" placeholder="Precio">
+                    <input type="text" id="Trabajo" placeholder="Trabajo">
+                    <button id="addEventButton" class="button">Ajouter un événement</button>
+                </div>   
+            </div> 
         </div>
     </div>
     <script type="module">

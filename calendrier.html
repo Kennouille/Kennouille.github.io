@@ -85,11 +85,73 @@
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
-        var currentMonth = new Date().getMonth();
-        var currentYear = new Date().getFullYear();
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
         var event = {}; // Objet pour stocker les événements par date
 
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+
+        function generateCalendar(month, year) {
+            const calendarTable = document.getElementById('calendarTable');
+            const monthYearDisplay = document.getElementById('monthYear');
+            calendarTable.innerHTML = `
+                <tr>
+                    <th>Lu</th>
+                    <th>Ma</th>
+                    <th>Mie</th>
+                    <th>Ju</th>
+                    <th>Vie</th>
+                    <th>Sa</th>
+                    <th>Do</th>
+                </tr>
+            `;
+
+            const firstDay = (new Date(year, month).getDay() + 6) % 7; // Ajustement pour commencer par lundi
+            const daysInMonth = 32 - new Date(year, month, 32).getDate();
+            let date = 1;
+
+            for (let i = 0; i < 6; i++) {
+                let row = document.createElement('tr');
+
+                for (let j = 0; j < 7; j++) {
+                    if (i === 0 && j < firstDay) {
+                        let cell = document.createElement('td');
+                        let cellText = document.createTextNode('');
+                        cell.appendChild(cellText);
+                        row.appendChild(cell);
+                    } else if (date > daysInMonth) {
+                        break;
+                    } else {
+                        let cell = document.createElement('td');
+                        let cellText = document.createTextNode(date);
+                        cell.classList.add('clickable');
+                        cell.addEventListener('click', handleDateClick);
+                        if (date === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
+                            cell.classList.add('today');
+                        }
+                        cell.appendChild(cellText);
+                        row.appendChild(cell);
+                        date++;
+                    }
+                }
+
+                calendarTable.appendChild(row);
+            }
+
+            monthYearDisplay.textContent = monthNames[month] + ' ' + year;
+        }
+
+        function changeMonth(direction) {
+            currentMonth += direction;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentMonth, currentYear);
+        }
 
         async function fetchEventsByDate(date) {
             try {
@@ -272,56 +334,6 @@
             return hourOrder[hour] || 11; // Retourne 11 pour les heures non définies
         }
 
-        function generateCalendar(month, year) {
-            const calendarTable = document.getElementById('calendarTable');
-            const monthYearDisplay = document.getElementById('monthYear');
-            calendarTable.innerHTML = `
-                <tr>
-                    <th>Lu</th>
-                    <th>Ma</th>
-                    <th>Mie</th>
-                    <th>Ju</th>
-                    <th>Vie</th>
-                    <th>Sa</th>
-                    <th>Do</th>
-                </tr>
-            `;
-
-            const firstDay = (new Date(year, month).getDay() + 6) % 7; // Ajustement pour commencer par lundi
-            const daysInMonth = 32 - new Date(year, month, 32).getDate();
-            let date = 1;
-
-            for (let i = 0; i < 6; i++) {
-                let row = document.createElement('tr');
-
-                for (let j = 0; j < 7; j++) {
-                    if (i === 0 && j < firstDay) {
-                        let cell = document.createElement('td');
-                        let cellText = document.createTextNode('');
-                        cell.appendChild(cellText);
-                        row.appendChild(cell);
-                    } else if (date > daysInMonth) {
-                        break;
-                    } else {
-                        let cell = document.createElement('td');
-                        let cellText = document.createTextNode(date);
-                        cell.classList.add('clickable');
-                        cell.addEventListener('click', handleDateClick);
-                        if (date === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
-                            cell.classList.add('today');
-                        }
-                        cell.appendChild(cellText);
-                        row.appendChild(cell);
-                        date++;
-                    }
-                }
-
-                calendarTable.appendChild(row);
-            }
-
-            monthYearDisplay.textContent = monthNames[month] + ' ' + year;
-        }
-
         function selectToday() {
             const today = new Date();
             const todayDate = today.getDate();
@@ -407,18 +419,6 @@
             generateCalendar(currentMonth, currentYear);
             selectToday();
         };
-
-        function changeMonth(direction) {
-            currentMonth += direction;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            } else if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
-            generateCalendar(currentMonth, currentYear);
-        }
 
         function saveDate() {
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');

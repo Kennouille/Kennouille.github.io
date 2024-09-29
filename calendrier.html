@@ -128,7 +128,7 @@
                     const { data, error } = await supabase
                         .from('tableData1')
                         .select('Nombre, Lugar')
-                        .eq('Telefono', telefono);
+                        .eq('user_id', user_id);
 
                     if (error) {
                         console.error('Erreur lors de la récupération des données :', error);

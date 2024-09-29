@@ -42,6 +42,7 @@
                         <th>Lugar</th>
                         <th>Precio</th>
                         <th>Trabajo</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -222,8 +223,11 @@
 
                 const tbody = document.querySelector('#editable-table tbody');
                 tbody.innerHTML = ''; // Effacer les anciennes lignes
+
                 data.forEach(event => {
                     const row = tbody.insertRow();
+                    row.dataset.userId = event.user_id; // Ajouter l'attribut data-user-id
+
                     Object.entries(event).forEach(([key, value]) => {
                         const cell = row.insertCell();
                         cell.textContent = value;
@@ -270,6 +274,7 @@
                 return [];
             }
         }
+
 
 
 

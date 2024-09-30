@@ -91,6 +91,8 @@
         var currentYear = new Date().getFullYear();
         var event = {}; // Objet pour stocker les événements par date
 
+        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
             generateCalendar(currentMonth, currentYear);
@@ -154,7 +156,6 @@
             });
         });
 
-        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
         
         function generateCalendar(month, year) {
             const calendarTable = document.getElementById('calendarTable');
@@ -300,8 +301,9 @@
 
                 console.log('Data fetched from Supabase:', data);
 
-                const tbody = document.querySelector('#journalierTable tbody');
+                const tableBody = document.querySelector('#editable-table tbody');
                 tbody.innerHTML = ''; // Effacer les anciennes lignes
+                
                 data.forEach(rowData => {
                     const row = tbody.insertRow();
                     row.dataset.userId = rowData.user_id; // Ajouter l'attribut data-user-id

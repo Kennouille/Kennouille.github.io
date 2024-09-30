@@ -137,9 +137,12 @@
                         let cellText = document.createTextNode(date);
                         cell.classList.add('clickable');
                         cell.addEventListener('click', handleDateClick);
-                        cell.appendChild(cellText);
-                        row.appendChild(cell);
-                        date++;
+                        if (date === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
+                    cell.classList.add('today');
+                    }
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                    date++;
                     }
                 }
 

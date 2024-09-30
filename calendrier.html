@@ -14,7 +14,7 @@
             <button class="button" onclick="changeMonth(-1)">Precedente</button>
             <span id="monthYear"></span>
             <button class="button" onclick="changeMonth(1)">Siguiente</button>
-            <p id="selectedDateDisplay"></p>
+            <p id="selectedDateDisplay">Date sélectionnée : ""</p>
         </div>
         <div class="calendar-container">
             <table id="calendarTable">
@@ -304,28 +304,32 @@
                 const tableBody = document.querySelector('#editable-table tbody');
                 tbody.innerHTML = ''; // Effacer les anciennes lignes
                 
-                data.forEach(rowData => {
-                    const row = tbody.insertRow();
-                    row.dataset.userId = rowData.user_id; // Ajouter l'attribut data-user-id
-                    Object.entries(rowData).forEach(([key, value]) => {
-                        const cell = row.insertCell();
-                        cell.textContent = value;
-                        cell.contentEditable = "true";
-                        cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
-                        if (key === 'Telefono') {
-                            cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
-                        }
-                    });
-
-                    // Ajouter le bouton "Appliquer"
-                    const applyCell = row.insertCell();
-                    const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Appliquer';
-                    applyButton.classList.add('apply-button');
-                    applyCell.appendChild(applyButton);
+                data.forEach(event => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td contenteditable="true">${event.Telefono}</td>
+                        <td contenteditable="true">${event.Nombre}</td>
+                        <td contenteditable="true">${event.Fecha}</td>
+                        <td contenteditable="true">${event.Hora}</td>
+                        <td contenteditable="true">${event.Min}</td>
+                        <td contenteditable="true">${event.Lugar}</td>
+                        <td contenteditable="true">${event.Precio}</td>
+                        <td contenteditable="true">${event.Trabajo}</td>
+                    `;
+                    tableBody.appendChild(row);
                 });
+            } catch (error) {
+                console.error('Erreur lors du chargement des données :', error);
+            }
+        }
 
-                addEmptyRow();
+                // Ajouter le bouton "Appliquer"
+                const applyCell = row.insertCell();
+                const applyButton = document.createElement('button');
+                applyButton.textContent = 'Appliquer';
+                applyButton.classList.add('apply-button');
+                applyCell.appendChild(applyButton);
+        
 
                 // Ajouter des écouteurs d'événements aux boutons "Appliquer"
                 document.querySelectorAll('.apply-button').forEach(button => {
@@ -352,10 +356,6 @@
                         }
                     });
                 });
-            } catch (err) {
-                console.error('Error loading Supabase client:', err);
-            }
-        }
 
         // Fonction pour gérer le clic sur une date
         async function handleDateClick(event) {
@@ -397,18 +397,44 @@
             const todayMonth = today.getMonth();
             const todayYear = today.getFullYear();
 
-            if (todayMonth === currentMonth && todayYear === currentYear) {
-                document.querySelectorAll('.clickable').forEach(dateElement => {
-                    if (parseInt(dateElement.textContent) === todayDate) {
-                        dateElement.classList.add('selected');
-                        const selectedDateDisplay = document.getElementById('selectedDateDisplay');
-                        selectedDateDisplay.textContent = 'Date sélectionnée : ' + todayDate + ' ' + monthNames[todayMonth] + ' ' + todayYear;
-                        // Mettre à jour le champ de date du formulaire
-                        const selectedDate = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
-                        document.getElementById('Fecha').value = selectedDate;
+            const selectedDate = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
+            document.getElementById('Fecha').value = selectedDate;
+
+            // Mettre à jour l'affichage de la date sélectionnée
+            const selectedDateDisplay = document.getElementById('selectedDateDisplay');
+            selectedDateDisplay.textContent = `Date sélectionnée : ${new Date(selectedDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+
+            // Récupérer et afficher les événements du jour
+            fetchEventsByDate(selectedDate).then(events => {
+                // Trier les événements par heure
+                events.sort((a, b) => getHourOrder(a.Hora) - getHourOrder(b.Hora));
+
+                // Afficher les événements dans le tableau editable-table
+                const tableBody = document.querySelector('#editable-table tbody');
+                tableBody.innerHTML = ''; // Effacer les anciennes lignes
+
+                events.forEach(event => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td contenteditable="true">${event.Telefono}</td>
+                        <td contenteditable="true">${event.Nombre}</td>
+                        <td contenteditable="true">${event.Fecha}</td>
+                        <td contenteditable="true">${event.Hora}</td>
+                        <td contenteditable="true">${event.Min}</td>
+                        <td contenteditable="true">${event.Lugar}</td>
+                        <td contenteditable="true">${event.Precio}</td>
+                        <td contenteditable="true">${event.Trabajo}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                // Mettre en surbrillance la date du jour dans le calendrier
+                document.querySelectorAll('.clickable').forEach(cell => {
+                    if (parseInt(cell.textContent) === todayDate && todayMonth === currentMonth && todayYear === currentYear) {
+                        cell.classList.add('selected');
                     }
                 });
-            }
+            });
         }
 
 

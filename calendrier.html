@@ -102,6 +102,11 @@
             generateCalendar(currentMonth, currentYear);
         }
 
+        window.onload = function() {
+            generateCalendar(currentMonth, currentYear);
+            selectToday();
+        }
+
         function generateCalendar(month, year) {
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');
@@ -461,10 +466,7 @@
 
 
 
-        window.onload = function() {
-            generateCalendar(currentMonth, currentYear);
-            selectToday();
-        }
+
 
         function saveDate() {
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');

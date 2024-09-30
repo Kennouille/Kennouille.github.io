@@ -86,6 +86,9 @@
     <script type="module">
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
+        import { supabase } from './supabaseClientAgendaJour.js';
+        var event = {}; // Objet pour stocker les événements par date
+        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
         function changeMonth(direction) {
             currentMonth += direction;
@@ -100,14 +103,8 @@
         }
 
         function generateCalendar(month, year) {
-            if (isCalendarGenerated) return;
-            isCalendarGenerated = true;
-            console.log('generateCalendar called');
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');
-            const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-            monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
-
             calendarTable.innerHTML = `
                 <tr>
                     <th>Lu</th>
@@ -120,8 +117,7 @@
                 </tr>
             `;
 
-
-            const firstDay = (new Date(year, month).getDay() + 6) % 7; // Ajustement pour commencer par lundi
+            const firstDay = new Date(year, month).getDay();
             const daysInMonth = 32 - new Date(year, month, 32).getDate();
             let date = 1;
 
@@ -141,9 +137,6 @@
                         let cellText = document.createTextNode(date);
                         cell.classList.add('clickable');
                         cell.addEventListener('click', handleDateClick);
-                        if (date === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
-                            cell.classList.add('today');
-                        }
                         cell.appendChild(cellText);
                         row.appendChild(cell);
                         date++;
@@ -156,10 +149,7 @@
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
 
-        import { supabase } from './supabaseClientAgendaJour.js';
 
-
-        var event = {}; // Objet pour stocker les événements par date
 
 
         document.addEventListener('DOMContentLoaded', async function() {

@@ -102,7 +102,6 @@
                     applyCell.appendChild(applyButton);
                 });
 
-                addEmptyRow();
 
                 // Ajouter des écouteurs d'événements aux boutons "Appliquer"
                 document.querySelectorAll('.apply-button').forEach(button => {
@@ -134,15 +133,6 @@
             }
         }
 
-        // Fonction pour ajouter une ligne vide
-        function addEmptyRow() {
-            const tbody = document.querySelector('#journalierTable tbody');
-            const row = tbody.insertRow();
-            for (let i = 0; i < 8; i++) { // 8 colonnes dans votre tableau
-                const cell = row.insertCell();
-                cell.contentEditable = "true";
-            }
-        }
 
     </script>
 </body>

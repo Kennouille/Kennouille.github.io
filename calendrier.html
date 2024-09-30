@@ -101,11 +101,6 @@
                 currentMonth = 0;
                 currentYear++;
             }
-            document.getElementById('PrecedenteButton').addEventListener('click', function() {
-            changeMonth(-1);
-            document.getElementById('SiguienteButton').addEventListener('click', function() {
-            changeMonth(+1);
-
             generateCalendar(currentMonth, currentYear);
         }
 

@@ -144,10 +144,6 @@
             document.getElementById('Telefono').addEventListener('input', async function() {
                 const telefono = this.value;
 
-                // Ajoutez des logs pour vérifier les valeurs
-                console.log('Telefono input:', telefono);
-                console.log('user_id:', user_id);
-
                 if (telefono) {
                     const { data, error } = await supabase
                         .from('tableData1')

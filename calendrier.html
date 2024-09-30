@@ -167,6 +167,11 @@
             // Appeler fetchEventsByDate directement pour récupérer les événements d'aujourd'hui
             await fetchEventsByDate(today);
 
+            document.getElementById('precedenteButton').addEventListener('click', function() {
+            changeMonth(-1);
+            document.getElementById('siguienteButton').addEventListener('click', function() {
+            changeMonth(+1);
+
             generateCalendar(currentMonth, currentYear);
             selectToday();
         });

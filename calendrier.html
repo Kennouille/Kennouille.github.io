@@ -93,31 +93,36 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
+            generateCalendar(currentMonth, currentYear);
+            selectToday();
 
             document.getElementById('addEventButton').addEventListener('click', async function() {
-                const newEvent = {
-                    Telefono: document.getElementById('Telefono').value,
-                    Nombre: document.getElementById('Nombre').value,
-                    Fecha: document.getElementById('Fecha').value,
-                    Hora: document.getElementById('Hora').value,
-                    Min: document.getElementById('Min').value,
-                    Lugar: document.getElementById('Lugar').value,
-                    Precio: document.getElementById('Precio').value,
-                    Trabajo: document.getElementById('Trabajo').value,
-                    user_id: uuid.v4() // Générer un UUID valide
-                };
+                const telefono = document.getElementById('Telefono').value;
+                const nombre = document.getElementById('Nombre').value;
+                const fecha = document.getElementById('Fecha').value;
+                const hora = document.getElementById('Hora').value;
+                const min = document.getElementById('Min').value;
+                const lugar = document.getElementById('Lugar').value;
+                const precio = document.getElementById('Precio').value;
+                const trabajo = document.getElementById('Trabajo').value;
 
-                console.log('Nouvel événement à ajouter :', newEvent);
-
-                const { data, error } = await supabase
+                const { error } = await supabase
                     .from('event_quot1')
-                    .insert([newEvent]);
+                    .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo }]);
 
                 if (error) {
-                    console.error('Erreur lors de l\'insertion des données :', error);
+                    console.error('Erreur lors de l\'ajout de l\'événement :', error);
                 } else {
-                    console.log('Données insérées avec succès :', data);
-                    loadTableData(); // Recharger les données pour afficher le nouvel événement
+                    console.log('Événement ajouté avec succès');
+                    // Effacer les champs du formulaire
+                    document.getElementById('Telefono').value = '';
+                    document.getElementById('Nombre').value = '';
+                    document.getElementById('Fecha').value = '';
+                    document.getElementById('Hora').value = '';
+                    document.getElementById('Min').value = '';
+                    document.getElementById('Lugar').value = '';
+                    document.getElementById('Precio').value = '';
+                    document.getElementById('Trabajo').value = '';
                 }
             });
 
@@ -200,6 +205,8 @@
 
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
+
+
 
         async function fetchEventsByDate(date) {
             try {
@@ -348,6 +355,7 @@
             }
         }
 
+        // Fonction pour gérer le clic sur une date
         async function handleDateClick(event) {
             const clickedDate = event.target.textContent;
             const selectedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(clickedDate).padStart(2, '0')}`;
@@ -379,6 +387,7 @@
                 tableBody.appendChild(row);
             });
         }
+
 
         function selectToday() {
             const today = new Date();
@@ -448,6 +457,7 @@
 
         // Générer le calendrier pour le mois et l'année actuels
         generateCalendar(currentMonth, currentYear);
+        selectToday();
     </script>
 </body>
 </html>

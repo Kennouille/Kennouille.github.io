@@ -145,6 +145,8 @@
                 }
             })      
             });
+            let isCalendarGenerated = false;
+            let isTodaySelected = false;
         
             document.getElementById('Telefono').addEventListener('input', async function() {
                 const telefono = this.value;
@@ -176,6 +178,8 @@
 
 
         function generateCalendar(month, year) {
+            if (isCalendarGenerated) return;
+            isCalendarGenerated = true;
             console.log('generateCalendar called');
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');
@@ -468,6 +472,8 @@
 
 
         function selectToday() {
+            if (isTodaySelected) return;
+            isTodaySelected = true;
             console.log('selectToday called');
             const today = new Date();
             const todayDate = today.getDate();

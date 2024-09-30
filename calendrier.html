@@ -91,13 +91,12 @@
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
         function changeMonth(direction) {
-            currentMonth += direction;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            } else if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
+            if (direction === 'next') {
+                currentMonth = (currentMonth === 11) ? 0 : currentMonth + 1;
+                currentYear = (currentMonth === 0) ? currentYear + 1 : currentYear;
+            } else if (direction === 'prev') {
+                currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+                currentYear = (currentMonth === 11) ? currentYear - 1 : currentYear;
             }
             generateCalendar(currentMonth, currentYear);
         }
@@ -105,7 +104,6 @@
         window.onload = function() {
             generateCalendar(currentMonth, currentYear);
             selectToday();
-            function changeMonth(direction);
         }
 
         function generateCalendar(month, year) {

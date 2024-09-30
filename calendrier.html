@@ -94,6 +94,7 @@
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded triggered');
             loadTableData();
             generateCalendar(currentMonth, currentYear);
             selectToday();
@@ -175,6 +176,7 @@
 
 
         function generateCalendar(month, year) {
+            console.log('generateCalendar called');
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');
             calendarTable.innerHTML = `
@@ -303,7 +305,8 @@
 
         // Fonction pour charger les données de la table
         async function loadTableData() {
-        try {
+            console.log('loadTableData called');
+            try {
             const { data, error } = await supabase
                 .from('event_quot1')
                 .select('*');
@@ -465,6 +468,7 @@
 
 
         function selectToday() {
+            console.log('selectToday called');
             const today = new Date();
             const todayDate = today.getDate();
             const todayMonth = today.getMonth();

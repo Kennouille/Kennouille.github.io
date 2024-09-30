@@ -327,9 +327,7 @@
                     cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
                 });
 
-                // Trier les événements par heure
-                events.sort((a, b) => getHourOrder(a.Hora) - getHourOrder(b.Hora));
-
+                
                 // Ajouter le bouton "Appliquer"
                 const applyCell = row.insertCell();
                 const applyButton = document.createElement('button');

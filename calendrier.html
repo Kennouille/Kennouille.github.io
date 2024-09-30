@@ -92,12 +92,17 @@
 
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOMContentLoaded triggered');
             const today = new Date().toISOString().split('T')[0]; // Obtenir la date d'aujourd'hui au format YYYY-MM-DD
-            fetchEventsByDate(today);
+
+            // Appeler fetchEventsByDate directement pour récupérer les événements d'aujourd'hui
+            await fetchEventsByDate(today);
+
             generateCalendar(currentMonth, currentYear);
             selectToday();
+        });
+
 
             document.getElementById('addEventButton').addEventListener('click', async function() {
             const telefono = document.getElementById('Telefono').value;
@@ -144,7 +149,7 @@
                     loadTableData();
                 }
             })      
-            });
+            
             let isCalendarGenerated = false;
             let isTodaySelected = false;
         
@@ -326,75 +331,41 @@
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
             selectedDateDisplay.textContent = `Date sélectionnée : ${new Date(selectedDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
 
-            // Récupérer les événements pour la date sélectionnée
-            const events = await fetchEventsByDate(selectedDate);
+            try {
+                // Récupérer les événements pour la date sélectionnée
+                const events = await fetchEventsByDate(selectedDate);
 
-            // Trier les événements par heure
-            events.sort((a, b) => getHourOrder(a.Hora) - getHourOrder(b.Hora));
+                // Afficher les événements dans le tableau editable-table
+                const tableBody = document.querySelector('#editable-table tbody');
+                tableBody.innerHTML = ''; // Effacer les anciennes lignes
 
-            // Afficher les événements dans le tableau editable-table
-            const tableBody = document.querySelector('#editable-table tbody');
-            tableBody.innerHTML = ''; // Effacer les anciennes lignes
-
-            events.forEach(event => {
-                const row = document.createElement('tr');
-                row.dataset.userId = event.user_id; // Assurez-vous que l'ID utilisateur est défini
-                row.innerHTML = `
-                    <td contenteditable="true" data-column="Telefono">${event.Telefono}</td>
-                    <td contenteditable="true" data-column="Nombre">${event.Nombre}</td>
-                    <td contenteditable="true" data-column="Fecha">${event.Fecha}</td>
-                    <td contenteditable="true" data-column="Hora">${event.Hora}</td>
-                    <td contenteditable="true" data-column="Min">${event.Min}</td>
-                    <td contenteditable="true" data-column="Lugar">${event.Lugar}</td>
-                    <td contenteditable="true" data-column="Precio">${event.Precio}</td>
-                    <td contenteditable="true" data-column="Trabajo">${event.Trabajo}</td>
-                `;
-                tableBody.appendChild(row);
-
-                    // Ajouter le bouton "Appliquer"
-                    const applyCell = row.insertCell();
-                    const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Appliquer';
-                    applyButton.classList.add('apply-button');
-                    applyCell.appendChild(applyButton);
+                events.forEach(event => {
+                    const row = document.createElement('tr');
+                    row.dataset.userId = event.user_id; // Assurez-vous que l'ID utilisateur est défini
+                    row.innerHTML = `
+                        <td contenteditable="true" data-column="Telefono">${event.Telefono}</td>
+                        <td contenteditable="true" data-column="Nombre">${event.Nombre}</td>
+                        <td contenteditable="true" data-column="Fecha">${event.Fecha}</td>
+                        <td contenteditable="true" data-column="Hora">${event.Hora}</td>
+                        <td contenteditable="true" data-column="Min">${event.Min}</td>
+                        <td contenteditable="true" data-column="Lugar">${event.Lugar}</td>
+                        <td contenteditable="true" data-column="Precio">${event.Precio}</td>
+                        <td contenteditable="true" data-column="Trabajo">${event.Trabajo}</td>
+                    `;
+                    tableBody.appendChild(row);
                 });
 
-                // Ajouter des écouteurs d'événements aux boutons "Appliquer"
-                document.querySelectorAll('.apply-button').forEach(button => {
-                    button.addEventListener('click', async function() {
-                        const row = button.closest('tr');
-                        const updatedEvent = {};
-                        Array.from(row.cells).forEach(cell => {
-                            if (cell.dataset.column) {
-                                updatedEvent[cell.dataset.column] = cell.textContent.trim();
-                            }
-                        });
-
-                    const userId = row.dataset.userId;
-
-                    const { error } = await supabase
-                        .from('event_quot1')
-                        .update(updatedEvent)
-                        .eq('user_id', userId);
-
-                    if (error) {
-                        console.error('Erreur lors de la mise à jour des données :', error);
-                    } else {
-                        console.log('Données mises à jour avec succès');
-                    }
+                // Retirer la classe 'selected' de toutes les dates
+                document.querySelectorAll('.clickable').forEach(cell => {
+                    cell.classList.remove('selected');
                 });
-            });
 
-            // Retirer la classe 'selected' de toutes les dates
-            document.querySelectorAll('.clickable').forEach(cell => {
-                cell.classList.remove('selected');
-            });
-
-            // Ajouter la classe 'selected' à la date cliquée
-            event.target.classList.add('selected');
+                // Ajouter la classe 'selected' à la date cliquée
+                event.target.classList.add('selected');
+            } catch (error) {
+                console.error('Erreur lors de la récupération des événements :', error);
+            }
         }
-
-
 
 
         function getHourOrder(hour) {
@@ -430,17 +401,15 @@
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
             selectedDateDisplay.textContent = `Date sélectionnée : ${new Date(selectedDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
 
-            // Récupérer et afficher les événements du jour
-            fetchEventsByDate(selectedDate).then(events => {
-
             // Mettre en surbrillance la date du jour dans le calendrier
             document.querySelectorAll('.clickable').forEach(cell => {
+                cell.classList.remove('selected');
                 if (parseInt(cell.textContent) === todayDate && todayMonth === currentMonth && todayYear === currentYear) {
                     cell.classList.add('selected');
                 }
             });
-        });
-    }
+        }
+
 
 
 

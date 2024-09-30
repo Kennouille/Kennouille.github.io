@@ -11,9 +11,9 @@
     <div class="main-container">
         <h1>Calendario y Agenda</h1>
         <div class="navigation-container">
-            <button class="button" onclick="changeMonth(-1)">precedente</button>
+            <button class="button" onclick="changeMonth(-1)">Precedente</button>
             <span id="monthYear"></span>
-            <button class="button" onclick="changeMonth(1)">siguiente</button>
+            <button class="button" onclick="changeMonth(1)">Siguiente</button>
         </div>
         <div class="calendar-container">
             <table id="calendarTable">
@@ -84,13 +84,8 @@
         </div>
     </div>
     <script type="module">
-        import { supabase } from './supabaseClientAgendaJour.js';
-
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
-        var event = {}; // Objet pour stocker les événements par date
-
-        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
         function changeMonth(direction) {
             currentMonth += direction;
@@ -110,6 +105,7 @@
             console.log('generateCalendar called');
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');
+            const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
             calendarTable.innerHTML = `
                 <tr>
                     <th>Lu</th>
@@ -159,6 +155,12 @@
 
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
+
+        import { supabase } from './supabaseClientAgendaJour.js';
+
+
+        var event = {}; // Objet pour stocker les événements par date
+
 
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOMContentLoaded triggered');

@@ -92,6 +92,18 @@
 
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
+        function changeMonth(direction) {
+            currentMonth += direction;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentMonth, currentYear);
+        }
+
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOMContentLoaded triggered');
             const today = new Date().toISOString().split('T')[0]; // Obtenir la date d'aujourd'hui au format YYYY-MM-DD
@@ -456,18 +468,6 @@
         window.onload = function() {
             generateCalendar(currentMonth, currentYear);
             selectToday();
-        };
-
-        function changeMonth(direction) {
-            currentMonth += direction;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            } else if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
-            generateCalendar(currentMonth, currentYear);
         }
 
         function saveDate() {

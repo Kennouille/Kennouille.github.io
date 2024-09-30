@@ -11,9 +11,9 @@
     <div class="main-container">
         <h1>Calendario y Agenda</h1>
         <div class="navigation-container">
-            <button id="prevMonth">Mois Précédent</button>
+            <button class="button" onclick="changeMonth(-1)">precedente</button>
             <span id="monthYear"></span>
-            <button id="nextMonth">Mois Suivant</button>
+            <button class="button" onclick="changeMonth(1)">siguiente</button>
         </div>
         <div class="calendar-container">
             <table id="calendarTable">
@@ -84,29 +84,29 @@
         </div>
     </div>
     <script type="module">
+        import { supabase } from './supabaseClientAgendaJour.js';
+
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
-        import { supabase } from './supabaseClientAgendaJour.js';
         var event = {}; // Objet pour stocker les événements par date
-        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
-        function changeMonth(direction) {
-            if (direction === 'next') {
-                currentMonth = (currentMonth === 11) ? 0 : currentMonth + 1;
-                currentYear = (currentMonth === 0) ? currentYear + 1 : currentYear;
-            } else if (direction === 'prev') {
-                currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
-                currentYear = (currentMonth === 11) ? currentYear - 1 : currentYear;
+        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+         function changeMonth(direction) {
+            currentMonth += direction;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
             }
             generateCalendar(currentMonth, currentYear);
         }
 
-        window.onload = function() {
-            generateCalendar(currentMonth, currentYear);
-            selectToday();
-        }
-
         function generateCalendar(month, year) {
+            if (isCalendarGenerated) return;
+            isCalendarGenerated = true;
+            console.log('generateCalendar called');
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');
             calendarTable.innerHTML = `
@@ -121,7 +121,10 @@
                 </tr>
             `;
 
-            const firstDay = new Date(year, month).getDay();
+            // Mettre à jour l'affichage du mois et de l'année
+            monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
+
+            const firstDay = (new Date(year, month).getDay() + 6) % 7; // Ajustement pour commencer par lundi
             const daysInMonth = 32 - new Date(year, month, 32).getDate();
             let date = 1;
 
@@ -142,11 +145,11 @@
                         cell.classList.add('clickable');
                         cell.addEventListener('click', handleDateClick);
                         if (date === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
-                    cell.classList.add('today');
-                    }
-                    cell.appendChild(cellText);
-                    row.appendChild(cell);
-                    date++;
+                            cell.classList.add('today');
+                        }
+                        cell.appendChild(cellText);
+                        row.appendChild(cell);
+                        date++;
                     }
                 }
 
@@ -155,9 +158,6 @@
 
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
-
-
-
 
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOMContentLoaded triggered');
@@ -169,8 +169,7 @@
             generateCalendar(currentMonth, currentYear);
             selectToday();
         });
-
-            document.getElementById('addEventButton').addEventListener('click', async function() {
+        document.getElementById('addEventButton').addEventListener('click', async function() {
             const telefono = document.getElementById('Telefono').value;
             const nombre = document.getElementById('Nombre').value;
             const fecha = document.getElementById('Fecha').value;
@@ -179,7 +178,7 @@
             const lugar = document.getElementById('Lugar').value;
             const precio = document.getElementById('Precio').value;
             const trabajo = document.getElementById('Trabajo').value;
-            
+
             // Générer un UUID pour user_id
             const user_id = crypto.randomUUID();
 
@@ -192,12 +191,12 @@
             console.log('Lugar:', lugar);
             console.log('Precio:', precio);
             console.log('Trabajo:', trabajo);
-            console.log('user_id:', user_id);   
+            console.log('user_id:', user_id);
 
                 const { error } = await supabase
                     .from('event_quot1')
                     .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, user_id: user_id }]);
-                
+
                 if (error) {
                     console.error('Erreur lors de l\'ajout de l\'événement :', error);
                 } else {
@@ -214,16 +213,13 @@
                     // Recharger les données du tableau
                     loadTableData();
                 }
-            })      
+            })
 
             let isCalendarGenerated = false;
             let isTodaySelected = false;
-        
+
             document.getElementById('Telefono').addEventListener('input', async function() {
                 const telefono = this.value;
-
-                // Générer le calendrier pour le mois et l'année actuels
-                generateCalendar(currentMonth, currentYear);
 
                 if (telefono) {
                     // Requête pour récupérer les données de tableData1 où Telefono correspond
@@ -249,7 +245,6 @@
                     document.getElementById('Lugar').value = '';
                 }
             });
-
         async function fetchEventsByDate(date) {
             console.log('fetchEventsByDate called for date:', date);
             try {
@@ -327,8 +322,6 @@
                 return [];
             }
         }
-
-
         // Fonction pour charger les données de la table
         async function loadTableData() {
             console.log('loadTableData called');
@@ -400,7 +393,7 @@
                             const { data, error } = await supabase
                                 .from('event_quot1')
                                 .update(updatedEvent)
-                                .eq('user_id', userId);
+        .eq('user_id', userId);
 
                             if (error) {
                                 console.error('Erreur lors de la mise à jour des données :', error);
@@ -415,10 +408,6 @@
                 console.error('Erreur lors de la récupération des événements :', error);
             }
         }
-
-
-            
-
 
         function getHourOrder(hour) {
             const hourOrder = {
@@ -462,10 +451,10 @@
             });
         }
 
-
-
-
-
+        window.onload = function() {
+            generateCalendar(currentMonth, currentYear);
+            selectToday();
+        }
 
         function saveDate() {
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');

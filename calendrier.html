@@ -139,12 +139,27 @@
                     // Recharger les données du tableau
                     loadTableData();
                 }
+            }      
             });
-
+        
             document.getElementById('Telefono').addEventListener('input', async function() {
                 const telefono = this.value;
 
                 if (telefono) {
+                    // Récupérer user_id depuis la table event_quot1
+                    const { data: userData, error: userError } = await supabase
+                        .from('event_quot1')
+                        .select('user_id')
+                        .single(); // Assumant que vous récupérez un seul user_id
+
+                    if (userError) {
+                        console.error("Erreur lors de la récupération de user_id:", userError);
+                        return;
+                    }
+
+                    let user_id = userData.user_id; // Assigner le user_id récupéré
+
+                    // Requête pour récupérer les données de tableData1
                     const { data, error } = await supabase
                         .from('tableData1')
                         .select('Nombre, Lugar')
@@ -166,8 +181,9 @@
                     document.getElementById('Nombre').value = '';
                     document.getElementById('Lugar').value = '';
                 }
-            });
         });
+
+
 
         
         function generateCalendar(month, year) {

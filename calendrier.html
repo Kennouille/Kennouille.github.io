@@ -86,12 +86,16 @@
     </div>
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
+        import { v4 as uuidv4 } from 'uuid';
 
         var currentMonth = new Date().getMonth();
         var currentYear = new Date().getFullYear();
         var event = {}; // Objet pour stocker les événements par date
 
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+
+        // Générer un UUID pour user_id
+        let user_id = uuidv4();
 
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
@@ -110,8 +114,8 @@
 
                 const { error } = await supabase
                     .from('event_quot1')
-                    .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo }]);
-
+                    .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, user_id: user_id }]);
+                
                 if (error) {
                     console.error('Erreur lors de l\'ajout de l\'événement :', error);
                 } else {

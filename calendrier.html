@@ -146,29 +146,11 @@
                 const telefono = this.value;
 
                 if (telefono) {
-                    // Récupérer user_id depuis la table event_quot1
-                    const { data: userData, error: userError } = await supabase
-                        .from('event_quot1')
-                        .select('user_id')
-                        .limit(1); // Limiter les résultats à une seule ligne
-
-                    if (userError) {
-                        console.error("Erreur lors de la récupération de user_id:", userError);
-                        return;
-                    }
-
-                    if (userData.length === 0) {
-                        console.error("Aucun user_id trouvé.");
-                        return;
-                    }
-
-                    let user_id = userData[0].user_id; // Assigner le user_id récupéré
-
-                    // Requête pour récupérer les données de tableData1
+                    // Requête pour récupérer les données de tableData1 où Telefono correspond
                     const { data, error } = await supabase
                         .from('tableData1')
                         .select('Nombre, Lugar')
-                        .eq('user_id', user_id);
+                        .eq('Telefono', telefono); // Comparer avec la colonne Telefono
 
                     if (error) {
                         console.error('Erreur lors de la récupération des données :', error);
@@ -188,10 +170,7 @@
                 }
             });
 
-
-
-
-        
+            
         function generateCalendar(month, year) {
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');

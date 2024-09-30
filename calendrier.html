@@ -209,6 +209,7 @@
 
 
 
+
         async function fetchEventsByDate(date) {
             try {
                 const { data, error } = await supabase
@@ -439,6 +440,22 @@
 
 
 
+        function getHourOrder(hour) {
+            const hourOrder = {
+                "9am": 1,
+                "10am": 2,
+                "11am": 3,
+                "12pm": 4,
+                "1pm": 5,
+                "2pm": 6,
+                "3pm": 7,
+                "4pm": 8,
+                "5pm": 9,
+                "otro": 10
+            };
+            return hourOrder[hour] || 11; // Retourne 11 pour les heures non définies
+        }
+
 
         function selectToday() {
             const today = new Date();
@@ -485,6 +502,7 @@
                 });
             });
         }
+
 
 
         window.onload = function() {

@@ -11,9 +11,9 @@
     <div class="main-container">
         <h1>Calendario y Agenda</h1>
         <div class="navigation-container">
-            <button class="button" onclick="changeMonth(-1)">Précédent</button>
+            <button class="button" onclick="changeMonth(-1)">precedente</button>
             <span id="monthYear"></span>
-            <button class="button" onclick="changeMonth(1)">Suivant</button>
+            <button class="button" onclick="changeMonth(1)">siguiente</button>
         </div>
         <div class="calendar-container">
             <table id="calendarTable">
@@ -101,6 +101,11 @@
                 currentMonth = 0;
                 currentYear++;
             }
+            document.getElementById('PrecedenteButton').addEventListener('click', function() {
+            changeMonth(-1);
+            document.getElementById('SiguienteButton').addEventListener('click', function() {
+            changeMonth(+1);
+
             generateCalendar(currentMonth, currentYear);
         }
 

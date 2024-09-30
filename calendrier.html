@@ -215,6 +215,9 @@
             document.getElementById('Telefono').addEventListener('input', async function() {
                 const telefono = this.value;
 
+                // Générer le calendrier pour le mois et l'année actuels
+                generateCalendar(currentMonth, currentYear);
+
                 if (telefono) {
                     // Requête pour récupérer les données de tableData1 où Telefono correspond
                     const { data, error } = await supabase

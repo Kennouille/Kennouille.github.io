@@ -107,6 +107,9 @@
             const lugar = document.getElementById('Lugar').value;
             const precio = document.getElementById('Precio').value;
             const trabajo = document.getElementById('Trabajo').value;
+            
+            // Générer un UUID pour user_id
+            const user_id = crypto.randomUUID();
 
             // Ajoutez des logs pour vérifier les valeurs
             console.log('Telefono:', telefono);
@@ -170,7 +173,7 @@
                 }
             });
 
-            
+
         function generateCalendar(month, year) {
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');

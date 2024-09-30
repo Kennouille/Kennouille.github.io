@@ -171,16 +171,6 @@
             selectToday();
         });
 
-        // Attacher les écouteurs d'événements après la définition des fonctions
-        document.getElementById('prevMonth').addEventListener('click', function() {
-            changeMonth(-1);
-        });
-
-        document.getElementById('nextMonth').addEventListener('click', function() {
-            changeMonth(1);
-        });
-
-
             document.getElementById('addEventButton').addEventListener('click', async function() {
             const telefono = document.getElementById('Telefono').value;
             const nombre = document.getElementById('Nombre').value;

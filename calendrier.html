@@ -117,12 +117,12 @@
             console.log('Lugar:', lugar);
             console.log('Precio:', precio);
             console.log('Trabajo:', trabajo);
-            console.log('user_id:', user_id);
+            console.log('user_id:', user_id);   
 
                 const { error } = await supabase
                     .from('event_quot1')
                     .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, user_id: user_id }]);
-
+                
                 if (error) {
                     console.error('Erreur lors de l\'ajout de l\'événement :', error);
                 } else {
@@ -143,6 +143,10 @@
 
             document.getElementById('Telefono').addEventListener('input', async function() {
                 const telefono = this.value;
+
+                // Ajoutez des logs pour vérifier les valeurs
+                console.log('Telefono input:', telefono);
+                console.log('user_id:', user_id);
 
                 if (telefono) {
                     const { data, error } = await supabase

@@ -234,6 +234,7 @@
 
 
         async function fetchEventsByDate(date) {
+            console.log('fetchEventsByDate called for date:', date);
             try {
                 const { data, error } = await supabase
                     .from('event_quot1')
@@ -267,7 +268,7 @@
                         cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
                     });
 
-                    // Ajouter le bouton "Appliquer"
+                    // Ajouter la cellule pour le bouton "Appliquer"
                     const applyCell = row.insertCell();
                     const applyButton = document.createElement('button');
                     applyButton.textContent = 'Appliquer';

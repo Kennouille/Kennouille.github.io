@@ -149,7 +149,7 @@
                     loadTableData();
                 }
             })      
-            
+
             let isCalendarGenerated = false;
             let isTodaySelected = false;
         
@@ -251,14 +251,6 @@
                     return [];
                 }
 
-                // Définir l'ordre de tri pour les heures
-                const horaOrder = ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', 'otro'];
-
-                // Trier les événements par la colonne Hora
-                data.sort((a, b) => {
-                    return horaOrder.indexOf(a.Hora) - horaOrder.indexOf(b.Hora);
-                });
-
                 const tbody = document.querySelector('#editable-table tbody');
                 tbody.innerHTML = ''; // Effacer les anciennes lignes
 
@@ -271,6 +263,13 @@
                         cell.textContent = value;
                         cell.contentEditable = "true";
                         cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
+                    });
+                    // Définir l'ordre de tri pour les heures
+                    const horaOrder = ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', 'otro'];
+
+                    // Trier les événements par la colonne Hora
+                    data.sort((a, b) => {
+                        return horaOrder.indexOf(a.Hora) - horaOrder.indexOf(b.Hora);
                     });
 
                     // Ajouter la cellule pour le bouton "Appliquer"

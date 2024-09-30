@@ -106,6 +106,8 @@
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');
             const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+            monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
+
             calendarTable.innerHTML = `
                 <tr>
                     <th>Lu</th>
@@ -118,8 +120,6 @@
                 </tr>
             `;
 
-            // Mettre à jour l'affichage du mois et de l'année
-            monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
 
             const firstDay = (new Date(year, month).getDay() + 6) % 7; // Ajustement pour commencer par lundi
             const daysInMonth = 32 - new Date(year, month, 32).getDate();

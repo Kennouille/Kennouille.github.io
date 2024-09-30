@@ -235,9 +235,6 @@
             monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
 
-
-
-
         async function fetchEventsByDate(date) {
             console.log('fetchEventsByDate called for date:', date);
             try {
@@ -251,6 +248,14 @@
                     return [];
                 }
 
+                // Définir l'ordre de tri pour les heures
+                const horaOrder = ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', 'otro'];
+
+                // Trier les événements par la colonne Hora
+                data.sort((a, b) => {
+                    return horaOrder.indexOf(a.Hora) - horaOrder.indexOf(b.Hora);
+                });
+
                 const tbody = document.querySelector('#editable-table tbody');
                 tbody.innerHTML = ''; // Effacer les anciennes lignes
 
@@ -258,18 +263,14 @@
                     const row = tbody.insertRow();
                     row.dataset.userId = event.user_id; // Ajouter l'attribut data-user-id
 
+                    // Ajouter les cellules pour les autres colonnes, sauf user_id
                     Object.entries(event).forEach(([key, value]) => {
-                        const cell = row.insertCell();
-                        cell.textContent = value;
-                        cell.contentEditable = "true";
-                        cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
-                    });
-                    // Définir l'ordre de tri pour les heures
-                    const horaOrder = ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', 'otro'];
-
-                    // Trier les événements par la colonne Hora
-                    data.sort((a, b) => {
-                        return horaOrder.indexOf(a.Hora) - horaOrder.indexOf(b.Hora);
+                        if (key !== 'user_id') {
+                            const cell = row.insertCell();
+                            cell.textContent = value;
+                            cell.contentEditable = "true";
+                            cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
+                        }
                     });
 
                     // Ajouter la cellule pour le bouton "Appliquer"
@@ -311,6 +312,7 @@
                 return [];
             }
         }
+
 
         // Fonction pour charger les données de la table
         async function loadTableData() {

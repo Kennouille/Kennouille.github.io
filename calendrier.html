@@ -99,14 +99,25 @@
             selectToday();
 
             document.getElementById('addEventButton').addEventListener('click', async function() {
-                const telefono = document.getElementById('Telefono').value;
-                const nombre = document.getElementById('Nombre').value;
-                const fecha = document.getElementById('Fecha').value;
-                const hora = document.getElementById('Hora').value;
-                const min = document.getElementById('Min').value;
-                const lugar = document.getElementById('Lugar').value;
-                const precio = document.getElementById('Precio').value;
-                const trabajo = document.getElementById('Trabajo').value;
+            const telefono = document.getElementById('Telefono').value;
+            const nombre = document.getElementById('Nombre').value;
+            const fecha = document.getElementById('Fecha').value;
+            const hora = document.getElementById('Hora').value;
+            const min = document.getElementById('Min').value;
+            const lugar = document.getElementById('Lugar').value;
+            const precio = document.getElementById('Precio').value;
+            const trabajo = document.getElementById('Trabajo').value;
+
+            // Ajoutez des logs pour vérifier les valeurs
+            console.log('Telefono:', telefono);
+            console.log('Nombre:', nombre);
+            console.log('Fecha:', fecha);
+            console.log('Hora:', hora);
+            console.log('Min:', min);
+            console.log('Lugar:', lugar);
+            console.log('Precio:', precio);
+            console.log('Trabajo:', trabajo);
+            console.log('user_id:', user_id);
 
                 const { error } = await supabase
                     .from('event_quot1')

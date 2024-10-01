@@ -17,6 +17,9 @@
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
          function changeMonth(direction) {
+            if (ischangeMonth) return;
+            ischangeMonth = true;
+            console.log('changeMonth called');
             currentMonth += direction;
             if (currentMonth < 0) {
                 currentMonth = 11;
@@ -379,7 +382,7 @@
         window.onload = function() {
             generateCalendar(currentMonth, currentYear);
             selectToday();
-            changeMonth();
+            changeMonth(direction);
         }
 
         function saveDate() {
@@ -413,6 +416,8 @@
         // Générer le calendrier pour le mois et l'année actuels
         generateCalendar(currentMonth, currentYear);
         selectToday();
+        changeMonth(direction);
+
     </script>
 </head>
 

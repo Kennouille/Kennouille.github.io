@@ -248,7 +248,7 @@
                             if (error) {
                                 console.error('Erreur lors de la mise à jour des données :', error);
                             } else {
-                                console.log('Données mises à jour avec succès :', data);
+                                console.log('Données mises à jour avec succès');
                                 // Afficher le message de succès
                                 const successMessage = document.getElementById('successMessage');
                                 successMessage.classList.remove('hidden');
@@ -262,6 +262,7 @@
                             }
                         }
                     });
+
                 });
 
                 return data;
@@ -339,7 +340,7 @@
                             if (error) {
                                 console.error('Erreur lors de la mise à jour des données :', error);
                             } else {
-                                console.log('Données mises à jour avec succès :', data);
+                                console.log('Données mises à jour avec succès');
                                 // Afficher le message de succès
                                 const successMessage = document.getElementById('successMessage');
                                 successMessage.classList.remove('hidden');
@@ -353,6 +354,7 @@
                             }
                         }
                     });
+
                 });
 
             } catch (error) {

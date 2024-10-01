@@ -80,14 +80,19 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOMContentLoaded triggered');
+
+            // Définir la variable today
+            const today = new Date().toISOString().split('T')[0]; // Obtenir la date d'aujourd'hui au format YYYY-MM-DD
+
+            // Générer le calendrier pour le mois et l'année actuels
             generateCalendar(currentMonth, currentYear);
             selectToday();
-        });
 
             // Appeler fetchEventsByDate directement pour récupérer les événements d'aujourd'hui
             await fetchEventsByDate(today);
+
             // Ajouter des écouteurs d'événements pour les boutons
             document.getElementById('prevButton').addEventListener('click', function() {
                 changeMonth(-1);
@@ -96,6 +101,7 @@
             document.getElementById('nextButton').addEventListener('click', function() {
                 changeMonth(1);
             });
+
 
         document.getElementById('addEventButton').addEventListener('click', async function() {
             const telefono = document.getElementById('Telefono').value;

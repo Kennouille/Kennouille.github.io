@@ -84,6 +84,11 @@
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOMContentLoaded triggered');
 
+            const successMessage = document.getElementById('successMessage');
+
+            // Récupérer successMessage pour utilisation ultérieure
+            window.successMessage = successMessage;
+
             // Définir la variable today
             const today = new Date().toISOString().split('T')[0]; // Obtenir la date d'aujourd'hui au format YYYY-MM-DD
 
@@ -250,7 +255,6 @@
                             } else {
                                 console.log('Données mises à jour avec succès');
                                 // Afficher le message de succès
-                                const successMessage = document.getElementById('successMessage');
                                 successMessage.classList.remove('hidden');
                                 successMessage.classList.add('visible');
 
@@ -343,7 +347,6 @@
                             } else {
                                 console.log('Données mises à jour avec succès');
                                 // Afficher le message de succès
-                                const successMessage = document.getElementById('successMessage');
                                 successMessage.classList.remove('hidden');
                                 successMessage.classList.add('visible');
 

@@ -16,7 +16,6 @@
 
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
-        $(document).ready(function(){
          function changeMonth(direction) {
             currentMonth += direction;
             if (currentMonth < 0) {
@@ -28,7 +27,6 @@
             }
             generateCalendar(currentMonth, currentYear);
         }
-    });
 
         function generateCalendar(month, year) {
             if (isCalendarGenerated) return;
@@ -381,6 +379,7 @@
         window.onload = function() {
             generateCalendar(currentMonth, currentYear);
             selectToday();
+            changeMonth();
         }
 
         function saveDate() {

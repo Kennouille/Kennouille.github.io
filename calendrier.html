@@ -261,13 +261,12 @@
                         }
                     });
 
+                    return data;
+                    } catch (error) {
+                        console.error('Erreur lors de la récupération des événements :', error);
+                        return [];
+                    }
 
-                return data;
-            } catch (error) {
-                console.error('Erreur lors de la récupération des événements :', error);
-                return [];
-            }
-        }
         // Fonction pour charger les données de la table
         async function loadTableData() {
             console.log('loadTableData called');

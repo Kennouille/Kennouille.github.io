@@ -88,7 +88,10 @@
             console.log('successMessage element:', window.successMessage);
 
             // Définir la variable today
-            const today = new Date().toISOString().split('T')[0]; // Obtenir la date d'aujourd'hui au format YYYY-MM-DD
+            var today = new Date();
+            var todayDate = today.getDate();
+            var todayMonth = today.getMonth();
+            var todayYear = today.getFullYear();
 
             // Générer le calendrier pour le mois et l'année actuels
             generateCalendar(currentMonth, currentYear);
@@ -415,6 +418,8 @@
                     cell.classList.add('selected');
                 }
             });
+            // Appeler fetchEventsByDate avec la date du jour
+            fetchEventsByDate(selectedDate);
         }
 
         window.onload = function() {

@@ -16,9 +16,7 @@
 
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
-        $(document).ready(function(){
-         function changeMonth(direction) {
-            console.log('changeMonth called');
+        function changeMonth(direction) {
             currentMonth += direction;
             if (currentMonth < 0) {
                 currentMonth = 11;
@@ -49,10 +47,9 @@
                 </tr>
             `;
 
-            // Mettre à jour l'affichage du mois et de l'année
             monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
 
-            const firstDay = (new Date(year, month).getDay() + 6) % 7; // Ajustement pour commencer par lundi
+            const firstDay = (new Date(year, month).getDay() + 6) % 7;
             const daysInMonth = 32 - new Date(year, month, 32).getDate();
             let date = 1;
 
@@ -83,8 +80,6 @@
 
                 calendarTable.appendChild(row);
             }
-
-            monthYearDisplay.textContent = monthNames[month] + ' ' + year;
         }
 
         document.addEventListener('DOMContentLoaded', async function() {
@@ -145,6 +140,16 @@
 
             let isCalendarGenerated = false;
             let isTodaySelected = false;
+
+            // Ajouter des écouteurs d'événements pour les boutons
+            document.getElementById('prevButton').addEventListener('click', function() {
+                changeMonth(-1);
+            });
+
+            document.getElementById('nextButton').addEventListener('click', function() {
+                changeMonth(1);
+            });
+
 
             document.getElementById('Telefono').addEventListener('input', async function() {
                 const telefono = this.value;
@@ -423,9 +428,9 @@
     <div class="main-container">
         <h1>Calendario y Agenda</h1>
         <div class="navigation-container">
-            <button class="button" onclick="changeMonth(-1)">precedente</button>
+            <button id="prevButton" class="button">Précédent</button>
             <span id="monthYear"></span>
-            <button class="button" onclick="changeMonth(1)">siguiente</button>
+            <button id="nextButton" class="button">Suivant</button>
         </div>
         <div class="calendar-container">
             <table id="calendarTable">

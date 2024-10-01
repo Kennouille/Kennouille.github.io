@@ -6,83 +6,6 @@
     <title>Calendrier et Agenda Quotidien</title>
     <link rel="stylesheet" href="calendrier.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
-</head>
-<body>
-    <div class="main-container">
-        <h1>Calendario y Agenda</h1>
-        <div class="navigation-container">
-            <button class="button" onclick="changeMonth(-1)">precedente</button>
-            <span id="monthYear"></span>
-            <button class="button" onclick="changeMonth(1)">siguiente</button>
-        </div>
-        <div class="calendar-container">
-            <table id="calendarTable">
-                <tr>
-                    <th>Lu</th>
-                    <th>Ma</th>
-                    <th>Mie</th>
-                    <th>Ju</th>
-                    <th>Vie</th>
-                    <th>Sa</th>
-                    <th>Do</th>
-                </tr>
-            </table>
-        </div>
-        <div class="editable-container">
-            <span id="selectedDateDisplay">Fecha seleccionada : ""</span>
-            <table id="editable-table">
-                <thead>
-                    <tr>
-                        <th>Telefono</th>
-                        <th>Nombre</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Min</th>
-                        <th>Lugar</th>
-                        <th>Precio</th>
-                        <th>Trabajo</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                    </tr>
-                    <!-- Ajoutez plus de lignes si nécessaire -->
-                </tbody>
-            </table>
-        </div>
-        <div class="form-container">
-            <h2>Nuevo evento</h2>
-            <input type="text" id="Telefono" placeholder="Telefono">
-            <input type="text" id="Nombre" placeholder="Nombre">
-            <input type="date" id="Fecha">
-            <select id="Hora">
-                <option value="9am">9am</option>
-                <option value="10am">10am</option>
-                <option value="11am">11am</option>
-                <option value="12pm">12pm</option>
-                <option value="1pm">1pm</option>
-                <option value="2pm">2pm</option>
-                <option value="3pm">3pm</option>
-                <option value="4pm">4pm</option>
-                <option value="5pm">5pm</option>
-                <option value="otro">Otro</option>
-            </select>
-            <input type="number" id="Min" placeholder="Min">
-            <input type="text" id="Lugar" placeholder="Lugar">
-            <input type="number" id="Precio" placeholder="Precio">
-            <input type="text" id="Trabajo" placeholder="Trabajo">
-            <button id="addEventButton" class="button">Adjuntar un evento</button>
-        </div>
-    </div>
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
@@ -489,5 +412,84 @@
         generateCalendar(currentMonth, currentYear);
         selectToday();
     </script>
+</head>
+
+<body>
+    <div class="main-container">
+        <h1>Calendario y Agenda</h1>
+        <div class="navigation-container">
+            <button class="button" onclick="changeMonth(-1)">precedente</button>
+            <span id="monthYear"></span>
+            <button class="button" onclick="changeMonth(1)">siguiente</button>
+        </div>
+        <div class="calendar-container">
+            <table id="calendarTable">
+                <tr>
+                    <th>Lu</th>
+                    <th>Ma</th>
+                    <th>Mie</th>
+                    <th>Ju</th>
+                    <th>Vie</th>
+                    <th>Sa</th>
+                    <th>Do</th>
+                </tr>
+            </table>
+        </div>
+        <div class="editable-container">
+            <span id="selectedDateDisplay">Fecha seleccionada : ""</span>
+            <table id="editable-table">
+                <thead>
+                    <tr>
+                        <th>Telefono</th>
+                        <th>Nombre</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Min</th>
+                        <th>Lugar</th>
+                        <th>Precio</th>
+                        <th>Trabajo</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                    </tr>
+                    <!-- Ajoutez plus de lignes si nécessaire -->
+                </tbody>
+            </table>
+        </div>
+        <div class="form-container">
+            <h2>Nuevo evento</h2>
+            <input type="text" id="Telefono" placeholder="Telefono">
+            <input type="text" id="Nombre" placeholder="Nombre">
+            <input type="date" id="Fecha">
+            <select id="Hora">
+                <option value="9am">9am</option>
+                <option value="10am">10am</option>
+                <option value="11am">11am</option>
+                <option value="12pm">12pm</option>
+                <option value="1pm">1pm</option>
+                <option value="2pm">2pm</option>
+                <option value="3pm">3pm</option>
+                <option value="4pm">4pm</option>
+                <option value="5pm">5pm</option>
+                <option value="otro">Otro</option>
+            </select>
+            <input type="number" id="Min" placeholder="Min">
+            <input type="text" id="Lugar" placeholder="Lugar">
+            <input type="number" id="Precio" placeholder="Precio">
+            <input type="text" id="Trabajo" placeholder="Trabajo">
+            <button id="addEventButton" class="button">Adjuntar un evento</button>
+        </div>
+    </div>
+    
 </body>
 </html>

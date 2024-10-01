@@ -33,6 +33,27 @@ h1 {
     margin-bottom: 10px;
 }
 
+#successMessage {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none; /* Caché par défaut */
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
 .editable-container table, .form-container {
     width: 100%;
 }

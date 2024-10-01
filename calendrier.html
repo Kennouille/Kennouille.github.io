@@ -6,7 +6,7 @@
     <title>Calendrier et Agenda Quotidien</title>
     <link rel="stylesheet" href="calendrier.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
@@ -17,8 +17,6 @@
         const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
          function changeMonth(direction) {
-            if (ischangeMonth) return;
-            ischangeMonth = true;
             console.log('changeMonth called');
             currentMonth += direction;
             if (currentMonth < 0) {
@@ -382,7 +380,6 @@
         window.onload = function() {
             generateCalendar(currentMonth, currentYear);
             selectToday();
-            changeMonth();
         }
 
         function saveDate() {
@@ -416,7 +413,6 @@
         // Générer le calendrier pour le mois et l'année actuels
         generateCalendar(currentMonth, currentYear);
         selectToday();
-        changeMonth();
 
     </script>
 </head>

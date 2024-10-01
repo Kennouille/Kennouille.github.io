@@ -14,7 +14,8 @@
         var currentYear = new Date().getFullYear();
         var event = {}; // Objet pour stocker les événements par date
 
-        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
 
         function changeMonth(direction) {
             currentMonth += direction;
@@ -221,7 +222,7 @@
                     // Ajouter la cellule pour le bouton "Appliquer"
                     const applyCell = row.insertCell();
                     const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Appliquer';
+                    applyButton.textContent = 'Aplicar cambio';
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
 
@@ -309,7 +310,7 @@
                     // Ajouter la cellule pour le bouton "Appliquer"
                     const applyCell = row.insertCell();
                     const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Appliquer';
+                    applyButton.textContent = 'Aplicar cambio';
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
 
@@ -427,9 +428,9 @@
     <div class="main-container">
         <h1>Calendario y Agenda</h1>
         <div class="navigation-container">
-            <button id="prevButton" class="button">Précédent</button>
+            <button id="prevButton" class="button">Anterior</button>
             <span id="monthYear"></span>
-            <button id="nextButton" class="button">Suivant</button>
+            <button id="nextButton" class="button">Siguiente</button>
         </div>
         <div class="calendar-container">
             <table id="calendarTable">

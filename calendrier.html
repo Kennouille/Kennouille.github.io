@@ -219,14 +219,14 @@
                         }
                     });
 
-                    // Ajouter la cellule pour le bouton "Appliquer"
+                    // Ajouter la cellule pour le bouton "Aplicar cambio"
                     const applyCell = row.insertCell();
                     const applyButton = document.createElement('button');
                     applyButton.textContent = 'Aplicar cambio';
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
 
-                    // Ajouter un écouteur d'événement au bouton "Appliquer"
+                    // Ajouter un écouteur d'événement au bouton "Aplicar cambio"
                     applyButton.addEventListener('click', async function() {
                         const updatedEvent = {};
                         Array.from(row.cells).forEach(cell => {
@@ -258,8 +258,9 @@
                                     successMessage.classList.add('hidden');
                                 }, 1000);
                             }
-                        })
+                        }
                     });
+
 
                 return data;
             } catch (error) {

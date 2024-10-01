@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="calendrier.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
-    <script type="module" src="script.js">
+    <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
         var currentMonth = new Date().getMonth();
@@ -100,7 +100,6 @@
             generateCalendar(currentMonth, currentYear);
             selectToday();
         });
-
         document.getElementById('addEventButton').addEventListener('click', async function() {
             const telefono = document.getElementById('Telefono').value;
             const nombre = document.getElementById('Nombre').value;
@@ -125,17 +124,17 @@
             console.log('Trabajo:', trabajo);
             console.log('user_id:', user_id);
 
-            const { error } = await supabase
-                .from('event_quot1')
-                .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, user_id: user_id }]);
+                const { error } = await supabase
+                    .from('event_quot1')
+                    .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, user_id: user_id }]);
 
-            if (error) {
-                console.error('Erreur lors de l\'ajout de l\'événement :', error);
-            } else {
-                console.log('Événement ajouté avec succès');
-                // Effacer les champs du formulaire
-                document.getElementById('Telefono').value = '';
-                document.getElementById('Nombre').value = '';
+                if (error) {
+                    console.error('Erreur lors de l\'ajout de l\'événement :', error);
+                } else {
+                    console.log('Événement ajouté avec succès');
+                    // Effacer les champs du formulaire
+                    document.getElementById('Telefono').value = '';
+                    document.getElementById('Nombre').value = '';
                     document.getElementById('Fecha').value = '';
                     document.getElementById('Hora').value = '';
                     document.getElementById('Min').value = '';

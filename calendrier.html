@@ -253,13 +253,15 @@
                             } else {
                                 console.log('Données mises à jour avec succès');
                                 // Afficher le message de succès
-                                window.successMessage.classList.remove('hidden');
-                                window.successMessage.classList.add('visible');
+                                console.log('Affichage du message de succès');
+                                window.successMessage.style.display = 'block';
+                                console.log('Message de succès affiché');
 
                                 // Masquer le message après 1 seconde
                                 setTimeout(() => {
-                                    window.successMessage.classList.remove('visible');
-                                    window.successMessage.classList.add('hidden');
+                                    console.log('Masquage du message de succès');
+                                    window.successMessage.style.display = 'none';
+                                    console.log('Message de succès masqué');
                                 }, 1000);
                             }
                         }
@@ -343,13 +345,15 @@
                             } else {
                                 console.log('Données mises à jour avec succès');
                                 // Afficher le message de succès
-                                window.successMessage.classList.remove('hidden');
-                                window.successMessage.classList.add('visible');
+                                console.log('Affichage du message de succès');
+                                window.successMessage.style.display = 'block';
+                                console.log('Message de succès affiché');
 
                                 // Masquer le message après 1 seconde
                                 setTimeout(() => {
-                                    window.successMessage.classList.remove('visible');
-                                    window.successMessage.classList.add('hidden');
+                                    console.log('Masquage du message de succès');
+                                    window.successMessage.style.display = 'none';
+                                    console.log('Message de succès masqué');
                                 }, 1000);
                             }
                         }

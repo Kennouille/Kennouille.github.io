@@ -87,6 +87,14 @@
 
             // Appeler fetchEventsByDate directement pour récupérer les événements d'aujourd'hui
             await fetchEventsByDate(today);
+            // Ajouter des écouteurs d'événements pour les boutons
+            document.getElementById('prevButton').addEventListener('click', function() {
+                changeMonth(-1);
+            });
+
+            document.getElementById('nextButton').addEventListener('click', function() {
+                changeMonth(1);
+            });
 
             generateCalendar(currentMonth, currentYear);
             selectToday();
@@ -139,15 +147,6 @@
 
             let isCalendarGenerated = false;
             let isTodaySelected = false;
-
-            // Ajouter des écouteurs d'événements pour les boutons
-            document.getElementById('prevButton').addEventListener('click', function() {
-                changeMonth(-1);
-            });
-
-            document.getElementById('nextButton').addEventListener('click', function() {
-                changeMonth(1);
-            });
 
 
             document.getElementById('Telefono').addEventListener('input', async function() {

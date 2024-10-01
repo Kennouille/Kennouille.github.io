@@ -46,6 +46,7 @@
                 </tr>
             `;
 
+            // Mettre à jour l'affichage du mois et de l'année
             monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
 
             const firstDay = (new Date(year, month).getDay() + 6) % 7;

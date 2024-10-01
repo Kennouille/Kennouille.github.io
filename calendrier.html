@@ -29,8 +29,6 @@
         }
 
         function generateCalendar(month, year) {
-            if (isCalendarGenerated) return;
-            isCalendarGenerated = true;
             console.log('generateCalendar called');
             const calendarTable = document.getElementById('calendarTable');
             const monthYearDisplay = document.getElementById('monthYear');
@@ -82,9 +80,11 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', function() {
             console.log('DOMContentLoaded triggered');
-            const today = new Date().toISOString().split('T')[0]; // Obtenir la date d'aujourd'hui au format YYYY-MM-DD
+            generateCalendar(currentMonth, currentYear);
+            selectToday();
+        });
 
             // Appeler fetchEventsByDate directement pour récupérer les événements d'aujourd'hui
             await fetchEventsByDate(today);
@@ -96,9 +96,6 @@
             document.getElementById('nextButton').addEventListener('click', function() {
                 changeMonth(1);
             });
-
-            generateCalendar(currentMonth, currentYear);
-            selectToday();
         });
         document.getElementById('addEventButton').addEventListener('click', async function() {
             const telefono = document.getElementById('Telefono').value;
@@ -359,9 +356,6 @@
 
 
         function selectToday() {
-            if (isTodaySelected) return;
-            isTodaySelected = true;
-            console.log('selectToday called');
             const today = new Date();
             const todayDate = today.getDate();
             const todayMonth = today.getMonth();

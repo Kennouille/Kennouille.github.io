@@ -247,10 +247,19 @@
                                 console.error('Erreur lors de la mise à jour des données :', error);
                             } else {
                                 console.log('Données mises à jour avec succès :', data);
+                                // Afficher le message de succès
+                                const successMessage = document.getElementById('successMessage');
+                                successMessage.classList.remove('hidden');
+                                successMessage.classList.add('visible');
+
+                                // Masquer le message après 1 seconde
+                                setTimeout(() => {
+                                    successMessage.classList.remove('visible');
+                                    successMessage.classList.add('hidden');
+                                }, 1000);
                             }
                         }
                     });
-                });
 
                 return data;
             } catch (error) {
@@ -335,10 +344,19 @@
                                 console.error('Erreur lors de la mise à jour des données :', error);
                             } else {
                                 console.log('Données mises à jour avec succès :', data);
+                                // Afficher le message de succès
+                                const successMessage = document.getElementById('successMessage');
+                                successMessage.classList.remove('hidden');
+                                successMessage.classList.add('visible');
+
+                                // Masquer le message après 1 seconde
+                                setTimeout(() => {
+                                    successMessage.classList.remove('visible');
+                                    successMessage.classList.add('hidden');
+                                }, 1000);
                             }
                         }
                     });
-                });
 
             } catch (error) {
                 console.error('Erreur lors de la récupération des événements :', error);

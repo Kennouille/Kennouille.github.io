@@ -443,12 +443,18 @@
                 }
             });
 
+            // Ajoutez un log pour vérifier la date avant l'appel à fetchEventsByDate
+            console.log('Date passed to fetchEventsByDate from selectToday:', selectedDate);
+
             // Appeler fetchEventsByDate avec la date du jour
             fetchEventsByDate(selectedDate);
+
+            // Ajoutez un log pour vérifier la date après l'appel à fetchEventsByDate
+            console.log('Date sent to fetchEventsByDate from selectToday:', selectedDate);
         }
 
+
         window.onload = function() {
-            loadTableData();
             generateCalendar(currentMonth, currentYear);
             selectToday();
         }

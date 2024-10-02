@@ -424,6 +424,12 @@
             const selectedDate = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
             document.getElementById('Fecha').value = selectedDate;
 
+            // Vérifiez le format de la date avant de l'utiliser
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(selectedDate)) {
+                console.error('Date format is incorrect. Expected format: YYYY-MM-DD');
+                return;
+            }
+
             // Mettre à jour l'affichage de la date sélectionnée
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
             // selectedDateDisplay.textContent = `Fecha seleccionada : ${new Date(selectedDate).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}`;

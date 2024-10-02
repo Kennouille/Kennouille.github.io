@@ -1,6 +1,6 @@
 let attempts = 0;
 const maxAttempts = 3;
-const blockDuration = 10 * 60 * 100; // 1 minutes en millisecondes
+const blockDuration = 10 * 60 * 100; // 1 minute en millisecondes
 let isBlocked = false;
 let targetPage = '';
 
@@ -43,7 +43,7 @@ function checkCode() {
 
 function sendEmail() {
     console.log("Envoi de l'e-mail...");
-    emailjs.send("service_4ab7y3s","template_v83qlcw"); {
+    emailjs.send("service_4ab7y3s", "template_v83qlcw", {
         to_email: "muhlemannk@gmail.com",
         message: "L'utilisateur a été bloqué après 3 tentatives incorrectes."
     }).then(response => {
@@ -53,4 +53,3 @@ function sendEmail() {
         document.getElementById('message').innerText = "Erreur lors de l'envoi de l'e-mail.";
     });
 }
-

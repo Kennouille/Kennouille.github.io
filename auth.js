@@ -42,7 +42,7 @@ function checkCode() {
 }
 
 function sendEmail() {
-    // Utilisez EmailJS ou un autre service pour envoyer un e-mail
+    console.log("Envoi de l'e-mail...");
     emailjs.send("service_4ab7y3s", "template_v83qlcw", {
         to_email: "muhlemannk@gmail.com",
         message: "L'utilisateur a été bloqué après 3 tentatives incorrectes."
@@ -53,3 +53,4 @@ function sendEmail() {
         document.getElementById('message').innerText = "Erreur lors de l'envoi de l'e-mail.";
     });
 }
+

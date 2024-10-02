@@ -19,6 +19,10 @@
         .button:hover {
             background-color: #5DADE2;
         }
+        #code-container {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,12 +35,14 @@
         <img src="images/Julia_imagen_cleanup.jpg" alt="Image de bienvenue">
     </div>
     <div class="buttons">
+        <button class="button" onclick="showCodePrompt()">Contactos</button>
+        <button class="button" onclick="window.location.href='calendrier.html'">Calendario</button>
+        <button class="button" onclick="window.location.href='journalier.html'">Quotidiano</button>
+    </div>
+    <div id="code-container">
         <input type="password" id="code" placeholder="Entrez le code">
         <button class="button" onclick="checkCode()">Entrer</button>
         <p id="message"></p>
-        <button class="button" onclick="window.location.href='calendrier.html'">Calendario</button>
-        <button class="button" onclick="window.location.href='tableau.html'">Contactos</button>
-        <button class="button" onclick="window.location.href='journalier.html'">Quotidiano</button>
     </div>
     <script src="auth.js"></script>
 </body>

@@ -115,10 +115,10 @@
             const nombre = document.getElementById('Nombre').value;
             const fecha = document.getElementById('Fecha').value;
             const hora = document.getElementById('Hora').value;
-            const min = document.getElementById('Min').value;
-            const lugar = document.getElementById('Lugar').value;
-            const precio = document.getElementById('Precio').value;
-            const trabajo = document.getElementById('Trabajo').value;
+            const min = document.getElementById('Min').value || null;
+    const   lugar = document.getElementById('Lugar').value || null;
+    const   precio = document.getElementById('Precio').value || null;
+    const   trabajo = document.getElementById('Trabajo').value || null;
 
             // Générer un UUID pour user_id
             const user_id = crypto.randomUUID();

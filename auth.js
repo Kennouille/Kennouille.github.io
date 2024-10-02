@@ -40,17 +40,3 @@ function checkCode() {
         }
     }
 }
-
-
-function sendEmail() {
-    console.log("Envoi de l'e-mail...");
-    emailjs.send("service_4ab7y3s", "template_v83qlcw", {
-        to_email: "muhlemannk@gmail.com",
-        message: "L'utilisateur a été bloqué après 3 tentatives incorrectes."
-    }).then(response => {
-        console.log("E-mail envoyé avec succès", response.status, response.text);
-    }).catch(err => {
-        console.error("Erreur lors de l'envoi de l'e-mail", err);
-        document.getElementById('message').innerText = "Erreur lors de l'envoi de l'e-mail.";
-    });
-}

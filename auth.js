@@ -34,7 +34,6 @@ function checkCode() {
                 isBlocked = false;
                 attempts = 0;
             }, blockDuration);
-            sendEmail();
             document.getElementById('message').innerText = "Vous êtes bloqué pour 10 minutes.";
         } else {
             document.getElementById('message').innerText = `Code incorrect. Tentatives restantes : ${maxAttempts - attempts}`;

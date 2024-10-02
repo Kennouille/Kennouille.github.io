@@ -23,6 +23,7 @@ function checkCode() {
     const code = document.getElementById('code').value.trim();
     const correctCode = "109801"; // Remplacez par votre code
 
+
     if (code === correctCode) {
         window.location.href = targetPage;
     } else {

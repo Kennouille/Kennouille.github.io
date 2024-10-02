@@ -9,6 +9,7 @@ function checkCode() {
         return;
     }
 
+
     const code = document.getElementById('code').value;
     const correctCode = "109801"; // Remplacez par votre code
 

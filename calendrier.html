@@ -190,6 +190,10 @@
 
         // Fonction pour récupérer les événements par date
         async function fetchEventsByDate(date) {
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+                console.error('Date format is incorrect. Expected format: YYYY-MM-DD');
+                return;
+
             console.log('fetchEventsByDate called for date:', date);
             try {
                 const { data, error } = await supabase

@@ -116,9 +116,9 @@
             const fecha = document.getElementById('Fecha').value;
             const hora = document.getElementById('Hora').value;
             const min = document.getElementById('Min').value || null;
-    const   lugar = document.getElementById('Lugar').value || null;
-    const   precio = document.getElementById('Precio').value || null;
-    const   trabajo = document.getElementById('Trabajo').value || null;
+            const lugar = document.getElementById('Lugar').value || null;
+            const precio = document.getElementById('Precio').value || null;
+            const trabajo = document.getElementById('Trabajo').value || null;
 
             // Générer un UUID pour user_id
             const user_id = crypto.randomUUID();
@@ -395,6 +395,7 @@
         async function loadTableData() {
             console.log('loadTableData called');
             const today = new Date().toISOString().split('T')[0]; // Obtenir la date d'aujourd'hui au format YYYY-MM-DD
+            console.log('Date passed to fetchEventsByDate from loadTableData:', today);
             await fetchEventsByDate(today);
         }
 

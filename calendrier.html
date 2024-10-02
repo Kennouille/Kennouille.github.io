@@ -221,7 +221,7 @@
                     Object.entries(event).forEach(([key, value]) => {
                         if (key !== 'user_id') {
                             const cell = row.insertCell();
-                            cell.textContent = value;
+                            cell.textContent = value !== null ? value : ''; // Remplacer NULL par une chaîne vide
                             cell.contentEditable = "true";
                             cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
                         }

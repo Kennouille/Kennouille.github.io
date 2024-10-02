@@ -108,11 +108,6 @@ h1 {
     font-weight: bold; /* Met le texte en gras */
 }
 
-#selectedDateDisplay {
-    font-weight: bold; /* Met le texte en gras */
-    font-size: 1.5em; /* Ajustez la taille selon vos besoins */
-}
-
 /* Style de la table du calendrier */
 #calendarTable {
     width: 100%; /* Prend toute la largeur disponible */

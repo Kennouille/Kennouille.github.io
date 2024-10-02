@@ -1,10 +1,17 @@
 let attempts = 0;
 const maxAttempts = 3;
-const blockDuration = 10 * 60 * 1000; // 10 minutes en millisecondes
+const blockDuration = 10 * 60 * 100; // 1 minutes en millisecondes
 let isBlocked = false;
+let targetPage = '';
 
 function showCodePrompt() {
     document.getElementById('code-container').style.display = 'block';
+    targetPage = 'tableau.html';
+}
+
+function showCodePromptJournalier() {
+    document.getElementById('code-container').style.display = 'block';
+    targetPage = 'journalier.html';
 }
 
 function checkCode() {
@@ -13,11 +20,11 @@ function checkCode() {
         return;
     }
 
-    const code = document.getElementById('code').value.trim().toLowerCase();
-    const correctCode = "109801".toLowerCase();
+    const code = document.getElementById('code').value.trim();
+    const correctCode = "109801"; // Remplacez par votre code
 
     if (code === correctCode) {
-        window.location.href = 'tableau.html';
+        window.location.href = targetPage;
     } else {
         attempts++;
         if (attempts >= maxAttempts) {

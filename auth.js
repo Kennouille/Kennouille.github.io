@@ -43,5 +43,6 @@ function sendEmail() {
         console.log("E-mail envoyé avec succès", response.status, response.text);
     }).catch(err => {
         console.error("Erreur lors de l'envoi de l'e-mail", err);
+        document.getElementById('message').innerText = "Erreur lors de l'envoi de l'e-mail.";
     });
 }

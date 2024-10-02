@@ -11,7 +11,7 @@
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 14px;
+            font-size: 22px;
             margin: 4px 1px;
             cursor: pointer;
             border-radius: 12px;
@@ -31,9 +31,13 @@
         <img src="images/Julia_imagen_cleanup.jpg" alt="Image de bienvenue">
     </div>
     <div class="buttons">
-        <button class="button" onclick="window.location.href='tableau.html'">Contactos</button>
+        <input type="password" id="code" placeholder="Entrez le code">
+        <button class="button" onclick="checkCode()">Entrer</button>
+        <p id="message"></p>
         <button class="button" onclick="window.location.href='calendrier.html'">Calendario</button>
+        <button class="button" onclick="window.location.href='tableau.html'">Contactos</button>
         <button class="button" onclick="window.location.href='journalier.html'">Quotidiano</button>
     </div>
+    <script src="auth.js"></script>
 </body>
 </html>

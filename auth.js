@@ -13,8 +13,8 @@ function checkCode() {
         return;
     }
 
-    const code = document.getElementById('code').value;
-    const correctCode = "109801"; // Remplacez par votre code
+    const code = document.getElementById('code').value.trim().toLowerCase();
+    const correctCode = "109801".toLowerCase();
 
     if (code === correctCode) {
         window.location.href = 'tableau.html';

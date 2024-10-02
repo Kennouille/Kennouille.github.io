@@ -41,6 +41,7 @@ function checkCode() {
     }
 }
 
+
 function sendEmail() {
     console.log("Envoi de l'e-mail...");
     emailjs.send("service_4ab7y3s", "template_v83qlcw", {

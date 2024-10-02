@@ -14,7 +14,7 @@ function checkCode() {
     }
 
     const code = document.getElementById('code').value;
-    const correctCode = "votre_code_secret"; // Remplacez par votre code
+    const correctCode = "109801"; // Remplacez par votre code
 
     if (code === correctCode) {
         window.location.href = 'tableau.html';

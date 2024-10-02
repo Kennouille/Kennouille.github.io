@@ -43,8 +43,8 @@ function checkCode() {
 
 function sendEmail() {
     // Utilisez EmailJS ou un autre service pour envoyer un e-mail
-    emailjs.send("service_4ab7y3s", "template_123abc", {
-        to_email: "adresse@example.com",
+    emailjs.send("service_4ab7y3s", "template_v83qlcw", {
+        to_email: "muhlemannk@gmail.com",
         message: "L'utilisateur a été bloqué après 3 tentatives incorrectes."
     }).then(response => {
         console.log("E-mail envoyé avec succès", response.status, response.text);

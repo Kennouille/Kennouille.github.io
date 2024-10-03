@@ -1,6 +1,6 @@
 let attempts = 0;
 const maxAttempts = 3;
-const blockDuration = 10 * 60 * 100; // 1 minute en millisecondes
+const blockDuration = 10 * 60 * 100; // 10 minutes en millisecondes
 let isBlocked = false;
 let targetPage = '';
 
@@ -16,13 +16,12 @@ function showCodePromptJournalier() {
 
 function checkCode() {
     if (isBlocked) {
-        document.getElementById('message').innerText = "Vous êtes bloqué. Réessayez plus tard.";
+        showMessage("Vous êtes bloqué. Réessayez plus tard.");
         return;
     }
 
     const code = document.getElementById('code').value.trim();
     const correctCode = "109801"; // Remplacez par votre code
-
 
     if (code === correctCode) {
         window.location.href = targetPage;
@@ -34,9 +33,18 @@ function checkCode() {
                 isBlocked = false;
                 attempts = 0;
             }, blockDuration);
-            document.getElementById('message').innerText = "Vous êtes bloqué pour 10 minutes.";
+            showMessage("Vous êtes bloqué pour 1 minutes.");
         } else {
-            document.getElementById('message').innerText = `Code incorrect. Tentatives restantes : ${maxAttempts - attempts}`;
+            showMessage(`Code incorrect. Tentatives restantes : ${maxAttempts - attempts}`);
         }
     }
+}
+
+function showMessage(message) {
+    document.getElementById('message').innerText = message;
+    document.getElementById('popup').style.display = 'block';
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
 }

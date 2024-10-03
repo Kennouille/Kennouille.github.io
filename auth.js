@@ -40,6 +40,7 @@ function checkCode() {
     }
 }
 
+
 function showMessage(message) {
     document.getElementById('message').innerText = message;
     document.getElementById('popup').style.display = 'block';

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     let attempts = 0;
     const maxAttempts = 3;
-    const blockDuration = 10 * 60 * 1000; // 10 minutes en millisecondes
+    const blockDuration = 10 * 60 * 100; // 1 minutes en millisecondes
     let isBlocked = false;
     let targetPage = '';
 
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     isBlocked = false;
                     attempts = 0;
                 }, blockDuration);
-                showMessage("Vous êtes bloqué pour 10 minutes.");
+                showMessage("Vous êtes bloqué pour 1 minutes.");
             } else {
                 showMessage(`Code incorrect. Tentatives restantes : ${maxAttempts - attempts}`);
             }

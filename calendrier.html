@@ -134,27 +134,75 @@
             console.log('Trabajo:', trabajo);
             console.log('user_id:', user_id);
 
-                const { error } = await supabase
-                    .from('event_quot1')
-                    .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, user_id: user_id }]);
+            // Vérifier s'il existe une correspondance dans tableData1
+            const { data: existingData, error: fetchError } = await supabase
+                .from('tableData1')
+                .select('*')
+                .eq('Telefono', telefono);
 
-                if (error) {
-                    console.error('Erreur lors de l\'ajout de l\'événement :', error);
+            if (fetchError) {
+                console.error('Erreur lors de la vérification de la correspondance :', fetchError);
+                return;
+            }
+
+            if (existingData && existingData.length > 0) {
+                // Mettre à jour les colonnes dans tableData1
+                const { error: updateError } = await supabase
+                    .from('tableData1')
+                    .update({
+                        Nombre: nombre || existingData[0].Nombre,
+                        Fecha: fecha || existingData[0].Fecha,
+                        Hora: hora || existingData[0].Hora,
+                        Min: min || existingData[0].Min,
+                        Lugar: lugar || existingData[0].Lugar,
+                        Precio: precio || existingData[0].Precio,
+                        Trabajo: trabajo || existingData[0].Trabajo
+                    })
+                    .eq('Telefono', telefono);
+
+                if (updateError) {
+                    console.error('Erreur lors de la mise à jour de tableData1 :', updateError);
+                    return;
                 } else {
-                    console.log('Événement ajouté avec succès');
-                    // Effacer les champs du formulaire
-                    document.getElementById('Telefono').value = '';
-                    document.getElementById('Nombre').value = '';
-                    document.getElementById('Fecha').value = '';
-                    document.getElementById('Hora').value = '';
-                    document.getElementById('Min').value = '';
-                    document.getElementById('Lugar').value = '';
-                    document.getElementById('Precio').value = '';
-                    document.getElementById('Trabajo').value = '';
-                    // Recharger les données du tableau
-                    loadTableData();
+                    console.log('tableData1 mis à jour avec succès');
                 }
-            })
+            } else {
+                // Insérer une nouvelle ligne dans tableData1
+                const { error: insertErrorTableData1 } = await supabase
+                    .from('tableData1')
+                    .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo }]);
+
+                if (insertErrorTableData1) {
+                    console.error('Erreur lors de l\'ajout de la nouvelle ligne dans tableData1 :', insertErrorTableData1);
+                    return;
+                } else {
+                    console.log('Nouvelle ligne ajoutée dans tableData1 avec succès');
+                }
+            }
+
+            // Insérer les données dans event_quot1
+            const { error: insertErrorEventQuot1 } = await supabase
+                .from('event_quot1')
+                .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: travail, user_id: user_id }]);
+
+            if (insertErrorEventQuot1) {
+                console.error('Erreur lors de l\'ajout de l\'événement :', insertErrorEventQuot1);
+            } else {
+                console.log('Événement ajouté avec succès');
+                // Effacer les champs du formulaire
+                document.getElementById('Telefono').value = '';
+                document.getElementById('Nombre').value = '';
+                document.getElementById('Fecha').value = '';
+                document.getElementById('Hora').value = '';
+                document.getElementById('Min').value = '';
+                document.getElementById('Lugar').value = '';
+                document.getElementById('Precio').value = '';
+                document.getElementById('Trabajo').value = '';
+                // Recharger les données du tableau
+                loadTableData();
+            }
+        });
+
 
             let isCalendarGenerated = false;
             let isTodaySelected = false;

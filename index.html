@@ -19,10 +19,6 @@
         .button:hover {
             background-color: #5DADE2;
         }
-        #code-container {
-            display: none;
-            margin-top: 20px;
-        }
         .popup {
             display: none; /* Masqué par défaut */
             position: fixed;
@@ -61,12 +57,10 @@
         <button class="button" onclick="showCodePromptJournalier()">Quotidiano</button>
     </div>
     <script src="auth.js"></script>
-    <div id="code-container">
-        <input type="password" id="code" placeholder="Entrez le code">
-        <button class="button" onclick="checkCode()">Entrer</button>
-    </div>
     <div id="popup" class="popup">
         <div class="popup-content">
+            <input type="password" id="code" placeholder="Entrez le code">
+            <button class="button" onclick="checkCode()">Entrer</button>
             <p id="message"></p>
             <button class="button" onclick="closePopup()">Fermer</button>
         </div>

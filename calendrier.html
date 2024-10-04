@@ -291,6 +291,11 @@
                     cancelButton.classList.add('cancel-button');
                     applyCell.appendChild(cancelButton);
 
+                    const whatsappButton = document.createElement('button');
+                    whatsappButton.textContent = 'WhatsApp';
+                    whatsappButton.classList.add('whatsapp-button');
+                    applyCell.appendChild(whatsappButton);
+
                     // Ajouter un écouteur d'événement au bouton "Aplicar cambio"
                     applyButton.addEventListener('click', async function() {
                         const updatedEvent = {};
@@ -416,6 +421,15 @@
                             // Masquer le popup de confirmation
                             confirmationPopup.style.display = 'none';
                         });
+                    });
+
+                    // Ajouter un écouteur d'événement au bouton "WhatsApp"
+                    whatsappButton.addEventListener('click', function() {
+                        const telefono = row.querySelector('[data-column="Telefono"]').textContent.trim();
+                        if (telefono) {
+                            const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefono}`;
+                            window.open(whatsappUrl, '_blank');
+                        }
                     });
                 });
 
@@ -487,6 +501,11 @@
                     cancelButton.classList.add('cancel-button');
                     applyCell.appendChild(cancelButton);
 
+                    const whatsappButton = document.createElement('button');
+                    whatsappButton.textContent = 'WhatsApp';
+                    whatsappButton.classList.add('whatsapp-button');
+                    applyCell.appendChild(whatsappButton);
+
                     // Ajouter un écouteur d'événement au bouton "Aplicar cambio"
                     applyButton.addEventListener('click', async function() {
                         const updatedEvent = {};
@@ -612,6 +631,15 @@
                             // Masquer le popup de confirmation
                             confirmationPopup.style.display = 'none';
                         });
+                    });
+
+                    // Ajouter un écouteur d'événement au bouton "WhatsApp"
+                    whatsappButton.addEventListener('click', function() {
+                        const telefono = row.querySelector('[data-column="Telefono"]').textContent.trim();
+                        if (telefono) {
+                            const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefono}`;
+                            window.open(whatsappUrl, '_blank');
+                        }
                     });
                 });
 

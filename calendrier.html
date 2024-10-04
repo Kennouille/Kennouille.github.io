@@ -279,6 +279,7 @@
                         }
                     });
 
+                    // Ajouter la cellule pour le bouton "Aplicar cambio"
                     const applyCell = row.insertCell();
                     const applyButton = document.createElement('button');
                     applyButton.textContent = 'Aplicar cambio';
@@ -397,6 +398,16 @@
                             // Supprimer la ligne du tableau
                             row.remove();
 
+                            // Afficher le message de succès "Cancelado"
+                            window.successMessage.textContent = 'Cancelado';
+                            window.successMessage.style.display = 'block';
+
+                            // Masquer le message après 1 seconde
+                            setTimeout(() => {
+                                window.successMessage.style.display = 'none';
+                                window.successMessage.textContent = 'Données mises à jour avec succès'; // Réinitialiser le texte du message de succès
+                            }, 1000);
+
                             // Masquer le popup de confirmation
                             confirmationPopup.style.display = 'none';
                         });
@@ -471,6 +482,11 @@
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
 
+                    const cancelButton = document.createElement('button');
+                    cancelButton.textContent = 'Cancelar';
+                    cancelButton.classList.add('cancel-button');
+                    applyCell.appendChild(cancelButton);
+
                     // Ajouter un écouteur d'événement au bouton "Aplicar cambio"
                     applyButton.addEventListener('click', async function() {
                         const updatedEvent = {};
@@ -484,51 +500,120 @@
                         });
 
                         const telefono = updatedEvent['Telefono'];
+                        if (telefono) {
+                            // Mettre à jour les colonnes dans tableData1
+                            const { error: updateError } = await supabase
+                                .from('tableData1')
+                                .update({
+                                    Nombre: updatedEvent['Nombre'],
+                                    Fecha: updatedEvent['Fecha'],
+                                    Hora: updatedEvent['Hora'],
+                                    Min: updatedEvent['Min'],
+                                    Lugar: updatedEvent['Lugar'],
+                                    Precio: updatedEvent['Precio'],
+                                    Trabajo: updatedEvent['Trabajo']
+                                })
+                                .eq('Telefono', telefono);
+
+                            if (updateError) {
+                                console.error('Erreur lors de la mise à jour de tableData1 :', updateError);
+                                return;
+                            } else {
+                                console.log('tableData1 mis à jour avec succès');
+                            }
+                        }
+
+                        const userId = row.dataset.userId;
+                        if (userId) {
+                            const { data, error } = await supabase
+                                .from('event_quot1')
+                                .update(updatedEvent)
+                                .eq('user_id', userId);
+
+                            if (error) {
+                                console.error('Erreur lors de la mise à jour des données :', error);
+                            } else {
+                                console.log('Données mises à jour avec succès');
+                                // Afficher le message de succès
+                                window.successMessage.style.display = 'block';
+
+                                // Masquer le message après 1 seconde
+                                setTimeout(() => {
+                                    window.successMessage.style.display = 'none';
+                                }, 1000);
+                            }
+                        }
+                    });
+
+                    // Ajouter un écouteur d'événement au bouton "Cancelar"
+                    cancelButton.addEventListener('click', function() {
+                        // Afficher le popup de confirmation
+                        const confirmationPopup = document.getElementById('confirmationPopup');
+                        confirmationPopup.style.display = 'block';
+
+                        // Ajouter des écouteurs d'événement aux boutons du popup
+                        document.getElementById('confirmYes').addEventListener('click', async function() {
+                            const telefono = row.querySelector('[data-column="Telefono"]').textContent.trim();
+                            const userId = row.dataset.userId;
+
+                            if (userId) {
+                                // Supprimer la ligne dans event_quot1
+                                const { error: deleteErrorEventQuot1 } = await supabase
+                                    .from('event_quot1')
+                                    .delete()
+                                    .eq('user_id', userId);
+
+                                if (deleteErrorEventQuot1) {
+                                    console.error('Erreur lors de la suppression de la ligne dans event_quot1 :', deleteErrorEventQuot1);
+                                    return;
+                                } else {
+                                    console.log('Ligne supprimée dans event_quot1 avec succès');
+                                }
+                            }
+
                             if (telefono) {
-                                // Mettre à jour les colonnes dans tableData1
-                                const { error: updateError } = await supabase
+                                // Effacer les colonnes Hora, Min, Precio et Trabajo dans tableData1
+                                const { error: updateErrorTableData1 } = await supabase
                                     .from('tableData1')
                                     .update({
-                                        Nombre: updatedEvent['Nombre'],
-                                        Fecha: updatedEvent['Fecha'],
-                                        Hora: updatedEvent['Hora'],
-                                        Min: updatedEvent['Min'],
-                                        Lugar: updatedEvent['Lugar'],
-                                        Precio: updatedEvent['Precio'],
-                                        Trabajo: updatedEvent['Trabajo']
+                                        Hora: null,
+                                        Min: null,
+                                        Precio: null,
+                                        Trabajo: null
                                     })
                                     .eq('Telefono', telefono);
 
-                                if (updateError) {
-                                    console.error('Erreur lors de la mise à jour de tableData1 :', updateError);
+                                if (updateErrorTableData1) {
+                                    console.error('Erreur lors de la mise à jour de tableData1 :', updateErrorTableData1);
                                     return;
                                 } else {
-                                    console.log('tableData1 mis à jour avec succès');
+                                    console.log('Colonnes effacées dans tableData1 avec succès');
                                 }
                             }
 
-                            const userId = row.dataset.userId;
-                            if (userId) {
-                                const { data, error } = await supabase
-                                    .from('event_quot1')
-                                    .update(updatedEvent)
-                                    .eq('user_id', userId);
+                            // Supprimer la ligne du tableau
+                            row.remove();
 
-                                if (error) {
-                                    console.error('Erreur lors de la mise à jour des données :', error);
-                                } else {
-                                    console.log('Données mises à jour avec succès');
-                                    // Afficher le message de succès
-                                    window.successMessage.style.display = 'block';
+                            // Afficher le message de succès "Cancelado"
+                            window.successMessage.textContent = 'Cancelado';
+                            window.successMessage.style.display = 'block';
 
-                                    // Masquer le message après 1 seconde
-                                    setTimeout(() => {
-                                        window.successMessage.style.display = 'none';
-                                    }, 1000);
-                                }
-                            }
+                            // Masquer le message après 1 seconde
+                            setTimeout(() => {
+                                window.successMessage.style.display = 'none';
+                                window.successMessage.textContent = 'Données mises à jour avec succès'; // Réinitialiser le texte du message de succès
+                            }, 1000);
+
+                            // Masquer le popup de confirmation
+                            confirmationPopup.style.display = 'none';
+                        });
+
+                        document.getElementById('confirmNo').addEventListener('click', function() {
+                            // Masquer le popup de confirmation
+                            confirmationPopup.style.display = 'none';
                         });
                     });
+                });
 
             } catch (error) {
                 console.error('Erreur lors de la récupération des événements :', error);

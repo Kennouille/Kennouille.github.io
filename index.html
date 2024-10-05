@@ -2,22 +2,36 @@
 <html lang="fr">
 <head>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
         .button {
             font-family: 'Lobster', cursive;
-            border: 4px solid blue;
-            background-color: #5DADE2;
+            border: 4px solid #007BFF;
+            background-color: #007BFF;
             color: white;
-            padding: 6px 10px;
+            padding: 10px 20px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 22px;
-            margin: 4px 1px;
+            font-size: 18px;
+            margin: 10px;
             cursor: pointer;
             border-radius: 12px;
+            transition: background-color 0.3s ease;
         }
         .button:hover {
-            background-color: #5DADE2;
+            background-color: #0056b3;
+        }
+        .image-container img {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        .image-container img:hover {
+            transform: scale(1.05);
         }
         .popup {
             display: none; /* Masqué par défaut */
@@ -67,4 +81,5 @@
     <script src="auth.js"></script>
 </body>
 </html>
+
 

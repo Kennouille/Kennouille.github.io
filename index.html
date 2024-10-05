@@ -4,17 +4,21 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             background-color: #5DADE2;
             color: #333;
         }
         .image-container {
             position: relative;
-            width: 150%; /* Agrandir l'image de 50% */
-            margin: 0 auto;
+            width: 100%;
+            height: 100vh; /* 100% de la hauteur de l'écran */
+            overflow: hidden;
         }
         .image-container img {
             width: 100%;
-            border-radius: 10px;
+            height: 100%;
+            object-fit: cover; /* L'image couvre tout l'écran */
         }
         .overlay {
             position: absolute;
@@ -25,10 +29,11 @@
             background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour améliorer la lisibilité */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             color: white;
             text-align: center;
+            padding-top: 20vh; /* Espace en haut pour le titre et les boutons */
         }
         .button {
             font-family: 'Lobster', cursive;
@@ -66,7 +71,7 @@
     <div class="image-container">
         <img src="images/Julia_imagen_cleanup.jpg" alt="Image de bienvenue">
         <div class="overlay">
-            <h1>Bienvenido</h1>
+            <h1 style="color: white;">Bienvenido</h1>
             <div class="buttons">
                 <button class="button" onclick="window.location.href='calendrier.html'">Calendario</button>
                 <button class="button" onclick="showCodePrompt()">Contactos</button>
@@ -102,6 +107,29 @@
             var select = document.getElementById("services");
             var image = document.querySelector(".image-container img");
             image.src = select.value;
+        }
+
+        function showCodePrompt() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function showCodePromptJournalier() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function checkCode() {
+            var code = document.getElementById('code').value;
+            var message = document.getElementById('message');
+            if (code === 'correctCode') {
+                message.textContent = 'Code correct !';
+                // Ajoute ici ce qui doit se passer si le code est correct
+            } else {
+                message.textContent = 'Code incorrect, réessayez.';
+            }
         }
     </script>
 </body>

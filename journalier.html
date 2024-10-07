@@ -90,7 +90,6 @@
                     applyButton.textContent = 'Aplicar';
                     applyButton.classList.add('apply-button');
                     applyCell.appendChild(applyButton);
-                });
 
 
                 // Ajouter des écouteurs d'événements aux boutons "Appliquer"
@@ -103,7 +102,8 @@
                                 updatedEvent[cell.dataset.column] = cell.textContent.trim();
                             }
                         });
-
+                    }
+                }
                         const userId = row.dataset.userId;
 
                 // Ajouter les écouteurs pour les cases à cocher et les liens de facture

@@ -127,9 +127,6 @@
             const lugar = document.getElementById('Lugar').value || null;
             const precio = document.getElementById('Precio').value || null;
             const trabajo = document.getElementById('Trabajo').value || null;
-            const env_datos = document.getElementById('Env_datos').checked;
-            const factura = null; // Default value as it will be added later through the dialog
-            const pagado = document.getElementById('Pagado').checked;
 
             // Générer un UUID pour user_id
             const user_id = crypto.randomUUID();
@@ -143,9 +140,6 @@
             console.log('Lugar:', lugar);
             console.log('Precio:', precio);
             console.log('Trabajo:', trabajo);
-            console.log('Env_datos:', env_datos);
-            console.log('Factura:', factura);
-            console.log('Pagado:', pagado);
             console.log('user_id:', user_id);
 
             // Vérifier s'il existe une correspondance dans tableData1
@@ -171,9 +165,9 @@
                         Lugar: lugar || existingData[0].Lugar,
                         Precio: precio || existingData[0].Precio,
                         Trabajo: trabajo || existingData[0].Trabajo,
-                        Env_datos: env_datos,
-                        Factura: factura,
-                        Pagado: pagado
+                        env_datos: env_datos,
+                        factura: factura,
+                        pagado: pagado
                     })
                     .eq('Telefono', telefono);
 
@@ -187,7 +181,7 @@
                 // Insérer une nouvelle ligne dans tableData1
                 const { error: insertErrorTableData1 } = await supabase
                     .from('tableData1')
-                    .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, Env_datos: env_datos, Factura: factura, Pagado: pagado }]);
+                    .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, env_datos: env_datos, factura: factura, pagado: pagado }]);
 
                 if (insertErrorTableData1) {
                     console.error('Erreur lors de l\'ajout de la nouvelle ligne dans tableData1 :', insertErrorTableData1);
@@ -823,8 +817,6 @@
                 };
                 event[selectedDate].push(rowData);
 
-                // Appel de la fonction addToDataTable2 pour ajouter l'événement à dataTable2
-                addToDataTable2(rowData);
             });
 
             alert('Agenda sauvegardé pour la date : ' + selectedDate);

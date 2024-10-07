@@ -14,6 +14,7 @@
         <table id="journalierTable">
             <thead>
                 <tr>
+                    <tr>
                     <th>Telefono</th>
                     <th>Nombre</th>
                     <th>Fecha</th>
@@ -23,9 +24,7 @@
                     <th>Precio</th>
                     <th>Trabajo</th>
                     <th>user_id</th>
-                    <th>env_datos</th>
-                    <th>factura</th>
-                    <th>pagado</th>
+                    <th>Facturación</th> <!-- Colonne combinée -->
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -40,73 +39,63 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             loadTableData();
-
-            document.getElementById('addEventButton').addEventListener('click', async function() {
-                const newEvent = {
-                    Telefono: document.getElementById('Telefono').value,
-                    Nombre: document.getElementById('Nombre').value,
-                    Fecha: document.getElementById('Fecha').value,
-                    Hora: document.getElementById('Hora').value,
-                    Min: document.getElementById('Min').value,
-                    Lugar: document.getElementById('Lugar').value,
-                    Precio: document.getElementById('Precio').value,
-                    Trabajo: document.getElementById('Trabajo').value,
-                    user_id: document.getElementById('user_id').value,
-                    Env_datos: document.getElementById('env_datos').value,
-                    Factura: document.getElementById('factura').value,
-                    Pagado: document.getElementById('pagado').value
-                };
-
-                console.log('Nouvel événement à ajouter :', newEvent);
-
-                const { data, error } = await supabase
-                    .from('event_quot1')
-                    .insert([newEvent]);
-
-                if (error) {
-                    console.error('Erreur lors de l\'insertion des données :', error);
-                } else {
-                    console.log('Données insérées avec succès :', data);
-                    loadTableData(); // Recharger les données pour afficher le nouvel événement
-                }
-            });
         });
 
+        // Fonction pour charger les données de la table
         async function loadTableData() {
-            try {
-                const { data, error } = await supabase
-                    .from('event_quot1')
-                    .select('*');
+            const { data, error } = await supabase
+                .from('event_quot1')
+                .select('*');
 
-                if (error) {
-                    console.error('Error fetching data:', error);
-                    return;
-                }
+            if (error) {
+                console.error('Erreur lors de la récupération des données :', error);
+                return;
+            }
 
-                console.log('Data fetched from Supabase:', data);
+            const tbody = document.querySelector('#journalierTable tbody');
+            tbody.innerHTML = ''; // Effacer les anciennes lignes
 
-                const tbody = document.querySelector('#journalierTable tbody');
-                tbody.innerHTML = ''; // Effacer les anciennes lignes
-                data.forEach(rowData => {
-                    const row = tbody.insertRow();
-                    row.dataset.userId = rowData.user_id; // Ajouter l'attribut data-user-id
-                    Object.entries(rowData).forEach(([key, value]) => {
-                        const cell = row.insertCell();
-                        cell.textContent = value;
-                        cell.contentEditable = "true";
-                        cell.dataset.column = key; // Ajouter un attribut pour identifier la colonne
-                        if (key === 'Telefono') {
-                            cell.dataset.telefono = value; // Ajouter un attribut pour identifier la ligne
-                        }
-                    });
+            data.forEach(event => {
+                const row = tbody.insertRow();
+                row.dataset.userId = event.user_id; // Ajouter l'attribut data-user-id
 
-                    // Ajouter le bouton "Appliquer"
-                    const applyCell = row.insertCell();
-                    const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Aplicar';
-                    applyButton.classList.add('apply-button');
-                    applyCell.appendChild(applyButton);
-                });
+                row.innerHTML = `
+                    <td contenteditable="true" data-column="Telefono">${event.Telefono}</td>
+                    <td contenteditable="true" data-column="Nombre">${event.Nombre}</td>
+                    <td contenteditable="true" data-column="Fecha">${event.Fecha}</td>
+                    <td contenteditable="true" data-column="Hora">${event.Hora}</td>
+                    <td contenteditable="true" data-column="Min">${event.Min !== null ? event.Min : ''}</td>
+                    <td contenteditable="true" data-column="Lugar">${event.Lugar !== null ? event.Lugar : ''}</td>
+                    <td contenteditable="true" data-column="Precio">${event.Precio !== null ? event.Precio : ''}</td>
+                    <td contenteditable="true" data-column="Trabajo">${event.Trabajo !== null ? event.Trabajo : ''}</td>
+                    <td>
+                        <div class="checkbox-container" style="font-size: smaller;">
+                            <label>
+                                <input type="checkbox" data-column="Env_datos" ${event.Env_datos ? 'checked' : ''}> - Envié datos
+                            </label>
+                            <br>
+                            <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.Factura}">${event.Factura ? 'Voir la Facture' : 'Adjuntar Factura'}</span>
+                            <br>
+                            <label>
+                                <input type="checkbox" data-column="Pagado" ${event.Pagado ? 'checked' : ''}> - Pagado
+                            </label>
+                        </div>
+                    </td>
+                `;
+
+                // Ajouter les écouteurs pour les cases à cocher et les liens de facture
+                row.querySelector('[data-column="Env_datos"]').addEventListener('change', updateCheckbox);
+                row.querySelector('[data-column="Pagado"]').addEventListener('change', updateCheckbox);
+                row.querySelector('.factura-link').addEventListener('click', openFacturaDialog);
+
+
+                // Ajouter le bouton "Appliquer"
+                const applyCell = row.insertCell();
+                const applyButton = document.createElement('button');
+                applyButton.textContent = 'Aplicar';
+                applyButton.classList.add('apply-button');
+                applyCell.appendChild(applyButton);
+            });
 
 
                 // Ajouter des écouteurs d'événements aux boutons "Appliquer"

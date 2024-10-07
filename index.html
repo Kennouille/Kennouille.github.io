@@ -94,7 +94,7 @@
 </head>
 <body>
     <div class="image-container">
-        <img src="images/Julia_imagen_cleanup.jpg" alt="Image de bienvenue" class="active">
+        <img src="images/Julia_imagen_cleanup.jpg" alt="Image de bienvenida" class="active">
         <img src="images/colchones.jpg" alt="Colchones">
         <img src="images/muebles.jpg" alt="Muebles">
         <img src="images/vidrios_de_baños.jpg" alt="Vidrios de baños">
@@ -142,11 +142,8 @@
         }
 
         images.forEach(img => {
-            img.addEventListener('mousedown', stopCarousel);
-            img.addEventListener('mouseup', startCarousel);
-            img.addEventListener('touchstart', stopCarousel);
-            img.addEventListener('touchend', startCarousel);
-            img.addEventListener('mouseleave', startCarousel);
+            img.addEventListener('pointerdown', stopCarousel);
+            img.addEventListener('pointerup', startCarousel);
         });
 
         function showCodePrompt() {

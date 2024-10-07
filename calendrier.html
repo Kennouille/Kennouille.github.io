@@ -72,19 +72,7 @@
                             cell.classList.add('today');
                         }
                         cell.appendChild(cellText);
-                        const cell9 = document.createElement('td');
-                        const cell9Content = `
-                            <input type="checkbox" data-column="Env_datos" ${event.Env_datos ? 'checked' : ''}>
-                            <span class="factura-link" data-factura="${event.Factura}">${event.Factura ? 'Voir la Facture' : 'Ajouter Factura'}</span>
-                            <input type="checkbox" data-column="Pagado" ${event.Pagado ? 'checked' : ''}>
-                        `;
-                        cell9.innerHTML = cell9Content;
                         row.appendChild(cell9);
-
-                        // Ajouter les écouteurs pour les nouvelles colonnes
-                        row.querySelector('[data-column="Env_datos"]').addEventListener('change', updateCheckbox);
-                        row.querySelector('[data-column="Pagado"]').addEventListener('change', updateCheckbox);
-                        row.querySelector('.factura-link').addEventListener('click', openFacturaDialog);
                         date++;
                     }
                 }

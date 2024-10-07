@@ -306,12 +306,6 @@
                     `;
                     tbody.appendChild(row);
 
-                    // Ajouter les écouteurs pour les cases à cocher et les liens de facture
-                    row.querySelector('[data-column="Env_datos"]').addEventListener('change', updateCheckbox);
-                    row.querySelector('[data-column="Pagado"]').addEventListener('change', updateCheckbox);
-                    row.querySelector('.factura-link').addEventListener('click', openFacturaDialog);
-
-
                     // Ajouter la cellule pour le bouton "Aplicar cambio"
                     const applyCell = row.insertCell();
                     const applyButton = document.createElement('button');
@@ -335,13 +329,18 @@
                         Array.from(row.cells).forEach(cell => {
                             const column = cell.dataset.column;
                             if (column) {
-                                // Vérifiez si la cellule est vide
                                 const cellValue = cell.textContent.trim();
                                 updatedEvent[column] = cellValue === '' ? null : cellValue;
                             }
                         });
 
+                        // Capturer la valeur des cases à cocher séparément
+                        updatedEvent['env_datos'] = row.querySelector('[data-column="Env_datos"]').checked;
+                        updatedEvent['factura'] = row.querySelector('.factura-link').dataset.factura;
+                        updatedEvent['pagado'] = row.querySelector('[data-column="Pagado"]').checked;
+
                         const telefono = updatedEvent['Telefono'];
+
                         if (telefono) {
                             // Mettre à jour les colonnes dans tableData1
                             const { error: updateError } = await supabase
@@ -366,10 +365,9 @@
                             } else {
                                 console.log('tableData1 mis à jour avec succès');
                             }
-                        }
 
-                        const userId = row.dataset.userId;
-                        if (userId) {
+                            // Mettre à jour event_quot1
+                            const userId = row.dataset.userId;
                             const { data, error } = await supabase
                                 .from('event_quot1')
                                 .update(updatedEvent)

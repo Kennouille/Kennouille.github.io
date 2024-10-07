@@ -93,7 +93,7 @@
     <link rel="stylesheet" href="styles1.css">
 </head>
 <body>
-    <div class="image-container">
+    <div class="image-container" id="image-container">
         <img src="images/Julia_imagen_cleanup.jpg" alt="Image de bienvenida" class="active">
         <img src="images/colchones.jpg" alt="Colchones">
         <img src="images/muebles.jpg" alt="Muebles">
@@ -109,7 +109,7 @@
                 <button class="button" onclick="showCodePromptJournalier()">Quotidiano</button>
             </div>
             <div class="contact-info">
-                Contacto : 322-277-16-4-7
+                Contacto : 322-277-16-47
             </div>
         </div>
     </div>
@@ -141,10 +141,9 @@
             interval = setInterval(nextImage, 3000);
         }
 
-        images.forEach(img => {
-            img.addEventListener('mouseenter', stopCarousel);
-            img.addEventListener('mouseleave', startCarousel);
-        });
+        const imageContainer = document.getElementById('image-container');
+        imageContainer.addEventListener('pointerdown', stopCarousel);
+        imageContainer.addEventListener('pointerup', startCarousel);
 
         function showCodePrompt() {
             document.getElementById('popup').style.display = 'block';

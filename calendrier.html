@@ -97,11 +97,13 @@
             generateCalendar(currentMonth, currentYear);
             selectToday();
 
-            // Simuler un clic sur la date d'aujourd'hui pour charger les événements
-            const todayCell = document.querySelector(`td.clickable:contains(${todayDate})`);
-            if (todayCell) {
-                todayCell.click();
-            }
+            // Rechercher la cellule correspondant à aujourd'hui et simuler un clic
+            const cells = document.querySelectorAll('td.clickable');
+            cells.forEach(cell => {
+                if (cell.textContent == todayDate) {
+                    cell.click();
+                }
+            });
 
             // Appeler fetchEventsByDate directement pour récupérer les événements d'aujourd'hui
             await fetchEventsByDate(today);

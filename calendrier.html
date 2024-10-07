@@ -165,9 +165,9 @@
                         Lugar: lugar || existingData[0].Lugar,
                         Precio: precio || existingData[0].Precio,
                         Trabajo: trabajo || existingData[0].Trabajo,
-                        env_datos: env_datos,
-                        factura: factura,
-                        pagado: pagado
+                        env_datos: env_datos || existingData[0].env_datos,
+                        factura: factura || existingData[0].factura,
+                        pagado: pagado || existingData[0]pagado.
                     })
                     .eq('Telefono', telefono);
 
@@ -354,9 +354,9 @@
                                     Lugar: updatedEvent['Lugar'],
                                     Precio: updatedEvent['Precio'],
                                     Trabajo: updatedEvent['Trabajo'],
-                                    Env_datos: updatedEvent['Env_datos'],
-                                    Factura: updatedEvent['Factura'],
-                                    Pagado: updatedEvent['Pagado']
+                                    env_datos: updatedEvent['env_datos'],
+                                    factura: updatedEvent['factura'],
+                                    pagado: updatedEvent['pagado']
                                 })
                                 .eq('Telefono', telefono);
 

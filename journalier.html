@@ -84,6 +84,28 @@
                 `;
                 tbody.appendChild(row);
 
+                // Ajouter le bouton "Appliquer"
+                    const applyCell = row.insertCell();
+                    const applyButton = document.createElement('button');
+                    applyButton.textContent = 'Aplicar';
+                    applyButton.classList.add('apply-button');
+                    applyCell.appendChild(applyButton);
+                });
+
+
+                // Ajouter des écouteurs d'événements aux boutons "Appliquer"
+                document.querySelectorAll('.apply-button').forEach(button => {
+                    button.addEventListener('click', async function() {
+                        const row = button.closest('tr');
+                        const updatedEvent = {};
+                        Array.from(row.cells).forEach(cell => {
+                            if (cell.dataset.column) {
+                                updatedEvent[cell.dataset.column] = cell.textContent.trim();
+                            }
+                        });
+
+                        const userId = row.dataset.userId;
+
                 // Ajouter les écouteurs pour les cases à cocher et les liens de facture
                 row.querySelector('[data-column="Env_datos"]').addEventListener('change', updateCheckbox);
                 row.querySelector('[data-column="Pagado"]').addEventListener('change', updateCheckbox);

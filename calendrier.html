@@ -92,9 +92,12 @@
             var todayDate = today.getDate();
             var todayMonth = today.getMonth();
             var todayYear = today.getFullYear();
+            var todayFormatted = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
 
             // Générer le calendrier pour le mois et l'année actuels
             generateCalendar(currentMonth, currentYear);
+
+            // Appeler selectToday
             selectToday();
 
             // Rechercher la cellule correspondant à aujourd'hui et simuler un clic
@@ -106,7 +109,8 @@
             });
 
             // Appeler fetchEventsByDate directement pour récupérer les événements d'aujourd'hui
-            await fetchEventsByDate(today);
+            console.log('Date passed to fetchEventsByDate from DOMContentLoaded:', todayFormatted);
+            await fetchEventsByDate(todayFormatted);
 
             // Ajouter des écouteurs d'événements pour les boutons
             document.getElementById('prevButton').addEventListener('click', function() {
@@ -117,6 +121,7 @@
                 changeMonth(1);
             });
         });
+
 
         document.getElementById('addEventButton').addEventListener('click', async function() {
             const telefono = document.getElementById('Telefono').value;

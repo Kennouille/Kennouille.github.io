@@ -142,8 +142,8 @@
         }
 
         images.forEach(img => {
-            img.addEventListener('pointerdown', stopCarousel);
-            img.addEventListener('pointerup', startCarousel);
+            img.addEventListener('mouseenter', stopCarousel);
+            img.addEventListener('mouseleave', startCarousel);
         });
 
         function showCodePrompt() {

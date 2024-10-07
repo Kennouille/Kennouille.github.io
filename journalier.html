@@ -85,8 +85,8 @@
                 tbody.appendChild(row);
 
                 // Ajouter les écouteurs pour les cases à cocher et les liens de facture
-                row.querySelector('[data-column="Env_datos"]').addEventListener('change', updateCheckbox);
-                row.querySelector('[data-column="Pagado"]').addEventListener('change', updateCheckbox);
+                row.querySelector('[data-column="env_datos"]').addEventListener('change', updateCheckbox);
+                row.querySelector('[data-column="pagado"]').addEventListener('change', updateCheckbox);
                 row.querySelector('.factura-link').addEventListener('click', openFacturaDialog);
 
                 // Ajouter le bouton "Aplicar"

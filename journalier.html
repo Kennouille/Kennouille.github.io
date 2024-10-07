@@ -67,7 +67,7 @@
                     <td contenteditable="true" data-column="Lugar">${event.Lugar !== null ? event.Lugar : ''}</td>
                     <td contenteditable="true" data-column="Precio">${event.Precio !== null ? event.Precio : ''}</td>
                     <td contenteditable="true" data-column="Trabajo">${event.Trabajo !== null ? event.Trabajo : ''}</td>
-                    <td contenteditable="true" data-column="user_id">${event.user_id !== null ? event.user_id : ''}</td>
+                    <td contenteditable="true" data-column="user_id">${event.user_id}</td>
                     <td>
                         <div class="checkbox-container" style="font-size: smaller;">
                             <label>
@@ -84,34 +84,45 @@
                 `;
                 tbody.appendChild(row);
 
-                // Ajouter le bouton "Appliquer"
-                    const applyCell = row.insertCell();
-                    const applyButton = document.createElement('button');
-                    applyButton.textContent = 'Aplicar';
-                    applyButton.classList.add('apply-button');
-                    applyCell.appendChild(applyButton);
-
-
-                // Ajouter des écouteurs d'événements aux boutons "Appliquer"
-                document.querySelectorAll('.apply-button').forEach(button => {
-                    button.addEventListener('click', async function() {
-                        const row = button.closest('tr');
-                        const updatedEvent = {};
-                        Array.from(row.cells).forEach(cell => {
-                            if (cell.dataset.column) {
-                                updatedEvent[cell.dataset.column] = cell.textContent.trim();
-                            }
-                        });
-                    });
-                });
-                        const userId = row.dataset.userId;
-
                 // Ajouter les écouteurs pour les cases à cocher et les liens de facture
                 row.querySelector('[data-column="Env_datos"]').addEventListener('change', updateCheckbox);
                 row.querySelector('[data-column="Pagado"]').addEventListener('change', updateCheckbox);
                 row.querySelector('.factura-link').addEventListener('click', openFacturaDialog);
+
+                // Ajouter le bouton "Aplicar"
+                const applyCell = row.insertCell();
+                const applyButton = document.createElement('button');
+                applyButton.textContent = 'Aplicar';
+                applyButton.classList.add('apply-button');
+                applyCell.appendChild(applyButton);
+            });
+
+            // Ajouter des écouteurs d'événements aux boutons "Aplicar"
+            document.querySelectorAll('.apply-button').forEach(button => {
+                button.addEventListener('click', async function() {
+                    const row = button.closest('tr');
+                    const updatedEvent = {};
+                    Array.from(row.cells).forEach(cell => {
+                        if (cell.dataset.column) {
+                            updatedEvent[cell.dataset.column] = cell.textContent.trim();
+                        }
+                    });
+
+                    const userId = row.dataset.userId;
+                    const { error } = await supabase
+                        .from('event_quot1')
+                        .update(updatedEvent)
+                        .eq('user_id', userId);
+
+                    if (error) {
+                        console.error('Erreur lors de la mise à jour des données :', error);
+                    } else {
+                        console.log('Données mises à jour avec succès');
+                    }
+                });
             });
         }
+
 
         async function updateCheckbox(event) {
             const row = event.target.closest('tr');
@@ -119,6 +130,7 @@
             const value = event.target.checked;
             const userId = row.dataset.userId;
 
+            // Vérifier et mettre à jour uniquement les colonnes existantes
             const { error } = await supabase
                 .from('event_quot1')
                 .update({ [column]: value })
@@ -130,6 +142,7 @@
                 console.log(`Colonne ${column} mise à jour avec succès`);
             }
         }
+
 
         async function openFacturaDialog(event) {
             const facturaLink = event.target;
@@ -178,6 +191,7 @@
                 }
             }
         }
+
 
 
 

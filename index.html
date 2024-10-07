@@ -19,6 +19,14 @@
             width: 100%;
             height: 100%;
             object-fit: cover; /* L'image couvre tout l'écran */
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .image-container img.active {
+            opacity: 1;
         }
         .overlay {
             position: absolute;
@@ -89,7 +97,13 @@
 </head>
 <body>
     <div class="image-container">
-        <img src="images/Julia_imagen_cleanup.jpg" alt="Image de bienvenue">
+        <img src="images/Julia_imagen_cleanup.jpg" alt="Image de bienvenue" class="active">
+        <img src="images/colchones.jpg" alt="Colchones">
+        <img src="images/muebles.jpg" alt="Muebles">
+        <img src="images/vidrios_de_baños.jpg" alt="Vidrios de baños">
+        <img src="images/sala_comedor.jpg" alt="Sala y comedor">
+        <img src="images/muebles_exteriores.jpg" alt="Muebles exteriores">
+        <img src="images/tapetes.jpg" alt="Tapetes">
         <div class="overlay">
             <h1 style="color: white;">Bienvenido</h1>
             <div class="buttons">
@@ -98,7 +112,7 @@
                 <button class="button" onclick="showCodePromptJournalier()">Quotidiano</button>
             </div>
             <div class="contact-info">
-                Contactez-nous : 0123-456-789
+                Contacto : 322-277-16-47
             </div>
             <div class="dropdown">
                 <select id="services" onchange="changeImage()">
@@ -123,9 +137,17 @@
     </div>
     <script src="auth.js"></script>
     <script>
+        let index = 0;
+        const images = document.querySelectorAll('.image-container img');
+        setInterval(() => {
+            images[index].classList.remove('active');
+            index = (index + 1) % images.length;
+            images[index].classList.add('active');
+        }, 3000);
+
         function changeImage() {
             var select = document.getElementById("services");
-            var image = document.querySelector(".image-container img");
+            var image = document.querySelector(".image-container img.active");
             image.src = select.value;
         }
 
@@ -140,7 +162,6 @@
         function closePopup() {
             document.getElementById('popup').style.display = 'none';
         }
-
 
         function checkCode() {
             var code = document.getElementById('code').value;

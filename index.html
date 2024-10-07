@@ -66,9 +66,6 @@
             margin: 20px 0;
             font-size: 20px;
         }
-        .dropdown {
-            margin: 20px 0;
-        }
         .popup {
             display: none; /* Masqué par défaut */
             position: fixed;
@@ -128,17 +125,28 @@
     <script>
         let index = 0;
         const images = document.querySelectorAll('.image-container img');
-        setInterval(() => {
+        let interval = setInterval(nextImage, 3000);
+
+        function nextImage() {
             images[index].classList.remove('active');
             index = (index + 1) % images.length;
             images[index].classList.add('active');
-        }, 3000);
-
-        function changeImage() {
-            var select = document.getElementById("services");
-            var image = document.querySelector(".image-container img.active");
-            image.src = select.value;
         }
+
+        function stopCarousel() {
+            clearInterval(interval);
+        }
+
+        function startCarousel() {
+            interval = setInterval(nextImage, 3000);
+        }
+
+        images.forEach(img => {
+            img.addEventListener('mousedown', stopCarousel);
+            img.addEventListener('mouseup', startCarousel);
+            img.addEventListener('touchstart', stopCarousel);
+            img.addEventListener('touchend', startCarousel);
+        });
 
         function showCodePrompt() {
             document.getElementById('popup').style.display = 'block';

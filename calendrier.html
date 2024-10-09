@@ -686,17 +686,32 @@
                                                     factura: data.Key // Utilise la clé du fichier téléchargé
                                                 };
                                                 const userId = row.dataset.userId;
-                                                const { error: updateError } = await supabase
+                                                // Mettre à jour tableData1
+                                                const { error: updateErrorTableData1 } = await supabase
+                                                    .from('tableData1')
+                                                    .update({
+                                                        factura: updatedEvent['factura']
+                                                    })
+                                                    .eq('Telefono', updatedEvent['Telefono']); // Ajoute une condition appropriée
+
+                                                if (updateErrorTableData1) {
+                                                    console.error('Erreur lors de la mise à jour de tableData1 :', updateErrorTableData1);
+                                                } else {
+                                                    console.log('tableData1 mis à jour avec succès');
+                                                }
+
+                                                // Mettre à jour event_quot1
+                                                const { error: updateErrorEventQuot1 } = await supabase
                                                     .from('event_quot1')
                                                     .update(updatedEvent)
                                                     .eq('user_id', userId);
 
-                                                if (updateError) {
-                                                    console.error('Erreur lors de la mise à jour de l\'événement :', updateError);
+                                                if (updateErrorEventQuot1) {
+                                                    console.error('Erreur lors de la mise à jour de l\'événement :', updateErrorEventQuot1);
                                                 } else {
                                                     console.log('Événement mis à jour avec succès');
                                                     facturaLink.textContent = 'Factura Adjuntada'; // Changer le texte du lien après téléchargement
-                                                    facturaLink.dataset.imageUrl = `path/to/your/${data.Key}`; // Mettre à jour l'URL de l'image
+                                                    facturaLink.dataset.imageUrl = `https://mngggybayjooqkzbhvqy.supabase.co/storage/v1/object/facturas/${data.Key}`; // Mettre à jour l'URL de l'image
                                                 }
                                             }
                                         }
@@ -707,7 +722,6 @@
                             }
                         });
                     }
-
 
                     // Ajouter la cellule pour le bouton "Aplicar cambio"
                     const applyCell = row.insertCell();

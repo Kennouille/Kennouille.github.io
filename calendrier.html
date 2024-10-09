@@ -568,7 +568,14 @@
                     // Ajouter les écouteurs pour les cases à cocher et les liens de facture
                     row.querySelector('[data-column="env_datos"]').addEventListener('change', updateCheckbox);
                     row.querySelector('[data-column="pagado"]').addEventListener('change', updateCheckbox);
-                    row.querySelector('.factura-link').addEventListener('click', openFacturaDialog);
+                    // Ajoutez l'écouteur d'événement ici
+                    row.querySelector('.factura-link').addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const facturaInput = row.querySelector('#facturaInput');
+                        if (facturaInput) {
+                            facturaInput.click();
+                        }
+                    });
 
 
                     // Ajouter la cellule pour le bouton "Aplicar cambio"
@@ -979,19 +986,17 @@
                         <td>
                             <div class="checkbox-container" style="font-size: smaller;">
                                 <label>
-                                    <input type="checkbox" data-column="env_datos" ${event.env_datos ? 'checked' : ''}> - Envié datos
+                                    <input type="checkbox" data-column="Env_datos">
                                 </label>
                                 <br>
                                 <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.Factura}">${event.Factura ? 'Voir la Facture' : 'Adjuntar Factura'}</span>
                                 <br>
                                 <label>
-                                    <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - Pagado
+                                    <input type="checkbox" data-column="Pagado">
                                 </label>
                                 <input type="file" id="facturaInput" style="display: none;">
                             </div>
                         </td>
-
-
                     </tr>
                     <!-- Ajoutez plus de lignes si nécessaire -->
                 </tbody>

@@ -574,7 +574,15 @@
 
             try {
                 // Récupérer les événements pour la date sélectionnée
-                const events = await fetchEventsByDate(selectedDate);
+                const { data: events, error } = await supabase
+                    .from('event_quot1')
+                    .select('*')
+                    .eq('Fecha', selectedDate);
+
+                if (error) {
+                    console.error('Erreur lors de la récupération des événements :', error);
+                    return;
+                }
 
                 // Définir l'ordre de tri pour les heures
                 const horaOrder = ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', 'otro'];

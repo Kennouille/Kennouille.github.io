@@ -650,7 +650,7 @@
                         console.error('Aucune facture trouvée');
                     }
 
-                    // Ajouter l'écouteur d'événement pour télécharger une nouvelle facture
+                    // Ajouter l'écouteur d'événement pour le lien "Adjuntar Factura"
                     const facturaLink = row.querySelector('.factura-link');
                     facturaLink.addEventListener('click', function(event) {
                         event.preventDefault();
@@ -664,10 +664,7 @@
                                 if (file) {
                                     console.log('Fichier sélectionné:', file.name);
                                     // Télécharger le fichier sur Supabase
-                                    const { data, error } = await supabase
-                                        .storage
-                                        .from('facturas') // Remplace 'facturas' par le nom de ton bucket de stockage
-                                        .upload(`public/${file.name}`, file);
+                                    const { data, error } = await supabase.storage.from('facturas').upload(`public/${file.name}`, file);
 
                                     if (error) {
                                         console.error('Erreur lors du téléchargement du fichier:', error);
@@ -678,10 +675,7 @@
                                             factura: data.Key // Utilise la clé du fichier téléchargé
                                         };
                                         const userId = row.dataset.userId;
-                                        const { error: updateError } = await supabase
-                                            .from('event_quot1')
-                                            .update(updatedEvent)
-                                            .eq('user_id', userId);
+                                        const { error: updateError } = await supabase.from('event_quot1').update(updatedEvent).eq('user_id', userId);
 
                                         if (updateError) {
                                             console.error('Erreur lors de la mise à jour de l\'événement :', updateError);

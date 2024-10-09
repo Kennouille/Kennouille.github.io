@@ -596,7 +596,7 @@
                 const tableBody = document.querySelector('#editable-table tbody');
                 tableBody.innerHTML = ''; // Effacer les anciennes lignes
 
-                events.forEach(event => {
+                events.forEach(async event => {
                     const row = document.createElement('tr');
                     row.dataset.userId = event.user_id; // Assurez-vous que l'ID utilisateur est défini
                     row.innerHTML = `

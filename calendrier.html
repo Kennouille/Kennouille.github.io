@@ -318,12 +318,49 @@
                     `;
                     tbody.appendChild(row);
 
-                    // Ajoutez l'écouteur d'événement ici les liens de facture
-                    row.querySelector('.factura-link').addEventListener('click', function(event) {
+                    // Ajoutez l'écouteur d'événement ici
+                    const facturaLink = row.querySelector('.factura-link');
+                    facturaLink.addEventListener('click', function(event) {
                         event.preventDefault();
+                        console.log('Factura link clicked');
                         const facturaInput = row.querySelector('#facturaInput');
                         if (facturaInput) {
                             facturaInput.click();
+                            // Ajouter un gestionnaire pour l'événement de changement de fichier
+                            facturaInput.addEventListener('change', async function() {
+                                const file = facturaInput.files[0];
+                                if (file) {
+                                    console.log('Fichier sélectionné:', file.name);
+                                    // Télécharger le fichier sur Supabase
+                                    const { data, error } = await supabase
+                                        .storage
+                                        .from('facturas') // Remplace 'facturas' par le nom de ton bucket de stockage
+                                        .upload(`public/${file.name}`, file);
+
+                                    if (error) {
+                                        console.error('Erreur lors du téléchargement du fichier:', error);
+                                    } else {
+                                        console.log('Fichier téléchargé avec succès:', data);
+                                        // Mettre à jour la base de données avec le lien du fichier
+                                        const updatedEvent = {
+                                            factura: data.Key // Utilise la clé du fichier téléchargé
+                                        };
+                                        const userId = row.dataset.userId;
+                                        const { error: updateError } = await supabase
+                                            .from('event_quot1')
+                                            .update(updatedEvent)
+                                            .eq('user_id', userId);
+
+                                        if (updateError) {
+                                            console.error('Erreur lors de la mise à jour de l\'événement :', updateError);
+                                        } else {
+                                            console.log('Événement mis à jour avec succès');
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            console.error('facturaInput not found');
                         }
                     });
 

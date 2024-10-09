@@ -617,7 +617,32 @@
                     `;
                     tableBody.appendChild(row);
 
-                    // Ajoutez l'écouteur d'événement ici
+                    // Récupérer l'URL de l'image
+                    if (event.Factura) {
+                        const { data: imageURL, error: imageError } = await supabase
+                            .storage
+                            .from('facturas') // Remplace 'facturas' par le nom de ton bucket de stockage
+                            .getPublicUrl(event.Factura);
+
+                        if (imageError) {
+                            console.error('Erreur lors de la récupération de l\'image :', imageError);
+                        } else {
+                            // Ajouter l'écouteur d'événement pour afficher l'image
+                            const facturaLink = row.querySelector('.factura-link');
+                            facturaLink.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                console.log('Factura link clicked, image URL:', imageURL.publicUrl);
+
+                                // Afficher l'image dans un popup
+                                const imagePopup = window.open("", "Image", "width=600,height=400");
+                                imagePopup.document.write(`<img src="${imageURL.publicUrl}" alt="Facture">`);
+                            });
+                        }
+                    } else {
+                        console.error('Aucune facture trouvée');
+                    }
+
+                    // Ajouter l'écouteur d'événement pour télécharger une nouvelle facture
                     const facturaLink = row.querySelector('.factura-link');
                     facturaLink.addEventListener('click', function(event) {
                         event.preventDefault();

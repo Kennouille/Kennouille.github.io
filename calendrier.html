@@ -647,52 +647,67 @@
                         console.error('Aucune facture trouvée');
                     }
 
-                    // Ajouter l'écouteur d'événement pour télécharger une nouvelle facture
+                    // Ajouter l'écouteur d'événement pour afficher l'image ou télécharger une nouvelle facture
                     const facturaLink = row.querySelector('.factura-link');
                     if (facturaLink) {
-                        facturaLink.addEventListener('click', function(event) {
+                        facturaLink.addEventListener('click', async function(event) {
                             event.preventDefault();
-                            console.log('Factura link clicked');
-                            const facturaInput = row.querySelector('#facturaInput');
-                            if (facturaInput) {
-                                facturaInput.click();
-                                // Ajouter un gestionnaire pour l'événement de changement de fichier
-                                facturaInput.addEventListener('change', async function() {
-                                    const file = facturaInput.files[0];
-                                    if (file) {
-                                        console.log('Fichier sélectionné:', file.name);
-                                        const { data, error } = await supabase
-                                            .storage
-                                            .from('facturas') // Remplace 'facturas' par le nom de ton bucket de stockage
-                                            .upload(`public/${file.name}`, file);
+                            if (facturaLink.textContent === 'Factura Adjuntada') {
+                                // Afficher l'image dans un popup
+                                const imageURL = facturaLink.dataset.imageUrl;
+                                if (imageURL) {
+                                    console.log('Afficher l\'image:', imageURL);
+                                    const imagePopup = window.open("", "Image", "width=600,height=400");
+                                    imagePopup.document.write(`<img src="${imageURL}" alt="Facture">`);
+                                } else {
+                                    console.error('URL de l\'image non trouvée.');
+                                }
+                            } else {
+                                console.log('Factura link clicked pour télécharger.');
+                                const facturaInput = row.querySelector('#facturaInput');
+                                if (facturaInput) {
+                                    facturaInput.click();
+                                    // Ajouter un gestionnaire pour l'événement de changement de fichier
+                                    facturaInput.addEventListener('change', async function() {
+                                        const file = facturaInput.files[0];
+                                        if (file) {
+                                            console.log('Fichier sélectionné:', file.name);
+                                            // Télécharger le fichier sur Supabase
+                                            const { data, error } = await supabase
+                                                .storage
+                                                .from('facturas') // Remplace 'facturas' par le nom de ton bucket de stockage
+                                                .upload(`public/${file.name}`, file);
 
-                                        if (error) {
-                                            console.error('Erreur lors du téléchargement du fichier:', error);
-                                        } else {
-                                            console.log('Fichier téléchargé avec succès:', data);
-                                            const updatedEvent = {
-                                                factura: data.Key // Utilise la clé du fichier téléchargé
-                                            };
-                                            const userId = row.dataset.userId;
-                                            const { error: updateError } = await supabase
-                                                .from('event_quot1')
-                                                .update(updatedEvent)
-                                                .eq('user_id', userId);
-
-                                            if (updateError) {
-                                                console.error('Erreur lors de la mise à jour de l\'événement :', updateError);
+                                            if (error) {
+                                                console.error('Erreur lors du téléchargement du fichier:', error);
                                             } else {
-                                                console.log('Événement mis à jour avec succès');
-                                                facturaLink.textContent = 'Factura Adjuntada'; // Changer le texte du lien après téléchargement
+                                                console.log('Fichier téléchargé avec succès:', data);
+                                                const updatedEvent = {
+                                                    factura: data.Key // Utilise la clé du fichier téléchargé
+                                                };
+                                                const userId = row.dataset.userId;
+                                                const { error: updateError } = await supabase
+                                                    .from('event_quot1')
+                                                    .update(updatedEvent)
+                                                    .eq('user_id', userId);
+
+                                                if (updateError) {
+                                                    console.error('Erreur lors de la mise à jour de l\'événement :', updateError);
+                                                } else {
+                                                    console.log('Événement mis à jour avec succès');
+                                                    facturaLink.textContent = 'Factura Adjuntada'; // Changer le texte du lien après téléchargement
+                                                    facturaLink.dataset.imageUrl = `path/to/your/${data.Key}`; // Mettre à jour l'URL de l'image
+                                                }
                                             }
                                         }
-                                    }
-                                });
-                            } else {
-                                console.error('facturaInput not found');
+                                    });
+                                } else {
+                                    console.error('facturaInput not found');
+                                }
                             }
                         });
                     }
+
 
                     // Ajouter la cellule pour le bouton "Aplicar cambio"
                     const applyCell = row.insertCell();

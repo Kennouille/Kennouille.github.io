@@ -712,7 +712,6 @@
                                                     console.log('Événement mis à jour avec succès');
                                                     facturaLink.textContent = 'Factura Adjuntada'; // Changer le texte du lien après téléchargement
                                                     facturaLink.dataset.imageUrl = `https://mngggybayjooqkzbhvqy.supabase.co/storage/v1/object/facturas/${data.Key}`; // Mettre à jour l'URL de l'image
-                                                    console.log('Mise à jour du texte et de l\'URL du lien');
                                                 }
                                             }
                                         }
@@ -722,7 +721,7 @@
                                 }
                             }
                         });
-
+                    }
 
                     // Ajouter la cellule pour le bouton "Aplicar cambio"
                     const applyCell = row.insertCell();
@@ -895,20 +894,22 @@
                             // Masquer le popup de confirmation
                             confirmationPopup.style.display = 'none';
                         });
+                    });
 
-                        // Ajouter un écouteur d'événement au bouton "WhatsApp"
-                        whatsappButton.addEventListener('click', function() {
-                            const telefono = row.querySelector('[data-column="Telefono"]').textContent.trim();
-                            if (telefono) {
-                                const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefono}`;
-                                window.open(whatsappUrl, '_blank');
-                            }
-                        });
+                    // Ajouter un écouteur d'événement au bouton "WhatsApp"
+                    whatsappButton.addEventListener('click', function() {
+                        const telefono = row.querySelector('[data-column="Telefono"]').textContent.trim();
+                        if (telefono) {
+                            const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefono}`;
+                            window.open(whatsappUrl, '_blank');
+                        }
+                    });
+                };
 
-                } catch (error) {
-                    console.error('Erreur lors de la récupération des événements :', error);
-                }
-
+            } catch (error) {
+                console.error('Erreur lors de la récupération des événements :', error);
+            }
+        }
 
         // Ajoutez un écouteur d'événements pour chaque cellule cliquable
         document.querySelectorAll('.clickable').forEach(cell => {

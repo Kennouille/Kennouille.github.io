@@ -600,9 +600,27 @@
                         });
 
                         // Capturer la valeur des cases à cocher séparément
-                        updatedEvent['env_datos'] = row.querySelector('[data-column="Env_datos"]').checked;
-                        updatedEvent['factura'] = row.querySelector('.factura-link').dataset.factura;
-                        updatedEvent['pagado'] = row.querySelector('[data-column="Pagado"]').checked;
+                        const envDatosCheckbox = row.querySelector('[data-column="env_datos"]');
+                        const facturaLink = row.querySelector('.factura-link');
+                        const pagadoCheckbox = row.querySelector('[data-column="pagado"]');
+
+                        if (envDatosCheckbox) {
+                            updatedEvent['env_datos'] = envDatosCheckbox.checked;
+                        } else {
+                            console.error('Element for env_datos not found');
+                        }
+
+                        if (facturaLink) {
+                            updatedEvent['factura'] = facturaLink.dataset.factura;
+                        } else {
+                            console.error('Element for factura not found');
+                        }
+
+                        if (pagadoCheckbox) {
+                            updatedEvent['pagado'] = pagadoCheckbox.checked;
+                        } else {
+                            console.error('Element for pagado not found');
+                        }
 
                         const telefono = updatedEvent['Telefono'];
 

@@ -484,6 +484,27 @@
             const selectedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(clickedDate).padStart(2, '0')}`;
             document.getElementById('Fecha').value = selectedDate;
 
+            const envDatosCheckbox = row.querySelector('[data-column="Env_datos"]');
+            const facturaLink = row.querySelector('.factura-link');
+            const pagadoCheckbox = row.querySelector('[data-column="Pagado"]');
+
+            if (envDatosCheckbox) {
+                updatedEvent['env_datos'] = envDatosCheckbox.checked;
+            } else {
+                console.error('Element for env_datos not found');
+            }
+
+            if (facturaLink) {
+                updatedEvent['factura'] = facturaLink.dataset.factura;
+            } else {
+                console.error('Element for factura not found');
+            }
+
+            if (pagadoCheckbox) {
+                updatedEvent['pagado'] = pagadoCheckbox.checked;
+            } else {
+                console.error('Element for pagado not found');
+            }
             // Mettre à jour l'affichage de la date sélectionnée
             const selectedDateDisplay = document.getElementById('selectedDateDisplay');
             // selectedDateDisplay.textContent = `Fecha seleccionada : ${new Date(selectedDate).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}`;

@@ -106,9 +106,14 @@
                 window.isTodaySelected = true;
             }
 
-            // Appeler fetchEventsByDate une seule fois pour récupérer les événements d'aujourd'hui
-            console.log('Date passed to fetchEventsByDate from DOMContentLoaded:', todayFormatted);
-            await fetchEventsByDate(todayFormatted);
+            // Simuler un clic sur la date actuelle pour appeler handleDateClick
+            const cells = document.querySelectorAll('.clickable');
+            cells.forEach(cell => {
+                if (parseInt(cell.textContent) === todayDate && currentMonth === todayMonth && currentYear === todayYear) {
+                    const event = new Event('click');
+                    cell.dispatchEvent(event);
+                }
+            });
 
             // Ajouter des écouteurs d'événements pour les boutons
             document.getElementById('prevButton').addEventListener('click', function() {

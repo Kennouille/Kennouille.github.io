@@ -603,6 +603,8 @@
                             console.error('Element for pagado not found');
                         }
 
+                        const telefono = updatedEvent['Telefono'];
+
                         if (telefono) {
                             // Mettre à jour les colonnes dans tableData1
                             const { error: updateError } = await supabase

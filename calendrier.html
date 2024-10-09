@@ -128,6 +128,36 @@
         });
     });
 
+    async function updateTables(factura) {
+        try {
+            const { error: updateErrorEventQuot1 } = await supabase
+                .from('event_quot1')
+                .update({ Factura: factura })
+                .eq('user_id', userId);
+
+            if (updateErrorEventQuot1) {
+                console.error('Erreur lors de la mise à jour de event_quot1:', updateErrorEventQuot1);
+                return;
+            } else {
+                console.log('event_quot1 mis à jour avec succès');
+            }
+
+            const { error: updateErrorTableData1 } = await supabase
+                .from('tableData1')
+                .update({ Factura: factura })
+                .eq('Telefono', telefono);
+
+            if (updateErrorTableData1) {
+                console.error('Erreur lors de la mise à jour de tableData1:', updateErrorTableData1);
+                return;
+            } else {
+                console.log('tableData1 mis à jour avec succès');
+            }
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour des tables:', error);
+        }
+    }
+});
         document.getElementById('addEventButton').addEventListener('click', async function() {
             const telefono = document.getElementById('Telefono').value;
             const nombre = document.getElementById('Nombre').value;

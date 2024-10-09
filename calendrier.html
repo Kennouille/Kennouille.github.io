@@ -313,10 +313,7 @@
                     `;
                     tbody.appendChild(row);
 
-                    // Ajouter les écouteurs pour les cases à cocher et les liens de facture
-                    row.querySelector('[data-column="env_datos"]').addEventListener('change', updateCheckbox);
-                    row.querySelector('[data-column="pagado"]').addEventListener('change', updateCheckbox);
-                    // Ajoutez l'écouteur d'événement ici
+                    // Ajoutez l'écouteur d'événement ici les liens de facture
                     row.querySelector('.factura-link').addEventListener('click', function(event) {
                         event.preventDefault();
                         const facturaInput = row.querySelector('#facturaInput');
@@ -577,10 +574,7 @@
 
                     tableBody.appendChild(row);
 
-                    // Ajouter les écouteurs pour les cases à cocher et les liens de facture
-                    row.querySelector('[data-column="env_datos"]').addEventListener('change', updateCheckbox);
-                    row.querySelector('[data-column="pagado"]').addEventListener('change', updateCheckbox);
-                    // Ajoutez l'écouteur d'événement ici
+                    // Ajoutez l'écouteur d'événement ici les liens de facture
                     row.querySelector('.factura-link').addEventListener('click', function(event) {
                         event.preventDefault();
                         const facturaInput = row.querySelector('#facturaInput');

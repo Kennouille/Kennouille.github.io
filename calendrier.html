@@ -574,21 +574,25 @@
                                 <label>
                                     <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - Pagado
                                 </label>
+                                <input type="file" id="facturaInput" style="display: none;">
                             </div>
                         </td>
                     `;
-                    // row.appendChild(facturacionCell);
-
                     tableBody.appendChild(row);
 
-                    // Ajoutez l'écouteur d'événement ici les liens de facture
-                    row.querySelector('.factura-link').addEventListener('click', function(event) {
+                    // Ajoutez l'écouteur d'événement ici avec un log
+                    const facturaLink = row.querySelector('.factura-link');
+                    facturaLink.addEventListener('click', function(event) {
                         event.preventDefault();
+                        console.log('Factura link clicked');
                         const facturaInput = row.querySelector('#facturaInput');
                         if (facturaInput) {
                             facturaInput.click();
+                        } else {
+                            console.error('facturaInput not found');
                         }
                     });
+                });
 
 
                     // Ajouter la cellule pour le bouton "Aplicar cambio"

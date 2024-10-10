@@ -125,11 +125,10 @@
 
             document.querySelectorAll('.factura-link').forEach(link => {
                 link.addEventListener('click', async function(event) {
+                    event.preventDefault();
                     const factura = link.getAttribute('data-factura');
                     const row = link.closest('tr');
                     const userId = row.dataset.userId;
-                    console.log('UserID trouvé:', userId);
-
                     const telefonoCell = row.querySelector('[data-column="Telefono"]');
                     console.log('Cellule Telefono trouvée:', telefonoCell);
 
@@ -142,59 +141,116 @@
                     }
                     console.log('Telefono après trim:', Telefono);
 
-                    if (!factura) {
-                        handleFacturaUpload(link, userId, Telefono);
+                    if (link.textContent === 'Voir la Facture') {
+                        const imageURL = link.dataset.imageUrl;
+                        console.log('factura link clicked, image URL:', imageURL);
+
+                        if (imageURL) {
+                            const imagePopup = window.open("", "Image", "width=600,height=400");
+                            imagePopup.document.write(`<img src="${imageURL}" alt="Facture">`);
+                        } else {
+                            console.error('URL de l\'image non trouvée.');
+                        }
                     } else {
-                        openFactura(link);
+                        if (userId && Telefono) {
+                            handleFacturaUpload(link, userId, Telefono);
+                        } else {
+                            console.error('userId ou Telefono non défini');
+                        }
                     }
                 });
             });
+        });
 
+        async function handleFacturaUpload(link, userId, Telefono) {
+            console.log('Début de handleFacturaUpload avec userId:', userId, 'et Telefono:', Telefono);
+            const facturaInput = document.createElement('input');
+            facturaInput.type = 'file';
+            facturaInput.accept = '.pdf, .jpg, .png';
 
-                        async function handleFacturaUpload(link, userId, Telefono) {
-                            const facturaInput = document.createElement('input');
-                            facturaInput.type = 'file';
-                            facturaInput.accept = '.pdf, .jpg, .png';
+            facturaInput.addEventListener('change', async function() {
+                const file = facturaInput.files[0];
 
-                            facturaInput.addEventListener('change', async function() {
-                                const file = facturaInput.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
 
-                                if (file) {
-                                    const formData = new FormData();
-                                    formData.append('file', file);
+                    const uploadUrl = 'https://ton-backend/upload';
 
-                                    const uploadUrl = 'https://ton-backend/upload'; // Remplacer par l'URL de ton upload
+                    try {
+                        const response = await fetch(uploadUrl, {
+                            method: 'POST',
+                            body: formData
+                        });
 
-                                    try {
-                                        const response = await fetch(uploadUrl, {
-                                            method: 'POST',
-                                            body: formData
-                                        });
+                        if (response.ok) {
+                            const responseData = await response.json();
+                            console.log('Données de réponse:', responseData);
 
-                                        if (response.ok) {
-                                            const responseData = await response.json();
-                                            console.log('Données de réponse:', responseData);
+                            const newFactura = responseData.fullPath;
 
-                                            const newFactura = responseData.fullPath;
-                                            console.log('Téléchargement réussi, newFactura:', newFactura);
+                            console.log('Appel à updateTables avec userId:', userId, 'et Telefono:', Telefono);
+                            await updateTables(newFactura, userId, Telefono);
 
-                                            await updateTables(newFactura, userId, Telefono);
-
-                                            link.setAttribute('data-factura', newFactura);
-                                            link.dataset.imageUrl = `https://mngggybayjooqkzbhvqy.supabase.co/storage/v1/object/public/${newFactura}`;
-                                            link.textContent = 'Voir la Facture';
-                                            console.log('Mise à jour du lien de la facture:', link.dataset.imageUrl);
-                                        } else {
-                                            console.error('Erreur lors de l\'upload de la facture');
-                                        }
-                                    } catch (error) {
-                                        console.error('Erreur lors de l\'upload de la facture:', error);
-                                    }
-                                }
-                            });
-
-                            facturaInput.click();
+                            link.setAttribute('data-factura', newFactura);
+                            link.dataset.imageUrl = `https://mngggybayjooqkzbhvqy.supabase.co/storage/v1/object/public/${newFactura}`;
+                            link.textContent = 'Voir la Facture';
+                            console.log('Mise à jour du lien de la facture:', link.dataset.imageUrl);
+                        } else {
+                            console.error('Erreur lors de l\'upload de la facture');
                         }
+                    } catch (error) {
+                        console.error('Erreur lors de l\'upload de la facture:', error);
+                    }
+                }
+            });
+
+            facturaInput.click();
+        }
+
+        async function updateTables(factura, userId, Telefono) {
+            try {
+                console.log('Début de updateTables avec userId:', userId, 'et Telefono:', Telefono);
+                if (!Telefono) {
+                    console.error('Telefono est undefined');
+                    return;
+                }
+
+                if (userId) {
+                    console.log('Tentative de mise à jour de event_quot1 avec factura:', factura);
+                    const { data: updatedEventQuot1, error: updateErrorEventQuot1 } = await supabase
+                        .from('event_quot1')
+                        .update({ factura: factura })
+                        .eq('user_id', userId);
+
+                    if (updateErrorEventQuot1) {
+                        console.error('Erreur lors de la mise à jour de event_quot1:', updateErrorEventQuot1);
+                    } else {
+                        console.log('event_quot1 mis à jour avec succès:', updatedEventQuot1);
+                    }
+                } else {
+                    console.error('user_id non défini');
+                }
+
+                if (Telefono) {
+                    console.log('Tentative de mise à jour de tableData1 avec factura:', factura);
+                    const { data: updatedTableData1, error: updateErrorTableData1 } = await supabase
+                        .from('tableData1')
+                        .update({ factura: factura })
+                        .eq('Telefono', Telefono);
+
+                    if (updateErrorTableData1) {
+                        console.error('Erreur lors de la mise à jour de tableData1:', updateErrorTableData1);
+                    } else {
+                        console.log('tableData1 mis à jour avec succès:', updatedTableData1);
+                    }
+                } else {
+                    console.error('Telefono non défini');
+                }
+            } catch (error) {
+                console.error('Erreur lors de la mise à jour des tables:', error);
+            }
+        }
 
 
                         function openFactura(link) {
@@ -209,53 +265,8 @@
                             }
                         }
 
-            async function updateTables(factura, userId, Telefono) {
-                try {
-                    console.log('Début de updateTables avec userId:', userId, 'et Telefono:', Telefono);
 
-                    if (!Telefono) {
-                        console.error('Telefono est undefined');
-                        return;
-                    }
 
-                    if (userId) {
-                        // Ajout d'un log pour montrer la mise à jour de event_quot1
-                        console.log('Tentative de mise à jour de event_quot1 avec factura:', factura);
-                        const { data: updatedEventQuot1, error: updateErrorEventQuot1 } = await supabase
-                            .from('event_quot1')
-                            .update({ factura: factura })
-                            .eq('user_id', userId);
-
-                        if (updateErrorEventQuot1) {
-                            console.error('Erreur lors de la mise à jour de event_quot1:', updateErrorEventQuot1);
-                        } else {
-                            console.log('event_quot1 mis à jour avec succès:', updatedEventQuot1);
-                        }
-                    } else {
-                        console.error('user_id non défini');
-                    }
-
-                    if (Telefono) {
-                        console.log('Tentative de mise à jour de tableData1 avec factura:', factura);
-                        const { data: updatedTableData1, error: updateErrorTableData1 } = await supabase
-                            .from('tableData1')
-                            .update({ factura: factura })
-                            .eq('Telefono', Telefono);
-
-                        if (updateErrorTableData1) {
-                            console.error('Erreur lors de la mise à jour de tableData1:', updateErrorTableData1);
-                        } else {
-                            console.log('tableData1 mis à jour avec succès:', updatedTableData1);
-                        }
-                    } else {
-                        console.error('Telefono non défini');
-                    }
-                } catch (error) {
-                    console.error('Erreur lors de la mise à jour des tables:', error);
-                }
-            }
-
-        });
 
         // Assurer que handleDateClick est défini une seule fois
         if (typeof handleDateClick === 'undefined') {

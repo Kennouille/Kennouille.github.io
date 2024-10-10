@@ -253,17 +253,18 @@
         }
 
 
-                        function openFactura(link) {
-                            const imageUrl = link.dataset.imageUrl;
-                            console.log('factura link clicked, image URL:', imageUrl);
+        function openFactura(link) {
+            const imageUrl = link.dataset.imageUrl;
+            console.log('factura link clicked, image URL:', imageUrl);
 
-                            if (imageUrl) {
-                                const imagePopup = window.open("", "Image", "width=600,height=400");
-                                imagePopup.document.write(`<img src="${imageUrl}" alt="Facture">`);
-                            } else {
-                                console.error('URL de l\'image non trouvée.');
-                            }
-                        }
+            if (imageUrl) {
+                const imagePopup = window.open("", "Image", "width=600,height=400");
+                imagePopup.document.write(`<img src="${imageUrl}" alt="Facture">`);
+            } else {
+                console.error('URL de l\'image non trouvée.');
+            }
+        }
+
 
 
 
@@ -726,9 +727,9 @@
 
                     // Ajoutons un log ici pour vérifier la cellule Telefono
                     const telefonoCell = row.querySelector('[data-column="Telefono"]');
-                    console.log('Cellule Telefono après insertion:', telefonoCell ? telefonoCell.textContent.trim() : 'Non trouvée');
+                    //console.log('Cellule Telefono après insertion:', telefonoCell ? telefonoCell.textContent.trim() : 'Non trouvée');
                     const userId = row.dataset.userId; // Assurez-vous que `userId` est récupéré
-                    console.log('UserID trouvé:', userId); // Log pour vérifier le `user_id`
+                    //console.log('UserID trouvé:', userId); // Log pour vérifier le `user_id`
 
 
 

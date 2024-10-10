@@ -84,30 +84,25 @@
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOMContentLoaded triggered');
 
-            // Obtenir l'élément successMessage
             window.successMessage = document.getElementById('successMessage');
             console.log('successMessage element:', window.successMessage);
 
-            // Définir la variable today avec la date actuelle
             var today = new Date();
             var todayDate = today.getDate();
             var todayMonth = today.getMonth();
             var todayYear = today.getFullYear();
             var todayFormatted = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
 
-            // Générer le calendrier pour le mois et l'année actuels si ce n'est pas déjà fait
             if (!window.isCalendarGenerated) {
                 generateCalendar(currentMonth, currentYear);
                 window.isCalendarGenerated = true;
             }
 
-            // Sélectionner la date actuelle si ce n'est pas déjà fait
             if (!window.isTodaySelected) {
                 selectToday();
                 window.isTodaySelected = true;
             }
 
-            // Simuler un clic sur la date actuelle pour appeler handleDateClick
             const cells = document.querySelectorAll('.clickable');
             cells.forEach(cell => {
                 if (parseInt(cell.textContent) === todayDate && currentMonth === todayMonth && currentYear === todayYear) {
@@ -116,7 +111,6 @@
                 }
             });
 
-            // Ajouter des écouteurs d'événements pour les boutons de navigation du calendrier
             document.getElementById('prevButton').addEventListener('click', function() {
                 changeMonth(-1);
             });
@@ -125,23 +119,19 @@
                 changeMonth(1);
             });
 
-            // Ajouter des écouteurs d'événements pour les cellules cliquables
             document.querySelectorAll('.clickable').forEach(cell => {
                 cell.addEventListener('click', handleDateClick);
             });
 
-            // Ajouter des écouteurs d'événements pour les liens de facture
             document.querySelectorAll('.factura-link').forEach(link => {
                 link.addEventListener('click', async function() {
                     const factura = link.getAttribute('data-factura');
 
                     if (!factura) {
-                        // Si aucune facture n'est attachée, demander à l'utilisateur d'en attacher une
                         const facturaInput = document.createElement('input');
                         facturaInput.type = 'file';
                         facturaInput.accept = '.pdf, .jpg, .png';
 
-                        // Gérer le changement de fichier
                         facturaInput.addEventListener('change', async function() {
                             const file = facturaInput.files[0];
 
@@ -149,7 +139,6 @@
                                 const formData = new FormData();
                                 formData.append('file', file);
 
-                                // Remplacer cette URL par l'endpoint de ton backend pour uploader le fichier
                                 const uploadUrl = 'https://ton-backend/upload';
 
                                 try {
@@ -160,12 +149,10 @@
 
                                     if (response.ok) {
                                         const responseData = await response.json();
-                                        const newFactura = responseData.filePath; // Chemin du fichier uploadé
+                                        const newFactura = responseData.filePath;
 
-                                        // Mettre à jour les tables
                                         await updateTables(newFactura);
 
-                                        // Mettre à jour l'attribut et le texte du lien
                                         link.setAttribute('data-factura', newFactura);
                                         link.textContent = 'Voir la Facture';
                                     } else {
@@ -177,19 +164,15 @@
                             }
                         });
 
-                        // Simuler un clic pour ouvrir la boîte de dialogue de fichier
                         facturaInput.click();
                     } else {
-                        // Si une facture est déjà attachée, ouvrir le lien
                         window.open(factura, '_blank');
                     }
                 });
             });
 
-            // Fonction pour mettre à jour les tables
             async function updateTables(factura) {
                 try {
-                    // Mettre à jour la table event_quot1
                     const { error: updateErrorEventQuot1 } = await supabase
                         .from('event_quot1')
                         .update({ Factura: factura })
@@ -202,7 +185,6 @@
                         console.log('event_quot1 mis à jour avec succès');
                     }
 
-                    // Mettre à jour la table tableData1
                     const { error: updateErrorTableData1 } = await supabase
                         .from('tableData1')
                         .update({ Factura: factura })
@@ -219,6 +201,16 @@
                 }
             }
         });
+
+        // Assurer que handleDateClick appelle fetchEventsByDate
+        async function handleDateClick(event) {
+            const date = event.target.textContent;
+            const formattedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+
+            console.log('fetchEventsByDate called for date:', formattedDate);
+            await fetchEventsByDate(formattedDate);
+        }
+
 
 
         document.getElementById('addEventButton').addEventListener('click', async function() {

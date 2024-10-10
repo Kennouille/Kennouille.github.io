@@ -128,10 +128,11 @@
                     const factura = link.getAttribute('data-factura');
                     const row = link.closest('tr');
                     const userId = row.dataset.userId;
-                    const telefonoCell = row.querySelector('[data-column="Telefono"]');
 
-                    // Ajout de logs pour vérifier l'existence de la cellule et sa valeur
+                    // Récupération de la cellule et du contenu de Telefono
+                    const telefonoCell = row.querySelector('[data-column="Telefono"]');
                     console.log('Cellule Telefono trouvée:', telefonoCell);
+
                     let telefono = null;
                     if (telefonoCell) {
                         telefono = telefonoCell.textContent.trim();
@@ -139,6 +140,7 @@
                     } else {
                         console.log('Cellule Telefono non trouvée');
                     }
+
                     console.log('Telefono après trim:', telefono);
 
                     if (!factura) {
@@ -172,15 +174,12 @@
                                             }
                                         }
 
-                                        // Utiliser la bonne clé pour le chemin du fichier
                                         const newfactura = responseData.path || responseData.filePath || responseData.fullPath; // Adaptation en fonction de la réponse
 
                                         await updateTables(newfactura, userId, telefono);
 
                                         link.setAttribute('data-factura', newfactura);
-                                        link.dataset.imageUrl = `https://mngggybayjooqkzbhvqy.supabase.co/storage/v1/object/facturas/${newfactura}`;
                                         link.textContent = 'Voir la Facture';
-                                        console.log('Mise à jour du lien de la facture:', link.dataset.imageUrl);
                                     } else {
                                         console.error('Erreur lors de l\'upload de la facture');
                                     }
@@ -192,21 +191,14 @@
 
                         facturaInput.click();
                     } else {
-                        const imageUrl = link.dataset.imageUrl;
-                        console.log('factura link clicked, image URL:', imageUrl);
-
-                        if (imageUrl) {
-                            const imagePopup = window.open("", "Image", "width=600,height=400");
-                            imagePopup.document.write(`<img src="${imageUrl}" alt="Facture">`);
-                        } else {
-                            console.error('URL de l\'image non trouvée.');
-                        }
+                        window.open(factura, '_blank');
                     }
                 });
             });
 
             async function updateTables(factura, userId, telefono) {
                 try {
+                    // Vérifier si userId et telefono sont définis
                     console.log('UserID:', userId);
                     console.log('Telefono:', telefono);
 

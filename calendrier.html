@@ -202,13 +202,15 @@
             }
         });
 
-        // Assurer que handleDateClick appelle fetchEventsByDate
-        async function handleDateClick(event) {
-            const date = event.target.textContent;
-            const formattedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+        // Assurer que handleDateClick est défini une seule fois
+        if (typeof handleDateClick === 'undefined') {
+            async function handleDateClick(event) {
+                const date = event.target.textContent;
+                const formattedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
 
-            console.log('fetchEventsByDate called for date:', formattedDate);
-            await fetchEventsByDate(formattedDate);
+                console.log('fetchEventsByDate called for date:', formattedDate);
+                await fetchEventsByDate(formattedDate);
+            }
         }
 
 

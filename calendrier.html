@@ -211,10 +211,7 @@
 
             async function updateTables(factura, userId, Telefono) {
                 try {
-                    console.log('UserID:', userId);
-                    console.log('Telefono:', Telefono);
-
-                    // Vérifions que `Telefono` est bien passé comme paramètre
+                    console.log('Début de updateTables avec userId:', userId, 'et Telefono:', Telefono); // Log ajouté
                     if (!Telefono) {
                         console.error('Telefono est undefined');
                         return;
@@ -229,7 +226,7 @@
                         if (updateErrorEventQuot1) {
                             console.error('Erreur lors de la mise à jour de event_quot1:', updateErrorEventQuot1);
                         } else {
-                            console.log('event_quot1 mis à jour avec succès', updatedEventQuot1);
+                            console.log('event_quot1 mis à jour avec succès:', updatedEventQuot1);
                         }
                     } else {
                         console.error('user_id non défini');
@@ -244,7 +241,7 @@
                         if (updateErrorTableData1) {
                             console.error('Erreur lors de la mise à jour de tableData1:', updateErrorTableData1);
                         } else {
-                            console.log('tableData1 mis à jour avec succès', updatedTableData1);
+                            console.log('tableData1 mis à jour avec succès:', updatedTableData1);
                         }
                     } else {
                         console.error('Telefono non défini');
@@ -253,8 +250,6 @@
                     console.error('Erreur lors de la mise à jour des tables:', error);
                 }
             }
-
-
         });
 
         // Assurer que handleDateClick est défini une seule fois
@@ -759,9 +754,9 @@
 
                     // Ajoutons un log ici pour vérifier la cellule Telefono
                     const telefonoCell = row.querySelector('[data-column="Telefono"]');
-                    //console.log('Cellule Telefono après insertion:', telefonoCell ? telefonoCell.textContent.trim() : 'Non trouvée');
+                    console.log('Cellule Telefono après insertion:', telefonoCell ? telefonoCell.textContent.trim() : 'Non trouvée');
                     const userId = row.dataset.userId; // Assurez-vous que `userId` est récupéré
-                    //console.log('UserID trouvé:', userId); // Log pour vérifier le `user_id`
+                    console.log('UserID trouvé:', userId); // Log pour vérifier le `user_id`
 
                     if (event.Factura) {
                         try {

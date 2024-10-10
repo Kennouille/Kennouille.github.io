@@ -439,6 +439,11 @@
                     `;
                     tbody.appendChild(row);
 
+                    // Ajoutons un log ici pour vérifier la cellule Telefono
+                    const telefonoCell = row.querySelector('[data-column="Telefono"]');
+                    console.log('Cellule Telefono après insertion:', telefonoCell ? telefonoCell.textContent.trim() : 'Non trouvée');
+
+
                     // Ajoutez l'écouteur d'événement ici
                     const facturaLink = row.querySelector('.factura-link');
                     facturaLink.addEventListener('click', function(event) {
@@ -737,6 +742,11 @@
                         </td>
                     `;
                     tableBody.appendChild(row);
+
+                    // Ajoutons un log ici pour vérifier la cellule Telefono
+                    const telefonoCell = row.querySelector('[data-column="Telefono"]');
+                    console.log('Cellule Telefono après insertion:', telefonoCell ? telefonoCell.textContent.trim() : 'Non trouvée');
+
 
                     if (event.Factura) {
                         try {

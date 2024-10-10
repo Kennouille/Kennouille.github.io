@@ -84,30 +84,25 @@
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOMContentLoaded déclenché');
 
-            // Initialiser l'élément successMessage
             window.successMessage = document.getElementById('successMessage');
             console.log('Élément successMessage:', window.successMessage);
 
-            // Définir la date d'aujourd'hui
             var today = new Date();
             var todayDate = today.getDate();
             var todayMonth = today.getMonth();
             var todayYear = today.getFullYear();
             var todayFormatted = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
 
-            // Générer le calendrier si ce n'est pas déjà fait
             if (!window.isCalendarGenerated) {
                 generateCalendar(currentMonth, currentYear);
                 window.isCalendarGenerated = true;
             }
 
-            // Sélectionner la date d'aujourd'hui si ce n'est pas déjà fait
             if (!window.isTodaySelected) {
                 selectToday();
                 window.isTodaySelected = true;
             }
 
-            // Simuler un clic sur la date actuelle pour appeler handleDateClick
             const cells = document.querySelectorAll('.clickable');
             cells.forEach(cell => {
                 if (parseInt(cell.textContent) === todayDate && currentMonth === todayMonth && currentYear === todayYear) {
@@ -116,7 +111,6 @@
                 }
             });
 
-            // Ajouter des écouteurs d'événements pour les boutons précédent et suivant
             document.getElementById('prevButton').addEventListener('click', function() {
                 changeMonth(-1);
             });
@@ -125,21 +119,25 @@
                 changeMonth(1);
             });
 
-            // Ajouter des écouteurs d'événements pour les cellules cliquables
             document.querySelectorAll('.clickable').forEach(cell => {
                 cell.addEventListener('click', handleDateClick);
             });
 
-            // Ajouter des écouteurs d'événements pour les liens de facture
-           document.querySelectorAll('.factura-link').forEach(link => {
+            document.querySelectorAll('.factura-link').forEach(link => {
                 link.addEventListener('click', async function() {
                     const factura = link.getAttribute('data-factura');
                     const row = link.closest('tr');
                     const userId = row.dataset.userId;
                     const telefonoCell = row.querySelector('[data-column="Telefono"]');
-                    const telefono = telefonoCell ? telefonoCell.textContent.trim() : null;
 
-                    console.log('Telefono:', telefono);  // Vérifie la valeur de telefono
+                    // Ajout de logs pour vérifier l'existence de la cellule et sa valeur
+                    console.log('Cellule Telefono trouvée:', telefonoCell);
+                    if (telefonoCell) {
+                        console.log('Contenu de Telefono:', telefonoCell.textContent);
+                    }
+
+                    const telefono = telefonoCell ? telefonoCell.textContent.trim() : null;
+                    console.log('Telefono après trim:', telefono);  // Ajoutons un log pour vérifier la valeur de telefono
 
                     if (!factura) {
                         const facturaInput = document.createElement('input');
@@ -165,7 +163,13 @@
                                         const responseData = await response.json();
                                         console.log('Données de réponse:', responseData); // Log toutes les données de réponse
 
-                                        // Utiliser la bonne clé pour le chemin du fichier
+                                        // Lister toutes les clés et leurs valeurs
+                                        for (const key in responseData) {
+                                            if (responseData.hasOwnProperty(key)) {
+                                                console.log(`Clé: ${key}, Valeur: ${responseData[key]}`);
+                                            }
+                                        }
+
                                         const newFactura = responseData.path || responseData.filePath || responseData.fullPath; // Adaptation en fonction de la réponse
 
                                         await updateTables(newFactura, userId, telefono);
@@ -187,7 +191,6 @@
                     }
                 });
             });
-
 
             // Fonction pour mettre à jour les tables avec le nouveau chemin de la facture
             async function updateTables(factura, userId, telefono) {
@@ -232,6 +235,7 @@
                 }
             }
         });
+
 
         // Assurer que handleDateClick est défini une seule fois
         if (typeof handleDateClick === 'undefined') {

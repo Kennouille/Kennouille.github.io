@@ -128,16 +128,20 @@
                     const factura = link.getAttribute('data-factura');
                     const row = link.closest('tr');
                     const userId = row.dataset.userId;
-                    const telefonoCell = row.querySelector('[data-column="Telefono"]');
 
-                    // Ajout de logs pour vérifier l'existence de la cellule et sa valeur
+                    // Récupération de la cellule et du contenu de Telefono
+                    const telefonoCell = row.querySelector('[data-column="Telefono"]');
                     console.log('Cellule Telefono trouvée:', telefonoCell);
+
+                    let telefono = null;
                     if (telefonoCell) {
+                        telefono = telefonoCell.textContent.trim();
                         console.log('Contenu de Telefono:', telefonoCell.textContent);
+                    } else {
+                        console.log('Cellule Telefono non trouvée');
                     }
 
-                    const telefono = telefonoCell ? telefonoCell.textContent.trim() : null;
-                    console.log('Telefono après trim:', telefono);  // Ajoutons un log pour vérifier la valeur de telefono
+                    console.log('Telefono après trim:', telefono);
 
                     if (!factura) {
                         const facturaInput = document.createElement('input');

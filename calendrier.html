@@ -733,6 +733,7 @@
                         <td contenteditable="true" data-column="Lugar">${event.Lugar !== null ? event.Lugar : ''}</td>
                         <td contenteditable="true" data-column="Precio">${event.Precio !== null ? event.Precio : ''}</td>
                         <td contenteditable="true" data-column="Trabajo">${event.Trabajo !== null ? event.Trabajo : ''}</td>
+                        <td contenteditable="false" data-column="user_id">${event.user_id !== null ? event.user_id : ''}</td>
                         <td>
                             <div class="checkbox-container" style="font-size: smaller;">
                                 <label>
@@ -1255,12 +1256,14 @@
                         <th>Lugar</th>
                         <th>Precio</th>
                         <th>Trabajo</th>
+                        <th>user_id</th>
                         <th>Facturación</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td contenteditable="true"></td>
                         <td contenteditable="true"></td>
                         <td contenteditable="true"></td>
                         <td contenteditable="true"></td>

@@ -127,8 +127,7 @@
                 link.addEventListener('click', async function() {
                     const factura = link.getAttribute('data-factura');
                     const row = link.closest('tr');
-                    const userId = row.dataset.userId; // Assurez-vous que `userId` est récupéré
-                    console.log('UserID trouvé:', userId); // Log pour vérifier le `user_id`
+                    const userId = row.dataset.userId;
                     const telefonoCell = row.querySelector('[data-column="Telefono"]');
                     console.log('Cellule Telefono trouvée:', telefonoCell);
 
@@ -148,6 +147,7 @@
                     }
                 });
             });
+
 
 
                         async function handleFacturaUpload(link, userId, Telefono) {
@@ -195,6 +195,7 @@
                             facturaInput.click();
                         }
 
+
                         function openFactura(link) {
                             const imageUrl = link.dataset.imageUrl;
                             console.log('factura link clicked, image URL:', imageUrl);
@@ -207,39 +208,36 @@
                             }
                         }
 
-
             async function updateTables(factura, userId, Telefono) {
                 try {
                     console.log('UserID:', userId);
                     console.log('Telefono:', Telefono);
 
                     if (userId) {
-                        const { error: updateErrorEventQuot1 } = await supabase
+                        const { data: updatedEventQuot1, error: updateErrorEventQuot1 } = await supabase
                             .from('event_quot1')
                             .update({ factura: factura })
                             .eq('user_id', userId);
 
                         if (updateErrorEventQuot1) {
                             console.error('Erreur lors de la mise à jour de event_quot1:', updateErrorEventQuot1);
-                            return;
                         } else {
-                            console.log('event_quot1 mis à jour avec succès');
+                            console.log('event_quot1 mis à jour avec succès', updatedEventQuot1);
                         }
                     } else {
                         console.error('user_id non défini');
                     }
 
                     if (Telefono) {
-                        const { error: updateErrorTableData1 } = await supabase
+                        const { data: updatedTableData1, error: updateErrorTableData1 } = await supabase
                             .from('tableData1')
                             .update({ factura: factura })
                             .eq('Telefono', Telefono);
 
                         if (updateErrorTableData1) {
                             console.error('Erreur lors de la mise à jour de tableData1:', updateErrorTableData1);
-                            return;
                         } else {
-                            console.log('tableData1 mis à jour avec succès');
+                            console.log('tableData1 mis à jour avec succès', updatedTableData1);
                         }
                     } else {
                         console.error('Telefono non défini');
@@ -248,7 +246,6 @@
                     console.error('Erreur lors de la mise à jour des tables:', error);
                 }
             }
-
         });
 
         // Assurer que handleDateClick est défini une seule fois

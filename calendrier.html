@@ -127,11 +127,10 @@
                 link.addEventListener('click', async function() {
                     const factura = link.getAttribute('data-factura');
                     const row = link.closest('tr');
-                    const userId = row.dataset.userId;
+                    const userId = row.dataset.userId; // Assurez-vous que `userId` est récupéré
                     const telefonoCell = row.querySelector('[data-column="Telefono"]');
-
-                    // Ajout de logs pour vérifier l'existence de la cellule et sa valeur
                     console.log('Cellule Telefono trouvée:', telefonoCell);
+
                     let Telefono = null;
                     if (telefonoCell) {
                         Telefono = telefonoCell.textContent.trim();
@@ -142,68 +141,70 @@
                     console.log('Telefono après trim:', Telefono);
 
                     if (!factura) {
-                        const facturaInput = document.createElement('input');
-                        facturaInput.type = 'file';
-                        facturaInput.accept = '.pdf, .jpg, .png';
-
-                        facturaInput.addEventListener('change', async function() {
-                            const file = facturaInput.files[0];
-
-                            if (file) {
-                                const formData = new FormData();
-                                formData.append('file', file);
-
-                                const uploadUrl = 'https://ton-backend/upload'; // Remplacer par l'URL de ton upload
-
-                                try {
-                                    const response = await fetch(uploadUrl, {
-                                        method: 'POST',
-                                        body: formData
-                                    });
-
-                                    if (response.ok) {
-                                        const responseData = await response.json();
-                                        console.log('Données de réponse:', responseData); // Log toutes les données de réponse
-
-                                        // Lister toutes les clés et leurs valeurs
-                                        for (const key in responseData) {
-                                            if (responseData.hasOwnProperty(key)) {
-                                                console.log(`Clé: ${key}, Valeur: ${responseData[key]}`);
-                                            }
-                                        }
-
-                                        // Utiliser la bonne clé pour le chemin du fichier
-                                        const newFactura = responseData.path || responseData.filePath || responseData.fullPath; // Adaptation en fonction de la réponse
-
-                                        await updateTables(newFactura, userId, Telefono);
-
-                                        link.setAttribute('data-factura', newFactura);
-                                        link.dataset.imageUrl = `https://mngggybayjooqkzbhvqy.supabase.co/storage/v1/object/public/facturas/${newFactura}`;
-                                        link.textContent = 'Voir la Facture';
-                                        console.log('Mise à jour du lien de la facture:', link.dataset.imageUrl);
-                                    } else {
-                                        console.error('Erreur lors de l\'upload de la facture');
-                                    }
-                                } catch (error) {
-                                    console.error('Erreur lors de l\'upload de la facture:', error);
-                                }
-                            }
-                        });
-
-                        facturaInput.click();
+                        handleFacturaUpload(link, userId, Telefono);
                     } else {
-                        const imageUrl = link.dataset.imageUrl;
-                        console.log('factura link clicked, image URL:', imageUrl);
-
-                        if (imageUrl) {
-                            const imagePopup = window.open("", "Image", "width=600,height=400");
-                            imagePopup.document.write(`<img src="${imageUrl}" alt="Facture">`);
-                        } else {
-                            console.error('URL de l\'image non trouvée.');
-                        }
+                        openFactura(link);
                     }
                 });
             });
+
+                        async function handleFacturaUpload(link, userId, Telefono) {
+                            const facturaInput = document.createElement('input');
+                            facturaInput.type = 'file';
+                            facturaInput.accept = '.pdf, .jpg, .png';
+
+                            facturaInput.addEventListener('change', async function() {
+                                const file = facturaInput.files[0];
+
+                                if (file) {
+                                    const formData = new FormData();
+                                    formData.append('file', file);
+
+                                    const uploadUrl = 'https://ton-backend/upload'; // Remplacer par l'URL de ton upload
+
+                                    try {
+                                        const response = await fetch(uploadUrl, {
+                                            method: 'POST',
+                                            body: formData
+                                        });
+
+                                        if (response.ok) {
+                                            const responseData = await response.json();
+                                            console.log('Données de réponse:', responseData); // Log toutes les données de réponse
+
+                                            // Utiliser `fullPath` pour le chemin complet du fichier
+                                            const newFactura = responseData.fullPath;
+
+                                            await updateTables(newFactura, userId, Telefono);
+
+                                            link.setAttribute('data-factura', newFactura);
+                                            link.dataset.imageUrl = `https://mngggybayjooqkzbhvqy.supabase.co/storage/v1/object/public/${newFactura}`;
+                                            link.textContent = 'Voir la Facture';
+                                            console.log('Mise à jour du lien de la facture:', link.dataset.imageUrl);
+                                        } else {
+                                            console.error('Erreur lors de l\'upload de la facture');
+                                        }
+                                    } catch (error) {
+                                        console.error('Erreur lors de l\'upload de la facture:', error);
+                                    }
+                                }
+                            });
+
+                            facturaInput.click();
+                        }
+
+                        function openFactura(link) {
+                            const imageUrl = link.dataset.imageUrl;
+                            console.log('factura link clicked, image URL:', imageUrl);
+
+                            if (imageUrl) {
+                                const imagePopup = window.open("", "Image", "width=600,height=400");
+                                imagePopup.document.write(`<img src="${imageUrl}" alt="Facture">`);
+                            } else {
+                                console.error('URL de l\'image non trouvée.');
+                            }
+                        }
+
 
             async function updateTables(factura, userId, Telefono) {
                 try {
@@ -245,6 +246,7 @@
                     console.error('Erreur lors de la mise à jour des tables:', error);
                 }
             }
+
         });
 
         // Assurer que handleDateClick est défini une seule fois

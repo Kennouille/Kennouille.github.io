@@ -173,12 +173,12 @@
                                         }
 
                                         // Utiliser la bonne clé pour le chemin du fichier
-                                        const newFactura = responseData.path || responseData.filePath || responseData.fullPath; // Adaptation en fonction de la réponse
+                                        const newfactura = responseData.path || responseData.filePath || responseData.fullPath; // Adaptation en fonction de la réponse
 
-                                        await updateTables(newFactura, userId, telefono);
+                                        await updateTables(newfactura, userId, telefono);
 
-                                        link.setAttribute('data-factura', newFactura);
-                                        link.dataset.imageUrl = `https://mngggybayjooqkzbhvqy.supabase.co/storage/v1/object/facturas/${newFactura}`;
+                                        link.setAttribute('data-factura', newfactura);
+                                        link.dataset.imageUrl = `https://mngggybayjooqkzbhvqy.supabase.co/storage/v1/object/facturas/${newfactura}`;
                                         link.textContent = 'Voir la Facture';
                                         console.log('Mise à jour du lien de la facture:', link.dataset.imageUrl);
                                     } else {

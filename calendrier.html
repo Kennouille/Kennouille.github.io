@@ -142,15 +142,7 @@
                     console.log('Telefono après trim:', Telefono);
 
                     if (link.textContent === 'Voir la Facture') {
-                        const imageURL = link.dataset.imageUrl;
-                        console.log('factura link clicked, image URL:', imageURL);
-
-                        if (imageURL) {
-                            const imagePopup = window.open("", "Image", "width=600,height=400");
-                            imagePopup.document.write(`<img src="${imageURL}" alt="Facture">`);
-                        } else {
-                            console.error('URL de l\'image non trouvée.');
-                        }
+                        openFactura(link);
                     } else {
                         if (userId && Telefono) {
                             handleFacturaUpload(link, userId, Telefono);
@@ -161,6 +153,7 @@
                 });
             });
         });
+
 
         async function handleFacturaUpload(link, userId, Telefono) {
             console.log('Début de handleFacturaUpload avec userId:', userId, 'et Telefono:', Telefono);
@@ -207,6 +200,7 @@
 
             facturaInput.click();
         }
+
 
         async function updateTables(factura, userId, Telefono) {
             try {

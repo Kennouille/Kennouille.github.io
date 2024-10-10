@@ -174,11 +174,11 @@
                                             }
                                         }
 
-                                        const newfactura = responseData.path || responseData.filePath || responseData.fullPath; // Adaptation en fonction de la réponse
+                                        const newFactura = responseData.path || responseData.filePath || responseData.fullPath; // Adaptation en fonction de la réponse
 
-                                        await updateTables(newfactura, userId, telefono);
+                                        await updateTables(newFactura, userId, telefono);
 
-                                        link.setAttribute('data-factura', newfactura);
+                                        link.setAttribute('data-factura', newFactura);
                                         link.textContent = 'Voir la Facture';
                                     } else {
                                         console.error('Erreur lors de l\'upload de la facture');
@@ -326,7 +326,7 @@
             // Insérer les données dans event_quot1
             const { error: insertErrorEventQuot1 } = await supabase
                 .from('event_quot1')
-                .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, env_datos: env_datos, factura: factura, Pagado: pagado, user_id: user_id }]);
+                .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, env_datos: env_datos, Factura: factura, pagado: pagado, user_id: user_id }]);
 
             if (insertErrorEventQuot1) {
                 console.error('Erreur lors de l\'ajout de l\'événement :', insertErrorEventQuot1);
@@ -428,10 +428,10 @@
                                     <input type="checkbox" data-column="env_datos" ${event.env_datos ? 'checked' : ''}> - Envié datos
                                 </label>
                                 <br>
-                                <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.factura}">${event.factura ? 'Voir la Facture' : 'Adjuntar factura'}</span>
+                                <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.Factura}">${event.Factura ? 'Voir la Facture' : 'Adjuntar Factura'}</span>
                                 <br>
                                 <label>
-                                    <input type="checkbox" data-column="Pagado" ${event.Pagado ? 'checked' : ''}> - Pagado
+                                    <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - pagado
                                 </label>
                             </div>
                         </td>
@@ -447,7 +447,7 @@
                     const facturaLink = row.querySelector('.factura-link');
                     facturaLink.addEventListener('click', function(event) {
                         event.preventDefault();
-                        console.log('factura link clicked');
+                        console.log('Factura link clicked');
                         const facturaInput = row.querySelector('#facturaInput');
                         if (facturaInput) {
                             facturaInput.click();
@@ -731,10 +731,10 @@
                                     <input type="checkbox" data-column="env_datos" ${event.env_datos ? 'checked' : ''}> - Envié datos
                                 </label>
                                 <br>
-                                <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.factura}">${event.factura ? 'Voir la Facture' : 'Adjuntar factura'}</span>
+                                <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.Factura}">${event.Factura ? 'Voir la Facture' : 'Adjuntar Factura'}</span>
                                 <br>
                                 <label>
-                                    <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - Pagado
+                                    <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - pagado
                                 </label>
                                 <input type="file" id="facturaInput" style="display: none;">
                             </div>
@@ -747,22 +747,22 @@
                     console.log('Cellule Telefono après insertion:', telefonoCell ? telefonoCell.textContent.trim() : 'Non trouvée');
 
 
-                    if (event.factura) {
+                    if (event.Factura) {
                         try {
                             const { data: imageURL, error: imageError } = await supabase
                                 .storage
                                 .from('facturas') // Remplace 'facturas' par le nom de ton bucket de stockage
-                                .getPublicUrl(event.factura);
+                                .getPublicUrl(event.Factura);
 
                             if (imageError) {
                                 console.error('Erreur lors de la récupération de l\'image :', imageError);
                             } else {
                                 const facturaLink = row.querySelector('.factura-link');
                                 if (facturaLink) {
-                                    facturaLink.textContent = 'factura Adjuntada'; // Changer le texte du lien
+                                    facturaLink.textContent = 'Factura Adjuntada'; // Changer le texte du lien
                                     facturaLink.addEventListener('click', function(event) {
                                         event.preventDefault();
-                                        console.log('factura link clicked, image URL:', imageURL.publicUrl);
+                                        console.log('Factura link clicked, image URL:', imageURL.publicUrl);
 
                                         // Afficher l'image dans un popup
                                         const imagePopup = window.open("", "Image", "width=600,height=400");
@@ -782,7 +782,7 @@
                     if (facturaLink) {
                         facturaLink.addEventListener('click', async function(event) {
                             event.preventDefault();
-                            if (facturaLink.textContent === 'factura Adjuntada') {
+                            if (facturaLink.textContent === 'Factura Adjuntada') {
                                 // Afficher l'image dans un popup
                                 const imageURL = facturaLink.dataset.imageUrl;
                                 if (imageURL) {
@@ -793,7 +793,7 @@
                                     console.error('URL de l\'image non trouvée.');
                                 }
                             } else {
-                                console.log('factura link clicked pour télécharger.');
+                                console.log('Factura link clicked pour télécharger.');
                                 const facturaInput = row.querySelector('#facturaInput');
                                 if (facturaInput) {
                                     facturaInput.click();
@@ -840,7 +840,7 @@
                                                     console.error('Erreur lors de la mise à jour de l\'événement :', updateErrorEventQuot1);
                                                 } else {
                                                     console.log('Événement mis à jour avec succès');
-                                                    facturaLink.textContent = 'factura Adjuntada'; // Changer le texte du lien après téléchargement
+                                                    facturaLink.textContent = 'Factura Adjuntada'; // Changer le texte du lien après téléchargement
                                                     facturaLink.dataset.imageUrl = `https://mngggybayjooqkzbhvqy.supabase.co/storage/v1/object/facturas/${data.Key}`; // Mettre à jour l'URL de l'image
                                                     console.log('Mise à jour du texte et de l\'URL du lien');
                                                 }
@@ -1131,7 +1131,7 @@
                     travail: cells[7].textContent,
                     env_datos: cells[8].querySelector('[data-column="env_datos"]').checked,
                     factura: cells[8].querySelector('.factura-link').dataset.factura,
-                    pagado: cells[8].querySelector('[data-column="Pagado"]').checked
+                    pagado: cells[8].querySelector('[data-column="pagado"]').checked
                 };
                 event[selectedDate].push(rowData);
 
@@ -1163,11 +1163,11 @@
             }
         }
 
-        async function openfacturaDialog(event) {
+        async function openFacturaDialog(event) {
             const facturaLink = event.target;
             const userId = facturaLink.closest('tr').dataset.userId;
 
-            if (facturaLink.textContent === 'Ajouter factura') {
+            if (facturaLink.textContent === 'Ajouter Factura') {
                 const input = document.createElement('input');
                 input.type = 'file';
                 input.accept = 'image/*';
@@ -1189,13 +1189,13 @@
                             // Mettre à jour la base de données
                             const { error: updateError } = await supabase
                                 .from('event_quot1')
-                                .update({ factura: data.Key })
+                                .update({ Factura: data.Key })
                                 .eq('user_id', userId);
 
                             if (updateError) {
                                 console.error('Erreur lors de la mise à jour de la colonne Factura :', updateError);
                             } else {
-                                console.log('Colonne factura mise à jour avec succès');
+                                console.log('Colonne Factura mise à jour avec succès');
                             }
                         }
                     }
@@ -1267,10 +1267,10 @@
                                     <input type="checkbox" data-column="env_datos" ${event.env_datos ? 'checked' : ''}> - Envié datos
                                 </label>
                                 <br>
-                                <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.factura}">${event.factura ? 'Voir la Facture' : 'Adjuntar factura'}</span>
+                                <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.Factura}">${event.Factura ? 'Voir la Facture' : 'Adjuntar Factura'}</span>
                                 <br>
                                 <label>
-                                    <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - Pagado
+                                    <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - pagado
                                 </label>
                                 <input type="file" id="facturaInput" style="display: none;">
                             </div>

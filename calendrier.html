@@ -84,30 +84,25 @@
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOMContentLoaded déclenché');
 
-            // Initialiser l'élément successMessage
             window.successMessage = document.getElementById('successMessage');
             console.log('Élément successMessage:', window.successMessage);
 
-            // Définir la date d'aujourd'hui
             var today = new Date();
             var todayDate = today.getDate();
             var todayMonth = today.getMonth();
             var todayYear = today.getFullYear();
             var todayFormatted = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
 
-            // Générer le calendrier si ce n'est pas déjà fait
             if (!window.isCalendarGenerated) {
                 generateCalendar(currentMonth, currentYear);
                 window.isCalendarGenerated = true;
             }
 
-            // Sélectionner la date d'aujourd'hui si ce n'est pas déjà fait
             if (!window.isTodaySelected) {
                 selectToday();
                 window.isTodaySelected = true;
             }
 
-            // Simuler un clic sur la date actuelle pour appeler handleDateClick
             const cells = document.querySelectorAll('.clickable');
             cells.forEach(cell => {
                 if (parseInt(cell.textContent) === todayDate && currentMonth === todayMonth && currentYear === todayYear) {
@@ -116,7 +111,6 @@
                 }
             });
 
-            // Ajouter des écouteurs d'événements pour les boutons précédent et suivant
             document.getElementById('prevButton').addEventListener('click', function() {
                 changeMonth(-1);
             });
@@ -125,12 +119,10 @@
                 changeMonth(1);
             });
 
-            // Ajouter des écouteurs d'événements pour les cellules cliquables
             document.querySelectorAll('.clickable').forEach(cell => {
                 cell.addEventListener('click', handleDateClick);
             });
 
-            // Ajouter des écouteurs d'événements pour les liens de facture
             document.querySelectorAll('.factura-link').forEach(link => {
                 link.addEventListener('click', async function() {
                     const factura = link.getAttribute('data-factura');
@@ -139,7 +131,6 @@
                     const telefono = row.querySelector('[data-column="Telefono"]').textContent.trim();
 
                     if (!factura) {
-                        // Aucune facture attachée, demander à l'utilisateur d'en attacher une
                         const facturaInput = document.createElement('input');
                         facturaInput.type = 'file';
                         facturaInput.accept = '.pdf, .jpg, .png';
@@ -185,19 +176,15 @@
                             }
                         });
 
-                        // Simuler un clic pour ouvrir la boîte de dialogue de fichier
                         facturaInput.click();
                     } else {
-                        // Facture déjà attachée, ouvrir le lien
                         window.open(factura, '_blank');
                     }
                 });
             });
 
-            // Fonction pour mettre à jour les tables avec le nouveau chemin de la facture
             async function updateTables(factura, userId, telefono) {
                 try {
-                    // Mettre à jour la table event_quot1
                     const { error: updateErrorEventQuot1 } = await supabase
                         .from('event_quot1')
                         .update({ factura: factura })
@@ -210,7 +197,6 @@
                         console.log('event_quot1 mis à jour avec succès');
                     }
 
-                    // Mettre à jour la table tableData1
                     const { error: updateErrorTableData1 } = await supabase
                         .from('tableData1')
                         .update({ factura: factura })
@@ -228,7 +214,6 @@
             }
         });
 
-
         // Assurer que handleDateClick est défini une seule fois
         if (typeof handleDateClick === 'undefined') {
             async function handleDateClick(event) {
@@ -239,8 +224,6 @@
                 await fetchEventsByDate(formattedDate);
             }
         }
-
-
 
         document.getElementById('addEventButton').addEventListener('click', async function() {
             const telefono = document.getElementById('Telefono').value;

@@ -131,14 +131,15 @@
             });
 
             // Ajouter des écouteurs d'événements pour les liens de facture
-            document.querySelectorAll('.factura-link').forEach(link => {
+           document.querySelectorAll('.factura-link').forEach(link => {
                 link.addEventListener('click', async function() {
                     const factura = link.getAttribute('data-factura');
                     const row = link.closest('tr');
                     const userId = row.dataset.userId;
                     const telefonoCell = row.querySelector('[data-column="Telefono"]');
                     const telefono = telefonoCell ? telefonoCell.textContent.trim() : null;
-                    console.log('Telefono:', telefono);  // Ajoutons un log pour vérifier la valeur de telefono
+
+                    console.log('Telefono:', telefono);  // Vérifie la valeur de telefono
 
                     if (!factura) {
                         const facturaInput = document.createElement('input');
@@ -164,14 +165,8 @@
                                         const responseData = await response.json();
                                         console.log('Données de réponse:', responseData); // Log toutes les données de réponse
 
-                                        // Lister toutes les clés et leurs valeurs
-                                        for (const key in responseData) {
-                                            if (responseData.hasOwnProperty(key)) {
-                                                console.log(`Clé: ${key}, Valeur: ${responseData[key]}`);
-                                            }
-                                        }
-
-                                        const newFactura = responseData.path; // Utiliser la bonne clé pour le chemin du fichier
+                                        // Utiliser la bonne clé pour le chemin du fichier
+                                        const newFactura = responseData.path || responseData.filePath || responseData.fullPath; // Adaptation en fonction de la réponse
 
                                         await updateTables(newFactura, userId, telefono);
 
@@ -193,33 +188,44 @@
                 });
             });
 
+
             // Fonction pour mettre à jour les tables avec le nouveau chemin de la facture
             async function updateTables(factura, userId, telefono) {
                 try {
-                    // Mettre à jour la table event_quot1
-                    const { error: updateErrorEventQuot1 } = await supabase
-                        .from('event_quot1')
-                        .update({ factura: factura })
-                        .eq('user_id', userId);
+                    // Vérifier si userId et telefono sont définis
+                    console.log('UserID:', userId);
+                    console.log('Telefono:', telefono);
 
-                    if (updateErrorEventQuot1) {
-                        console.error('Erreur lors de la mise à jour de event_quot1:', updateErrorEventQuot1);
-                        return;
+                    if (userId) {
+                        const { error: updateErrorEventQuot1 } = await supabase
+                            .from('event_quot1')
+                            .update({ factura: factura })
+                            .eq('user_id', userId);
+
+                        if (updateErrorEventQuot1) {
+                            console.error('Erreur lors de la mise à jour de event_quot1:', updateErrorEventQuot1);
+                            return;
+                        } else {
+                            console.log('event_quot1 mis à jour avec succès');
+                        }
                     } else {
-                        console.log('event_quot1 mis à jour avec succès');
+                        console.error('userId non défini');
                     }
 
-                    // Mettre à jour la table tableData1
-                    const { error: updateErrorTableData1 } = await supabase
-                        .from('tableData1')
-                        .update({ factura: factura })
-                        .eq('Telefono', telefono);
+                    if (telefono) {
+                        const { error: updateErrorTableData1 } = await supabase
+                            .from('tableData1')
+                            .update({ factura: factura })
+                            .eq('Telefono', telefono);
 
-                    if (updateErrorTableData1) {
-                        console.error('Erreur lors de la mise à jour de tableData1:', updateErrorTableData1);
-                        return;
+                        if (updateErrorTableData1) {
+                            console.error('Erreur lors de la mise à jour de tableData1:', updateErrorTableData1);
+                            return;
+                        } else {
+                            console.log('tableData1 mis à jour avec succès');
+                        }
                     } else {
-                        console.log('tableData1 mis à jour avec succès');
+                        console.error('Telefono non défini');
                     }
                 } catch (error) {
                     console.error('Erreur lors de la mise à jour des tables:', error);

@@ -81,82 +81,146 @@
             }
         }
 
-        document.querySelectorAll('.factura-link').forEach(link => {
-        link.addEventListener('click', async function() {
-            const factura = link.getAttribute('data-factura');
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('DOMContentLoaded triggered');
 
-            if (!factura) {
-                const facturaInput = document.createElement('input');
-                facturaInput.type = 'file';
-                facturaInput.accept = '.pdf, .jpg, .png';
+            // Obtenir l'élément successMessage
+            window.successMessage = document.getElementById('successMessage');
+            console.log('successMessage element:', window.successMessage);
 
-                facturaInput.addEventListener('change', async function() {
-                    const file = facturaInput.files[0];
+            // Définir la variable today avec la date actuelle
+            var today = new Date();
+            var todayDate = today.getDate();
+            var todayMonth = today.getMonth();
+            var todayYear = today.getFullYear();
+            var todayFormatted = `${todayYear}-${String(todayMonth + 1).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
 
-                    if (file) {
-                        const formData = new FormData();
-                        formData.append('file', file);
-                        const uploadUrl = 'https://ton-backend/upload';
+            // Générer le calendrier pour le mois et l'année actuels si ce n'est pas déjà fait
+            if (!window.isCalendarGenerated) {
+                generateCalendar(currentMonth, currentYear);
+                window.isCalendarGenerated = true;
+            }
 
-                        try {
-                            const response = await fetch(uploadUrl, {
-                                method: 'POST',
-                                body: formData
-                            });
+            // Sélectionner la date actuelle si ce n'est pas déjà fait
+            if (!window.isTodaySelected) {
+                selectToday();
+                window.isTodaySelected = true;
+            }
 
-                            if (response.ok) {
-                                const responseData = await response.json();
-                                const newFactura = responseData.filePath;
+            // Simuler un clic sur la date actuelle pour appeler handleDateClick
+            const cells = document.querySelectorAll('.clickable');
+            cells.forEach(cell => {
+                if (parseInt(cell.textContent) === todayDate && currentMonth === todayMonth && currentYear === todayYear) {
+                    const event = new Event('click');
+                    cell.dispatchEvent(event);
+                }
+            });
 
-                                await updateTables(newFactura);
+            // Ajouter des écouteurs d'événements pour les boutons de navigation du calendrier
+            document.getElementById('prevButton').addEventListener('click', function() {
+                changeMonth(-1);
+            });
 
-                                link.setAttribute('data-factura', newFactura);
-                                link.textContent = 'Voir la Facture';
-                            } else {
-                                console.error('Erreur lors de l\'upload de la facture');
+            document.getElementById('nextButton').addEventListener('click', function() {
+                changeMonth(1);
+            });
+
+            // Ajouter des écouteurs d'événements pour les cellules cliquables
+            document.querySelectorAll('.clickable').forEach(cell => {
+                cell.addEventListener('click', handleDateClick);
+            });
+
+            // Ajouter des écouteurs d'événements pour les liens de facture
+            document.querySelectorAll('.factura-link').forEach(link => {
+                link.addEventListener('click', async function() {
+                    const factura = link.getAttribute('data-factura');
+
+                    if (!factura) {
+                        // Si aucune facture n'est attachée, demander à l'utilisateur d'en attacher une
+                        const facturaInput = document.createElement('input');
+                        facturaInput.type = 'file';
+                        facturaInput.accept = '.pdf, .jpg, .png';
+
+                        // Gérer le changement de fichier
+                        facturaInput.addEventListener('change', async function() {
+                            const file = facturaInput.files[0];
+
+                            if (file) {
+                                const formData = new FormData();
+                                formData.append('file', file);
+
+                                // Remplacer cette URL par l'endpoint de ton backend pour uploader le fichier
+                                const uploadUrl = 'https://ton-backend/upload';
+
+                                try {
+                                    const response = await fetch(uploadUrl, {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+
+                                    if (response.ok) {
+                                        const responseData = await response.json();
+                                        const newFactura = responseData.filePath; // Chemin du fichier uploadé
+
+                                        // Mettre à jour les tables
+                                        await updateTables(newFactura);
+
+                                        // Mettre à jour l'attribut et le texte du lien
+                                        link.setAttribute('data-factura', newFactura);
+                                        link.textContent = 'Voir la Facture';
+                                    } else {
+                                        console.error('Erreur lors de l\'upload de la facture');
+                                    }
+                                } catch (error) {
+                                    console.error('Erreur lors de l\'upload de la facture:', error);
+                                }
                             }
-                        } catch (error) {
-                            console.error('Erreur lors de l\'upload de la facture:', error);
-                        }
+                        });
+
+                        // Simuler un clic pour ouvrir la boîte de dialogue de fichier
+                        facturaInput.click();
+                    } else {
+                        // Si une facture est déjà attachée, ouvrir le lien
+                        window.open(factura, '_blank');
                     }
                 });
+            });
 
-                facturaInput.click();
-            } else {
-                window.open(factura, '_blank');
+            // Fonction pour mettre à jour les tables
+            async function updateTables(factura) {
+                try {
+                    // Mettre à jour la table event_quot1
+                    const { error: updateErrorEventQuot1 } = await supabase
+                        .from('event_quot1')
+                        .update({ Factura: factura })
+                        .eq('user_id', userId);
+
+                    if (updateErrorEventQuot1) {
+                        console.error('Erreur lors de la mise à jour de event_quot1:', updateErrorEventQuot1);
+                        return;
+                    } else {
+                        console.log('event_quot1 mis à jour avec succès');
+                    }
+
+                    // Mettre à jour la table tableData1
+                    const { error: updateErrorTableData1 } = await supabase
+                        .from('tableData1')
+                        .update({ Factura: factura })
+                        .eq('Telefono', telefono);
+
+                    if (updateErrorTableData1) {
+                        console.error('Erreur lors de la mise à jour de tableData1:', updateErrorTableData1);
+                        return;
+                    } else {
+                        console.log('tableData1 mis à jour avec succès');
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de la mise à jour des tables:', error);
+                }
             }
         });
-    });
 
-    async function updateTables(factura) {
-        try {
-            const { error: updateErrorEventQuot1 } = await supabase
-                .from('event_quot1')
-                .update({ Factura: factura })
-                .eq('user_id', userId);
 
-            if (updateErrorEventQuot1) {
-                console.error('Erreur lors de la mise à jour de event_quot1:', updateErrorEventQuot1);
-                return;
-            } else {
-                console.log('event_quot1 mis à jour avec succès');
-            }
-
-            const { error: updateErrorTableData1 } = await supabase
-                .from('tableData1')
-                .update({ Factura: factura })
-                .eq('Telefono', telefono);
-
-            if (updateErrorTableData1) {
-                console.error('Erreur lors de la mise à jour de tableData1:', updateErrorTableData1);
-                return;
-            } else {
-                console.log('tableData1 mis à jour avec succès');
-            }
-        } catch (error) {
-            console.error('Erreur lors de la mise à jour des tables:', error);
-        }
-    }
         document.getElementById('addEventButton').addEventListener('click', async function() {
             const telefono = document.getElementById('Telefono').value;
             const nombre = document.getElementById('Nombre').value;

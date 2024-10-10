@@ -148,8 +148,6 @@
                 });
             });
 
-
-
                         async function handleFacturaUpload(link, userId, Telefono) {
                             const facturaInput = document.createElement('input');
                             facturaInput.type = 'file';
@@ -195,7 +193,6 @@
                             facturaInput.click();
                         }
 
-
                         function openFactura(link) {
                             const imageUrl = link.dataset.imageUrl;
                             console.log('factura link clicked, image URL:', imageUrl);
@@ -212,6 +209,12 @@
                 try {
                     console.log('UserID:', userId);
                     console.log('Telefono:', Telefono);
+
+                    // Vérifions que `Telefono` est bien passé comme paramètre
+                    if (!Telefono) {
+                        console.error('Telefono est undefined');
+                        return;
+                    }
 
                     if (userId) {
                         const { data: updatedEventQuot1, error: updateErrorEventQuot1 } = await supabase
@@ -246,6 +249,7 @@
                     console.error('Erreur lors de la mise à jour des tables:', error);
                 }
             }
+
         });
 
         // Assurer que handleDateClick est défini une seule fois

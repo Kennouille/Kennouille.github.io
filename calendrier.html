@@ -124,7 +124,7 @@
             });
 
             document.querySelectorAll('.factura-link').forEach(link => {
-                link.addEventListener('click', async function() {
+                link.addEventListener('click', async function(event) {
                     const factura = link.getAttribute('data-factura');
                     const row = link.closest('tr');
                     const userId = row.dataset.userId;

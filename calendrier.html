@@ -142,47 +142,48 @@
 
 
         async function handleFacturaUpload(link, userId) {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*,application/pdf';
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*,application/pdf';
 
-                input.addEventListener('change', async function() {
-                    const file = input.files[0];
-                    if (file) {
-                        try {
-                            // Upload du fichier à Supabase Storage
-                            const { data, error } = await supabase.storage
-                                .from('facturas')  // Assurez-vous que 'facturas' est le bon nom du bucket
-                                .upload(`facturas/${userId}/${file.name}`, file);
+            input.addEventListener('change', async function() {
+                const file = input.files[0];
+                if (file) {
+                    try {
+                        // Upload du fichier à Supabase Storage
+                        const { data, error } = await supabase.storage
+                            .from('facturas')
+                            .upload(`facturas/${userId}/${file.name}`, file);
 
-                            if (error) {
-                                console.error('Erreur lors du téléchargement de la facture :', error);
-                                return;
-                            }
-
-                            // Mettre à jour le lien avec la nouvelle facture
-                            link.textContent = 'Voir la Facture';
-                            link.dataset.factura = data.path;
-
-                            // Mise à jour de l'entrée dans la table event_quot1 avec le même user_id
-                            const { error: updateError } = await supabase
-                                .from('event_quot1')  // Assurez-vous que c'est bien le nom de la table
-                                .update({ Factura: data.path })
-                                .eq('user_id', userId);
-
-                            if (updateError) {
-                                console.error('Erreur lors de la mise à jour de la facture dans event_quot1 :', updateError);
-                            } else {
-                                console.log('Facture mise à jour avec succès dans event_quot1');
-                            }
-                        } catch (error) {
+                        if (error) {
                             console.error('Erreur lors du téléchargement de la facture :', error);
+                            return;
                         }
-                    }
-                });
 
-                input.click();
-            }
+                        // Mettre à jour le lien avec la nouvelle facture
+                        link.textContent = 'Voir la Facture';
+                        link.dataset.factura = data.path;
+
+                        // Mise à jour de l'entrée dans event_quot1 avec le bon nom de colonne (factura en minuscule)
+                        const { error: updateError } = await supabase
+                            .from('event_quot1')
+                            .update({ factura: data.path })
+                            .eq('user_id', userId);
+
+                        if (updateError) {
+                            console.error('Erreur lors de la mise à jour de la facture dans event_quot1 :', updateError);
+                        } else {
+                            console.log('Facture mise à jour avec succès dans event_quot1');
+                        }
+                    } catch (error) {
+                        console.error('Erreur lors du téléchargement de la facture :', error);
+                    }
+                }
+            });
+
+            input.click();
+        }
+
 
 
 

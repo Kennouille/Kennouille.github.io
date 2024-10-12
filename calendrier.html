@@ -253,14 +253,34 @@
                         if (error) {
                             console.error("Erreur lors de la récupération de l'URL publique de la facture :", error);
                         } else if (data) {
-                            // Ouvrir la facture dans une nouvelle fenêtre
-                            window.open(data.signedUrl, '_blank');
+                            // Afficher l'URL dans l'iframe du modal
+                            const iframe = document.getElementById('facturaIframe');
+                            iframe.src = data.signedUrl;
+
+                            // Afficher le modal
+                            const modal = document.getElementById('facturaModal');
+                            modal.style.display = 'block';
+
+                            // Fermer le modal en cliquant sur la croix
+                            document.getElementById('closeModal').onclick = function() {
+                                modal.style.display = 'none';
+                                iframe.src = ''; // Vider l'iframe quand le modal est fermé
+                            };
+
+                            // Fermer le modal en cliquant en dehors du contenu
+                            window.onclick = function(event) {
+                                if (event.target === modal) {
+                                    modal.style.display = 'none';
+                                    iframe.src = ''; // Vider l'iframe quand le modal est fermé
+                                }
+                            };
                         }
                     });
             } else {
                 console.error('URL de la facture non trouvée.');
             }
         }
+
 
 
 

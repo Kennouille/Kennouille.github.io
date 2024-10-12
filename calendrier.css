@@ -280,24 +280,27 @@ div {
 }
 
 .modal {
-    display: none; /* Caché par défaut */
+    display: none; /* Toujours caché par défaut */
     position: fixed;
     z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Transparence du fond */
+    background-color: rgba(0, 0, 0, 0.5); /* Fond sombre avec transparence */
+    overflow: hidden; /* Empêcher la page de défiler quand le modal est ouvert */
 }
 
 .modal-content {
     position: relative;
     background-color: white;
-    margin: 10% auto;
+    margin: 5% auto;
     padding: 20px;
     width: 80%;
     max-width: 800px;
+    max-height: 80%; /* Limite de la taille du modal */
     border-radius: 8px;
+    overflow-y: auto; /* Activer le défilement à l'intérieur du modal si nécessaire */
 }
 
 .close {

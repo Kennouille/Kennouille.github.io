@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="calendrier.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+    <script>
+        // Fonction pour afficher la date et l'heure de la dernière mise à jour
+        function displayLastUpdate() {
+            const now = new Date(); // Date et heure actuelles
+            const formattedDate = now.toLocaleString(); // Formatage en fonction des paramètres locaux
+            document.getElementById('lastUpdated').textContent = `Dernière mise à jour : ${formattedDate}`;
+        }
+
+        // Appeler la fonction lors du chargement de la page
+        window.onload = function() {
+            displayLastUpdate();
+        };
+    </script>
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 
@@ -1100,6 +1113,8 @@
             <span id="monthYear"></span>
             <button id="nextButton" class="button">Siguiente</button>
         </div>
+        <!-- Ajouter l'emplacement pour afficher la date et l'heure de la dernière mise à jour -->
+        <p id="lastUpdated" style="text-align: right; font-size: 0.8em; color: #666;"></p>
         <div class="calendar-container">
             <table id="calendarTable">
                 <tr>

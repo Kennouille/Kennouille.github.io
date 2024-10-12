@@ -279,7 +279,6 @@ div {
     margin-bottom: 5px;
 }
 
-<!-- Styles pour le modal -->
 .modal {
     display: none; /* Caché par défaut */
     position: fixed;

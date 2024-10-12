@@ -236,23 +236,24 @@
             const facturaPath = link.dataset.factura;
 
             if (facturaPath) {
-                // Obtenir l'URL publique de la facture
-                const { publicURL, error } = supabase
+                // Obtenir l'URL signée temporaire de la facture avec une durée de validité d'une journée (86400 secondes)
+                supabase
                     .storage
                     .from('facturas')
-                    .getPublicUrl(facturaPath);
-
-                if (error) {
-                    console.error('Erreur lors de la récupération de l\'URL publique de la facture :', error);
-                    return;
-                }
-
-                // Ouvrir la facture dans une nouvelle fenêtre
-                window.open(publicURL, '_blank');
+                    .createSignedUrl(facturaPath, 86400) // 86400 secondes = 1 jour
+                    .then(({ data, error }) => {
+                        if (error) {
+                            console.error("Erreur lors de la récupération de l'URL publique de la facture :", error);
+                        } else if (data) {
+                            // Ouvrir la facture dans une nouvelle fenêtre
+                            window.open(data.signedUrl, '_blank');
+                        }
+                    });
             } else {
                 console.error('URL de la facture non trouvée.');
             }
         }
+
 
 
 

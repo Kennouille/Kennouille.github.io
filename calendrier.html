@@ -8,26 +8,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
     <script>
-        // Fonction pour afficher la date et l'heure de la dernière mise à jour
-        function displayLastUpdate() {
-            const now = new Date(); // Date et heure actuelles
-            const formattedDate = now.toLocaleString(); // Formatage en fonction des paramètres locaux
-            const lastUpdatedElement = document.getElementById('lastUpdated');
-
-            // Vérifier si l'élément est bien trouvé
-            if (lastUpdatedElement) {
-                lastUpdatedElement.textContent = `Dernière mise à jour : ${formattedDate}`;
-                console.log('Dernière mise à jour affichée:', formattedDate);
-            } else {
-                console.error('Élément #lastUpdated non trouvé dans le DOM.');
+        // Fonction pour afficher la date et l'heure du dernier commit
+        async function displayLastCommit() {
+            try {
+                const response = await fetch('commit-info.json'); // Charger le fichier JSON
+                if (response.ok) {
+                    const data = await response.json();
+                    const commitDate = new Date(data.commitDate); // Convertir la date du commit
+                    const formattedDate = commitDate.toLocaleString(); // Formatage de la date
+                    document.getElementById('lastUpdated').textContent = `Dernier commit : ${formattedDate}`;
+                } else {
+                    console.error('Erreur lors du chargement des informations du commit');
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des informations du commit :', error);
             }
         }
 
         // Appeler la fonction lors du chargement du DOM
         document.addEventListener('DOMContentLoaded', function() {
-            displayLastUpdate();
+            displayLastCommit();
         });
     </script>
+
 
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';

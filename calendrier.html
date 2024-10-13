@@ -193,15 +193,15 @@
                             return;
                         }
 
-                        // Mettre à jour le lien avec la nouvelle facture
+                        // Mettre à jour le lien avec la nouvelle facture uniquement pour le bon user_id
                         link.textContent = 'Voir la Facture';
                         link.dataset.factura = data.path;
 
-                        // Mise à jour de l'entrée dans event_quot1 avec le bon nom de colonne (factura en minuscule)
+                        // Mise à jour de l'entrée dans event_quot1 avec le bon user_id
                         const { error: updateError } = await supabase
                             .from('event_quot1')
                             .update({ factura: data.path })
-                            .eq('user_id', userId);
+                            .eq('user_id', userId); // Utilise `user_id` comme critère de mise à jour
 
                         if (updateError) {
                             console.error('Erreur lors de la mise à jour de la facture dans event_quot1 :', updateError);
@@ -216,6 +216,7 @@
 
             input.click();
         }
+
 
 
 

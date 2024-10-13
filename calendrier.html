@@ -335,8 +335,9 @@
             const lugar = document.getElementById('Lugar').value || null;
             const precio = document.getElementById('Precio').value || null;
             const trabajo = document.getElementById('Trabajo').value || null;
-            const env_datos = document.getElementById('env_datos').value || null;
-            const pagado = document.getElementById('pagado').value || null;
+             // Pour les cases à cocher (checkboxes), il faut utiliser la propriété 'checked'
+            const env_datos = document.getElementById('env_datos').checked; // renvoie true ou false
+            const pagado = document.getElementById('pagado').checked; // renvoie true ou false
 
             // Générer un UUID pour user_id
             const user_id = crypto.randomUUID();

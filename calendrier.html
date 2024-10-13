@@ -12,14 +12,23 @@
         function displayLastUpdate() {
             const now = new Date(); // Date et heure actuelles
             const formattedDate = now.toLocaleString(); // Formatage en fonction des paramètres locaux
-            document.getElementById('lastUpdated').textContent = `Dernière mise à jour : ${formattedDate}`;
+            const lastUpdatedElement = document.getElementById('lastUpdated');
+
+            // Vérifier si l'élément est bien trouvé
+            if (lastUpdatedElement) {
+                lastUpdatedElement.textContent = `Dernière mise à jour : ${formattedDate}`;
+                console.log('Dernière mise à jour affichée:', formattedDate);
+            } else {
+                console.error('Élément #lastUpdated non trouvé dans le DOM.');
+            }
         }
 
-        // Appeler la fonction lors du chargement de la page
-        window.onload = function() {
+        // Appeler la fonction lors du chargement du DOM
+        document.addEventListener('DOMContentLoaded', function() {
             displayLastUpdate();
-        };
+        });
     </script>
+
     <script type="module">
         import { supabase } from './supabaseClientAgendaJour.js';
 

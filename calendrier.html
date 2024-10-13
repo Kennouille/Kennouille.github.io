@@ -16,7 +16,7 @@
                     const data = await response.json();
                     const commitDate = new Date(data.commitDate); // Convertir la date du commit
                     const formattedDate = commitDate.toLocaleString(); // Formatage de la date
-                    document.getElementById('lastUpdated').textContent = `Dernier commit : ${formattedDate}`;
+                    document.getElementById('lastUpdated').textContent = `Ultima actualización del programa : ${formattedDate}`;
                 } else {
                     console.error('Erreur lors du chargement des informations du commit');
                 }
@@ -1126,7 +1126,7 @@
             <button id="nextButton" class="button">Siguiente</button>
         </div>
         <!-- Ajouter l'emplacement pour afficher la date et l'heure de la dernière mise à jour -->
-        <p id="lastUpdated" style="text-align: right; font-size: 0.8em; color: #666;"></p>
+        <p id="lastUpdated" style="text-align: right; font-size: 0.5em; color: #666;"></p>
         <div class="calendar-container">
             <table id="calendarTable">
                 <tr>

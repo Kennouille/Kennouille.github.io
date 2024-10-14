@@ -826,7 +826,7 @@
 
                     // Ajouter le bouton "Borrar Factura"
                     const borrarFacturaButton = document.createElement('button');
-                    borrarFacturaButton.textContent = 'Borrar Factura';
+                    borrarFacturaButton.textContent = 'Borrar Factura'; // Correctement intitulé "Borrar Factura"
                     borrarFacturaButton.classList.add('borrar-factura-button');
                     applyCell.appendChild(borrarFacturaButton);
 
@@ -840,6 +840,8 @@
                                 updatedEvent[column] = cellValue === '' ? null : cellValue;
                             }
                         });
+                        // Ici, tu ajoutes ta logique pour mettre à jour l'événement
+                    });
 
                     // Ajouter un écouteur d'événement au bouton "Borrar Factura"
                     borrarFacturaButton.addEventListener('click', async function() {
@@ -864,6 +866,7 @@
                             alert("Erreur lors de la suppression de la facture.");
                         }
                     });
+
 
 
                         // Capturer la valeur des cases à cocher séparément

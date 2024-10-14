@@ -27,20 +27,6 @@ h1 {
     margin-bottom: 20px;
 }
 
-.table-container {
-    width: 100%;
-    max-width: 700px;
-    overflow-x: hidden;
-    height: auto;
-    overflow-y: hidden; /* Empêche le défilement vertical */
-}
-
-#editable-table {
-    width: auto;
-}
-
-
-
 #selectedDateDisplay {
     font-size: 1.5em; /* Ajustez la taille selon vos besoins */
     font-weight: bold;

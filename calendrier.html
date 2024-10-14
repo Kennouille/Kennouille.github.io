@@ -177,45 +177,6 @@
             });
         });
 
-        // Appel de fetchEventsByDate pour récupérer les événements de la date actuelle
-        const events = await fetchEventsByDate(todayFormatted);
-        const tableBody = document.querySelector('#editable-table tbody');
-
-        events.forEach(event => {
-            const row = document.createElement('tr');
-            row.dataset.userId = event.user_id;
-            row.innerHTML = `
-                <td contenteditable="true" data-column="Telefono">${event.Telefono}</td>
-                <td contenteditable="true" data-column="Nombre">${event.Nombre}</td>
-                <td contenteditable="true" data-column="Fecha">${event.Fecha}</td>
-                <td contenteditable="true" data-column="Hora">${event.Hora}</td>
-                <td contenteditable="true" data-column="Min">${event.Min !== null ? event.Min : ''}</td>
-                <td contenteditable="true" data-column="Lugar">${event.Lugar !== null ? event.Lugar : ''}</td>
-                <td contenteditable="true" data-column="Precio">${event.Precio !== null ? event.Precio : ''}</td>
-                <td contenteditable="true" data-column="Trabajo">${event.Trabajo !== null ? event.Trabajo : ''}</td>
-                <td contenteditable="true" data-column="user_id">${event.user_id}</td>
-                <td>
-                    <div class="checkbox-container" style="font-size: smaller;">
-                        <label>
-                            <input type="checkbox" data-column="env_datos" ${event.Env_datos ? 'checked' : ''}> - Envié datos
-                        </label>
-                        <br>
-                        <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.factura}">${event.factura ? 'Voir la Facture' : 'Adjuntar Factura'}</span>
-                        <br>
-                        <label>
-                            <input type="checkbox" data-column="pagado" ${event.Pagado ? 'checked' : ''}> - Pagado
-                        </label>
-                        <input type="file" id="facturaInput" style="display: none;">
-                    </div>
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-
-        // Réactive le défilement horizontal après l'ajout des lignes
-        const tableContainer = document.querySelector('.table-container');
-        tableContainer.style.overflowX = 'auto';
-        document.getElementById('editable-table').style.width = '1000px';
 
         async function handleFacturaUpload(link, userId) {
             const input = document.createElement('input');
@@ -1199,7 +1160,7 @@
                 </tr>
             </table>
         </div>
-        <div class="table-container">
+        <div class="editable-container">
             <table id="editable-table">
                 <thead>
                     <tr>
@@ -1234,7 +1195,6 @@
                                 </label>
                                 <br>
                                 <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.factura}">${event.factura ? 'Voir la Facture' : 'Adjuntar Factura'}</span>
-                                // <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="chemin_vers_facture.pdf">Voir la Facture</span>
                                 <br>
                                 <label>
                                     <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - pagado
@@ -1247,6 +1207,7 @@
                 </tbody>
             </table>
         </div>
+        <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="chemin_vers_facture.pdf">Voir la Facture</span>
         <!-- Modal pour afficher les PDF ou images -->
         <div id="facturaModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
             <div style="position:relative; width:80%; height:80%; margin:5% auto; background:white;">

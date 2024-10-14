@@ -133,8 +133,8 @@
             // Assurez-vous que chaque lien de facture déclenche openFactura
             document.querySelectorAll('.factura-link').forEach(link => {
                 link.addEventListener('click', function(event) {
-                    event.preventDefault(); // Empêcher la redirection
-                    openFactura(link); // Appel de la fonction pour afficher la facture
+                    event.preventDefault(); // Empêcher l'ouverture par défaut
+                    openFactura(link); // Ouvrir dans le modal
                 });
             });
 
@@ -157,6 +157,26 @@
             document.querySelectorAll('.clickable').forEach(cell => {
                 cell.addEventListener('click', handleDateClick);
             });
+
+
+
+
+
+             document.getElementById('testModalButton').addEventListener('click', function() {
+                const modal = document.getElementById('facturaModal');
+                modal.style.display = 'block';
+            });
+
+            document.getElementById('closeModal').addEventListener('click', function() {
+                const modal = document.getElementById('facturaModal');
+                modal.style.display = 'none';
+            });
+
+
+
+
+
+
 
             document.addEventListener('click', async function(event) {
                 if (event.target.classList.contains('factura-link')) {
@@ -289,35 +309,29 @@
 
                             const modal = document.getElementById('facturaModal');
                             const iframe = document.getElementById('facturaIframe');
-                            const imgElement = document.createElement('img'); // Créer un élément image pour les images
+                            const imgElement = document.getElementById('facturaImg');
 
                             if (isPDF) {
-                                // Charger le PDF dans l'iframe et afficher le modal
-                                iframe.src = fileUrl; // Charger le PDF dans l'iframe
-                                iframe.style.display = 'block'; // Afficher l'iframe
-                                modal.style.display = 'block'; // Afficher le modal
+                                iframe.src = fileUrl;
+                                iframe.style.display = 'block';  // Afficher l'iframe
+                                imgElement.style.display = 'none';  // Masquer l'image
                             } else if (isImage) {
-                                // Charger l'image dans le modal
                                 imgElement.src = fileUrl;
-                                imgElement.style.width = '100%'; // Ajuster la taille de l'image
-                                imgElement.style.height = '100%';
-
-                                // Ajouter l'image au modal
-                                modal.querySelector('.modal-content').appendChild(imgElement);
-                                modal.style.display = 'block'; // Afficher le modal
-                                iframe.style.display = 'none'; // Masquer l'iframe
+                                imgElement.style.display = 'block';  // Afficher l'image
+                                iframe.style.display = 'none';  // Masquer l'iframe
                             } else {
                                 // Pour d'autres types de fichiers, ouvrir dans un nouvel onglet
                                 window.open(fileUrl, '_blank');
                             }
 
-                            // Fermer le modal lorsque l'utilisateur clique sur la croix ou à l'extérieur
+                            // Afficher le modal
+                            modal.style.display = 'block';
+
+                            // Fermer le modal lorsque l'utilisateur clique sur la croix
                             document.getElementById('closeModal').onclick = function() {
                                 modal.style.display = 'none';
                                 iframe.src = '';  // Réinitialiser après fermeture
-                                if (imgElement.parentNode) {
-                                    imgElement.parentNode.removeChild(imgElement); // Supprimer l'image du modal
-                                }
+                                imgElement.src = '';  // Réinitialiser après fermeture
                             };
                         }
                     });
@@ -325,6 +339,7 @@
                 console.error('URL de la facture non trouvée.');
             }
         }
+
 
 
 
@@ -1216,10 +1231,12 @@
                 </tbody>
             </table>
         </div>
-        <!-- Modal pour afficher les PDF -->
+        <button id="testModalButton">Test Modal</button>
+        <!-- Modal pour afficher les PDF et images -->
         <div id="facturaModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
-            <div style="position:relative; width:80%; height:80%; margin:5% auto; background:white;">
-                <iframe id="facturaIframe" src="" style="width:100%; height:100%;"></iframe>
+            <div class="modal-content" style="position:relative; width:80%; height:80%; margin:5% auto; background:white;">
+                <iframe id="facturaIframe" src="" style="width:100%; height:100%; display: none;"></iframe>
+                <img id="facturaImg" style="width:100%; height:100%; display: none;" />
                 <button id="closeModal" style="position:absolute; top:10px; right:10px;">Fermer</button>
             </div>
         </div>

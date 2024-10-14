@@ -287,39 +287,32 @@
                         } else if (data) {
                             const fileUrl = data.signedUrl;
 
-                            // Détecter si le fichier est un PDF
-                            const isPDF = fileUrl.toLowerCase().endsWith('.pdf');
+                            // Charger le PDF ou l'image dans l'iframe du modal
+                            const modal = document.getElementById('facturaModal');
+                            const iframe = document.getElementById('facturaIframe');
+                            iframe.src = fileUrl; // Charger le fichier dans l'iframe
+                            modal.style.display = 'block'; // Afficher le modal
 
-                            if (isPDF) {
-                                // Charger le PDF dans l'iframe du modal
-                                const modal = document.getElementById('facturaModal');
-                                const iframe = document.getElementById('facturaIframe');
-                                iframe.src = fileUrl; // Charger le PDF
-                                modal.style.display = 'block'; // Afficher le modal
+                            // Fermer le modal lorsque l'utilisateur clique sur le bouton "Fermer"
+                            document.getElementById('closeModal').onclick = function () {
+                                modal.style.display = 'none';
+                                iframe.src = '';  // Réinitialiser après fermeture
+                            };
 
-                                // Fermer le modal lorsque l'utilisateur clique sur le bouton "Fermer"
-                                document.getElementById('closeModal').onclick = function() {
+                            // Fermer le modal lorsque l'utilisateur clique en dehors du contenu du modal
+                            window.onclick = function (event) {
+                                if (event.target === modal) {
                                     modal.style.display = 'none';
                                     iframe.src = '';  // Réinitialiser après fermeture
-                                };
-                            } else {
-                                // Gérer d'autres types de fichiers comme les images
-                                const modal = document.getElementById('facturaModal');
-                                const iframe = document.getElementById('facturaIframe');
-                                iframe.src = fileUrl; // Charger l'image ou autre dans le iframe
-                                modal.style.display = 'block';
-
-                                document.getElementById('closeModal').onclick = function() {
-                                    modal.style.display = 'none';
-                                    iframe.src = '';  // Réinitialiser après fermeture
-                                };
-                            }
+                                }
+                            };
                         }
                     });
             } else {
                 console.error('URL de la facture non trouvée.');
             }
         }
+
 
 
         // Assurer que handleDateClick est défini une seule fois

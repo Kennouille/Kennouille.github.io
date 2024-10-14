@@ -221,67 +221,6 @@
             input.click();
         }
 
-        borrarFacturaButton.addEventListener('click', async function() {
-            const userId = row.dataset.userId; // Récupérer le user_id de la ligne
-
-            if (!userId) {
-                alert("Erreur : user_id manquant.");
-                return;
-            }
-
-            try {
-                const response = await fetch(`/delete-factura/${userId}`, {
-                    method: 'POST', // Utilisation de la méthode POST pour la suppression
-                });
-
-                if (response.ok) {
-                    alert("Factura borrada con éxito.");
-                    // Remplacer le texte par "Adjuntar Factura" dans la cellule correspondante
-                    const facturaLink = row.querySelector('.factura-link');
-                    if (facturaLink) {
-                        facturaLink.textContent = 'Adjuntar Factura';
-                        facturaLink.removeAttribute('data-factura'); // Supprimer l'attribut data-factura
-                    }
-                } else {
-                    alert("Erreur lors de la suppression de la facture.");
-                }
-            } catch (error) {
-                console.error("Erreur:", error);
-                alert("Erreur lors de la suppression de la facture.");
-            }
-        });
-
-        async function deleteFactura(userId) {
-            const confirmDelete = confirm("¿Estás seguro de que quieres borrar la factura?");
-            if (confirmDelete) {
-                try {
-                    const response = await fetch(`/delete-factura/${userId}`, {
-                        method: 'GET',
-                    });
-
-                    if (response.ok) {
-                        alert("Factura borrada con éxito.");
-                        // Remplacer la facture par "Adjuntar Factura" dans l'UI
-                        const facturaLink = document.querySelector(`.factura-link[data-factura="${userId}"]`);
-                        if (facturaLink) {
-                            facturaLink.textContent = 'Adjuntar Factura';
-                            facturaLink.removeAttribute('data-factura');
-                        }
-                    } else {
-                        alert("Error al borrar la factura.");
-                    }
-                } catch (error) {
-                    console.error("Error en la solicitud:", error);
-                    alert("Hubo un problema al borrar la factura.");
-                }
-            }
-        }
-
-
-
-
-
-
         async function updateTables(factura, userId, Telefono) {
             try {
                 console.log('Début de updateTables avec userId:', userId, 'et Telefono:', Telefono);
@@ -859,11 +798,27 @@
 
                     // Ajouter un écouteur d'événement au bouton "Borrar Factura"
                     borrarFacturaButton.addEventListener('click', async function() {
-                        const userId = row.dataset.userId; // Récupère l'UUID du user
-                        if (userId) {
-                            await deleteFactura(userId); // Appelle la fonction deleteFactura avec user_id
+                    const userId = row.dataset.userId; // Récupère l'UUID du user
+                    if (userId) {
+                        const { error } = await supabase
+                            .from('event_quot1')
+                            .update({ factura: null })
+                            .eq('user_id', userId);
+
+                        if (error) {
+                            console.error('Erreur lors de la mise à jour de la facture :', error);
+                        } else {
+                            alert('La facture a été détachée avec succès.');
+                            // Mettre à jour l'interface utilisateur pour afficher "Adjuntar Factura"
+                            const facturaLink = row.querySelector('.factura-link');
+                            if (facturaLink) {
+                                facturaLink.textContent = 'Adjuntar Factura';
+                                facturaLink.removeAttribute('data-factura');
+                            }
                         }
-                    });
+                    }
+                });
+
 
 
                     // Ajouter un écouteur d'événement au bouton "Aplicar cambio"

@@ -28,22 +28,23 @@ h1 {
 }
 
 .table-container {
-    width: 100%;  /* Prendre toute la largeur du parent */
-    overflow-x: auto; /* Crée un ascenseur horizontal si nécessaire */
-    white-space: normal; /* Permet au contenu de s'étendre sur plusieurs lignes */
+    width: 100%; /* La table occupera toute la largeur disponible */
+    overflow-x: auto; /* Active seulement l'ascenseur horizontal si nécessaire */
+    overflow-y: hidden; /* Désactive complètement l'ascenseur vertical */
+    white-space: normal; /* Permettre au texte de se plier sur plusieurs lignes */
 }
 
 #editable-table {
-    width: max-content; /* La largeur du tableau dépend de son contenu */
-    border-collapse: collapse; /* Garder la structure compacte */
+    width: max-content; /* La largeur du tableau s'ajuste à son contenu */
+    border-collapse: collapse; /* Garde la structure compacte */
 }
 
 #editable-table th, #editable-table td {
     padding: 10px;
     border: 1px solid blue;
     text-align: center;
-    white-space: normal; /* Laisse le texte s'étendre sur plusieurs lignes si nécessaire */
-    word-wrap: break-word; /* Forcer le retour à la ligne si le texte est trop long */
+    white-space: normal; /* Le texte peut se plier sur plusieurs lignes */
+    word-wrap: break-word; /* Le texte long se replie sur plusieurs lignes */
 }
 
 

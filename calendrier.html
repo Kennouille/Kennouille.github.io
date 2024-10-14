@@ -176,7 +176,13 @@
                 }
             });
         });
+        await fetchAndDisplayEvents(); // Assure-toi que cette fonction est appelée
 
+        // Réactive le défilement horizontal après l'ajout des lignes
+        const tableContainer = document.querySelector('.table-container');
+        tableContainer.style.overflowX = 'auto';
+        document.getElementById('editable-table').style.width = '1000px';
+    });
 
         async function handleFacturaUpload(link, userId) {
             const input = document.createElement('input');

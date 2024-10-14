@@ -30,13 +30,13 @@ h1 {
 .table-container {
     width: 100%;
     max-width: 700px;
-    overflow-x: auto;
+    overflow-x: hidden;
     height: auto;
     overflow-y: hidden; /* Empêche le défilement vertical */
 }
 
 #editable-table {
-    width: 1000px;
+    width: auto;
 }
 
 

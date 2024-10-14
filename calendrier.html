@@ -193,7 +193,13 @@
                             .upload(`facturas/${userId}/${file.name}`, file);
 
                         if (error) {
-                            console.error('Erreur lors du téléchargement de la facture :', error);
+                            // Vérifier le code d'erreur
+                            if (error.statusCode === 409 && error.message === 'The resource already exists') {
+                                alert('Este archivo fue utilizado. Ponle otro nombre para utilizarlo de nuevo.');
+                            } else {
+                                console.error('Erreur lors du téléchargement de la facture :', error);
+                                alert('Erreur lors du téléchargement de la facture.');
+                            }
                             return;
                         }
 

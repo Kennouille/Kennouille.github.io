@@ -21,7 +21,7 @@ h1 {
     padding: 20px;
 }
 
-.navigation-container, .calendar-container, .editable-table, .form-container {
+.navigation-container, .calendar-container, .form-container {
     width: 100%;
     max-width: 600px; /* Limite la largeur pour une meilleure lisibilité sur les grands écrans */
     margin-bottom: 20px;
@@ -31,6 +31,12 @@ h1 {
     overflow-x: auto; /* Permet le défilement horizontal */
     width: 100%; /* Prend toute la largeur disponible */
     margin-top: 20px; /* Séparation par rapport au calendrier */
+}
+
+#editable-table {
+    min-width: 1000px; /* Définir une largeur minimale pour forcer le défilement */
+    width: max-content; /* Assure que le tableau peut dépasser la largeur de la page si nécessaire */
+    border-collapse: collapse; /* Conserve la structure de ton tableau */
 }
 
 #selectedDateDisplay {

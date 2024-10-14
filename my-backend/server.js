@@ -29,13 +29,13 @@ app.post('/event_quot', async (req, res) => {
 });
 
 // Suppression de la facture associée à un événement
-app.post('/deleteFactura/:eventId', async (req, res) => {
-    const eventId = req.params.eventId;
+app.post('/delete-factura/:userId', async (req, res) => {
+    const userId = req.params.userId;
 
     try {
-        // Requête SQL pour effacer la facture
-        const query = `UPDATE event_quot1 SET factura = NULL WHERE id = ?`;
-        await database.execute(query, [eventId]);
+        // Requête SQL pour effacer la facture en utilisant user_id (UUID)
+        const query = `UPDATE event_quot1 SET factura = NULL WHERE user_id = ?`;
+        await database.execute(query, [userId]);
 
         res.status(200).send({ message: "Factura borrada con éxito." });
     } catch (error) {

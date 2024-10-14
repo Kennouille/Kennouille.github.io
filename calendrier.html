@@ -283,34 +283,49 @@
                         } else if (data) {
                             const fileUrl = data.signedUrl;
 
-                            // Détecter si le fichier est un PDF
+                            // Détecter si le fichier est un PDF ou une image
                             const isPDF = fileUrl.toLowerCase().endsWith('.pdf');
+                            const isImage = /\.(jpg|jpeg|png|gif|bmp)$/i.test(fileUrl);
+
+                            const modal = document.getElementById('facturaModal');
+                            const iframe = document.getElementById('facturaIframe');
+                            const imgElement = document.createElement('img'); // Créer un élément image pour les images
 
                             if (isPDF) {
-                                // Charger le PDF dans l'objet et afficher le modal
-                                const modal = document.getElementById('facturaModal');
-                                const objectElement = document.getElementById('facturaObject');
-                                const downloadLink = document.getElementById('pdfDownloadLink');
-
-                                objectElement.data = fileUrl; // Charger le PDF dans l'objet
-                                downloadLink.href = fileUrl;  // Lien de téléchargement au cas où l'affichage échoue
+                                // Charger le PDF dans l'iframe et afficher le modal
+                                iframe.src = fileUrl; // Charger le PDF dans l'iframe
+                                iframe.style.display = 'block'; // Afficher l'iframe
                                 modal.style.display = 'block'; // Afficher le modal
+                            } else if (isImage) {
+                                // Charger l'image dans le modal
+                                imgElement.src = fileUrl;
+                                imgElement.style.width = '100%'; // Ajuster la taille de l'image
+                                imgElement.style.height = '100%';
 
-                                // Fermer le modal lorsque l'utilisateur clique sur la croix
-                                document.getElementById('closeModal').onclick = function() {
-                                    modal.style.display = 'none';
-                                    objectElement.data = ''; // Vider l'objet après fermeture
-                                };
+                                // Ajouter l'image au modal
+                                modal.querySelector('.modal-content').appendChild(imgElement);
+                                modal.style.display = 'block'; // Afficher le modal
+                                iframe.style.display = 'none'; // Masquer l'iframe
                             } else {
-                                // Gérer d'autres types de fichiers comme les images
+                                // Pour d'autres types de fichiers, ouvrir dans un nouvel onglet
                                 window.open(fileUrl, '_blank');
                             }
+
+                            // Fermer le modal lorsque l'utilisateur clique sur la croix ou à l'extérieur
+                            document.getElementById('closeModal').onclick = function() {
+                                modal.style.display = 'none';
+                                iframe.src = '';  // Réinitialiser après fermeture
+                                if (imgElement.parentNode) {
+                                    imgElement.parentNode.removeChild(imgElement); // Supprimer l'image du modal
+                                }
+                            };
                         }
                     });
             } else {
                 console.error('URL de la facture non trouvée.');
             }
         }
+
 
 
 

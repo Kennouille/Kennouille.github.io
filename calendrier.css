@@ -28,24 +28,36 @@ h1 {
 }
 
 .table-container {
-    width: 100%; /* Prend toute la largeur de l'agenda */
-    overflow-x: auto; /* Active uniquement l'ascenseur horizontal si nécessaire */
-    overflow-y: hidden; /* Désactive complètement l'ascenseur vertical */
-    white-space: nowrap; /* Empêche le texte ou les colonnes de se plier à la largeur de la fenêtre */
+    width: 100%; /* La table occupera toute la largeur disponible */
+    overflow-x: scroll; /* Ascenseur horizontal toujours visible */
+    white-space: normal; /* Le texte se pliera sur plusieurs lignes si nécessaire */
+    display: block; /* Assure que le conteneur de la table prenne toute la largeur */
 }
 
 #editable-table {
-    width: max-content; /* Le tableau s'ajustera à son contenu */
-    border-collapse: collapse; /* Style compact pour les bordures */
+    table-layout: fixed; /* Empêche les colonnes de s'ajuster à leur contenu */
+    width: 100%; /* La table occupera toute la largeur disponible */
+    border-collapse: collapse; /* Garde la structure compacte */
 }
 
 #editable-table th, #editable-table td {
     padding: 10px;
     border: 1px solid blue;
     text-align: center;
-    white-space: normal; /* Le texte peut se plier sur plusieurs lignes si nécessaire */
-    word-wrap: break-word; /* Permet au texte long de revenir à la ligne à l'intérieur des cellules */
+    white-space: normal; /* Permet au texte de se plier sur plusieurs lignes */
+    word-wrap: break-word; /* Permet aux mots longs de se plier correctement */
+    height: auto; /* Assure que les lignes restent visibles et ajustées */
 }
+
+#editable-table tbody tr {
+    display: table-row; /* Chaque ligne reste dans une seule "rangée" */
+}
+
+#editable-table {
+    height: auto; /* Ne jamais couper les lignes, elles seront toutes affichées */
+}
+
+
 
 
 /* Suppression des scrollbars verticales */

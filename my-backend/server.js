@@ -29,18 +29,25 @@ app.post('/event_quot', async (req, res) => {
 });
 
 // Suppression de la facture associée à un événement
-app.post('/delete-factura/:userId', async (req, res) => {
-    const userId = req.params.userId; // Récupérer l'ID de l'utilisateur
+app.get('/delete-factura/:userId', async (req, res) => {
+    const userId = req.params.userId;
 
     try {
-        // Remplacer la facture par NULL dans event_quot1
-        const query = `UPDATE event_quot1 SET factura = NULL WHERE user_id = ?`;
-        await database.execute(query, [userId]); // Exécuter la requête avec l'user_id
+        // Mettre la colonne `factura` à NULL pour le user_id correspondant
+        const { error } = await supabase
+            .from('event_quot1')
+            .update({ factura: null })
+            .eq('user_id', userId);
 
-        res.status(200).send({ message: "Factura borrada con éxito." });
+        if (error) {
+            console.error('Erreur lors de la mise à jour de la facture :', error);
+            return res.status(500).json({ message: 'Erreur lors de la mise à jour de la facture' });
+        }
+
+        res.status(200).json({ message: 'Factura mise à jour avec succès' });
     } catch (error) {
-        console.error("Error al borrar la factura:", error);
-        res.status(500).send({ message: "Error al borrar la factura." });
+        console.error('Erreur lors de la mise à jour de la facture :', error);
+        res.status(500).json({ message: 'Erreur interne du serveur' });
     }
 });
 

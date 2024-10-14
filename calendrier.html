@@ -222,25 +222,25 @@
         }
 
 
-        async function deleteFactura(eventId) {
+        async function deleteFactura(userId) {
             const confirmDelete = confirm("¿Estás seguro de que quieres borrar la factura?");
-
             if (confirmDelete) {
                 try {
-                    // Remplacer cette URL par celle de ton serveur ou API qui gère la suppression
-                    const response = await fetch(`/delete-factura/${eventId}`, {
+                    const response = await fetch(`/delete-factura/${userId}`, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
-                        }
+                            'Content-Type': 'application/json',
+                        },
                     });
 
                     if (response.ok) {
+                        alert("Factura borrada con éxito.");
                         // Remplacer la facture par "Adjuntar Factura" dans l'UI
-                        const facturaLink = document.querySelector(`.factura-link[data-factura="${eventId}"]`);
-                        facturaLink.textContent = 'Adjuntar Factura';
-                        facturaLink.removeAttribute('data-factura');
-                        alert("La factura ha sido borrada correctamente.");
+                        const facturaLink = document.querySelector(`.factura-link[data-factura="${userId}"]`);
+                        if (facturaLink) {
+                            facturaLink.textContent = 'Adjuntar Factura';
+                            facturaLink.removeAttribute('data-factura');
+                        }
                     } else {
                         alert("Error al borrar la factura.");
                     }
@@ -250,6 +250,7 @@
                 }
             }
         }
+
 
 
 
@@ -824,11 +825,19 @@
                     whatsappButton.classList.add('whatsapp-button');
                     applyCell.appendChild(whatsappButton);
 
-                    // Ajouter le bouton "Borrar Factura"
                     const borrarFacturaButton = document.createElement('button');
-                    borrarFacturaButton.textContent = 'Borrar Factura'; // Correctement intitulé "Borrar Factura"
+                    borrarFacturaButton.textContent = 'Borrar Factura';
                     borrarFacturaButton.classList.add('borrar-factura-button');
                     applyCell.appendChild(borrarFacturaButton);
+
+                    // Ajouter un écouteur d'événement au bouton "Borrar Factura"
+                    borrarFacturaButton.addEventListener('click', async function() {
+                        const userId = row.dataset.userId; // Récupère l'UUID du user
+                        if (userId) {
+                            await deleteFactura(userId); // Appelle la fonction deleteFactura avec user_id
+                        }
+                    });
+
 
                     // Ajouter un écouteur d'événement au bouton "Aplicar cambio"
                     applyButton.addEventListener('click', async function() {
@@ -840,32 +849,6 @@
                                 updatedEvent[column] = cellValue === '' ? null : cellValue;
                             }
                         });
-
-
-                    // Ajouter un écouteur d'événement au bouton "Borrar Factura"
-                    borrarFacturaButton.addEventListener('click', async function() {
-                        const eventId = row.dataset.eventId; // Assurez-vous que chaque ligne contient l'ID de l'événement
-                        try {
-                            const response = await fetch(`/delete-factura/${eventId}`, {
-                                method: 'POST',
-                            });
-
-                            if (response.ok) {
-                                alert("Factura borrada con éxito.");
-                                // Remplacer le texte par "Adjuntar Factura" dans la cellule correspondante
-                                const facturaLink = row.querySelector('.factura-link');
-                                if (facturaLink) {
-                                    facturaLink.textContent = 'Adjuntar Factura';
-                                }
-                            } else {
-                                alert("Erreur lors de la suppression de la facture.");
-                            }
-                        } catch (error) {
-                            console.error("Erreur:", error);
-                            alert("Erreur lors de la suppression de la facture.");
-                        }
-                    });
-
 
 
                         // Capturer la valeur des cases à cocher séparément

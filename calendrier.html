@@ -7,6 +7,7 @@
     <title>Calendrier et Agenda Quotidien</title>
     <link rel="stylesheet" href="calendrier.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
     <script>
         // Fonction pour afficher la date et l'heure du dernier commit
@@ -311,7 +312,54 @@
             }
         }
 
+        // Charger la facture en utilisant Supabase (modifie cette partie si nécessaire)
+        function openFactura(facturaPath) {
+            supabase
+                .storage
+                .from('facturas')
+                .createSignedUrl(facturaPath, 86400)
+                .then(({ data, error }) => {
+                    if (error) {
+                        console.error("Erreur lors de la récupération de l'URL signée :", error);
+                    } else if (data) {
+                        const fileUrl = data.signedUrl;
 
+                        // Vérifie si le fichier est un PDF
+                        const isPDF = fileUrl.toLowerCase().endsWith('.pdf');
+                        if (isPDF) {
+                            const modal = document.getElementById('facturaModal');
+                            const iframe = document.getElementById('facturaIframe');
+
+                            // Charger le fichier PDF dans l'iframe avec PDF.js
+                            const loadingTask = pdfjsLib.getDocument(fileUrl);
+                            loadingTask.promise.then(function(pdf) {
+                                pdf.getPage(1).then(function(page) {
+                                    const scale = 1.5;
+                                    const viewport = page.getViewport({ scale: scale });
+                                    const canvas = document.createElement('canvas');
+                                    const context = canvas.getContext('2d');
+                                    canvas.height = viewport.height;
+                                    canvas.width = viewport.width;
+
+                                    page.render({ canvasContext: context, viewport: viewport });
+
+                                    // Affiche le PDF dans le modal
+                                    iframe.srcdoc = canvas.toDataURL();
+                                    modal.style.display = 'block';
+                                });
+                            });
+
+                            document.getElementById('closeModal').onclick = function() {
+                                modal.style.display = 'none';
+                                iframe.src = '';  // Réinitialiser après fermeture
+                            };
+                        } else {
+                            // Si ce n'est pas un PDF, ouvre dans un nouvel onglet
+                            window.open(fileUrl, '_blank');
+                        }
+                    }
+                });
+            }
 
 
         // Assurer que handleDateClick est défini une seule fois
@@ -1079,6 +1127,7 @@
             }
         }
 
+
         async function openFacturaDialog(event) {
             const facturaLink = event.target;
             const userId = facturaLink.closest('tr').dataset.userId;
@@ -1201,12 +1250,10 @@
             </table>
         </div>
         <!-- Modal pour afficher les PDF -->
-        <div id="facturaModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
-            <div class="modal-content" style="position:relative; width:80%; height:80%; margin:5% auto; background:white;">
-                <span id="closeModal" class="close" style="position:absolute; top:10px; right:10px; cursor:pointer;">&times;</span>
-                <object id="facturaObject" data="" type="application/pdf" style="width:100%; height:100%;">
-                    <p>Votre navigateur ne peut pas afficher ce PDF. Vous pouvez le télécharger <a id="pdfDownloadLink" href="#" target="_blank">ici</a>.</p>
-                </object>
+        <div id="facturaModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
+            <div style="position:relative; width:80%; height:80%; margin:5% auto; background:white;">
+                <iframe id="facturaIframe" src="" style="width:100%; height:100%;"></iframe>
+                <button id="closeModal" style="position:absolute; top:10px; right:10px;">Fermer</button>
             </div>
         </div>
         <div class="form-container">

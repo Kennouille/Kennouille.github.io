@@ -285,19 +285,20 @@
                             // Détecter si le fichier est un PDF
                             const isPDF = fileUrl.toLowerCase().endsWith('.pdf');
 
-                            // Si c'est un PDF, on l'affiche dans une iframe
                             if (isPDF) {
+                                // Charger le PDF dans l'objet et afficher le modal
                                 const modal = document.getElementById('facturaModal');
-                                const iframe = document.getElementById('facturaIframe');
+                                const objectElement = document.getElementById('facturaObject');
+                                const downloadLink = document.getElementById('pdfDownloadLink');
 
-                                // Charger le PDF dans l'iframe
-                                iframe.src = fileUrl;
+                                objectElement.data = fileUrl; // Charger le PDF dans l'objet
+                                downloadLink.href = fileUrl;  // Lien de téléchargement au cas où l'affichage échoue
                                 modal.style.display = 'block'; // Afficher le modal
 
                                 // Fermer le modal lorsque l'utilisateur clique sur la croix
                                 document.getElementById('closeModal').onclick = function() {
                                     modal.style.display = 'none';
-                                    iframe.src = ''; // Vider l'iframe après fermeture
+                                    objectElement.data = ''; // Vider l'objet après fermeture
                                 };
                             } else {
                                 // Gérer d'autres types de fichiers comme les images
@@ -309,6 +310,7 @@
                 console.error('URL de la facture non trouvée.');
             }
         }
+
 
 
 
@@ -1202,7 +1204,9 @@
         <div id="facturaModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
             <div class="modal-content" style="position:relative; width:80%; height:80%; margin:5% auto; background:white;">
                 <span id="closeModal" class="close" style="position:absolute; top:10px; right:10px; cursor:pointer;">&times;</span>
-                <iframe id="facturaIframe" src="" style="width:100%; height:100%; border:none;"></iframe>
+                <object id="facturaObject" data="" type="application/pdf" style="width:100%; height:100%;">
+                    <p>Votre navigateur ne peut pas afficher ce PDF. Vous pouvez le télécharger <a id="pdfDownloadLink" href="#" target="_blank">ici</a>.</p>
+                </object>
             </div>
         </div>
         <div class="form-container">

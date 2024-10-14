@@ -29,23 +29,19 @@ app.post('/event_quot', async (req, res) => {
 });
 
 // Suppression de la facture associée à un événement
-app.post('/delete-factura/:eventId', async (req, res) => {
-  const eventId = req.params.eventId;
+app.post('/deleteFactura/:eventId', async (req, res) => {
+    const eventId = req.params.eventId;
 
-  try {
-    // Utiliser Supabase pour mettre la colonne `factura` à NULL pour un événement spécifique
-    const { data, error } = await supabase
-      .from('event_quot1')
-      .update({ factura: null }) // Mettre la colonne `factura` à NULL
-      .eq('id', eventId);        // Trouver l'événement correspondant avec l'ID
+    try {
+        // Requête SQL pour effacer la facture
+        const query = `UPDATE event_quot1 SET factura = NULL WHERE id = ?`;
+        await database.execute(query, [eventId]);
 
-    if (error) throw error;
-
-    res.status(200).send({ message: "Factura borrada con éxito." });
-  } catch (error) {
-    console.error("Error al borrar la factura:", error);
-    res.status(500).send({ message: "Error al borrar la factura." });
-  }
+        res.status(200).send({ message: "Factura borrada con éxito." });
+    } catch (error) {
+        console.error("Error al borrar la factura:", error);
+        res.status(500).send({ message: "Error al borrar la factura." });
+    }
 });
 
 app.listen(port, () => {

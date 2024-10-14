@@ -431,7 +431,9 @@
                 document.getElementById('pagado').checked = false;
                 // Recharger les données du tableau
                 loadTableData();
-                handleDateClick(event)
+                // Actualiser le tableau avec handleDateClick pour la date sélectionnée
+                const selectedDate = new Date(fecha); // Utiliser la date sélectionnée
+                handleDateClick({ target: { textContent: selectedDate.getDate() } });
             }
         });
 

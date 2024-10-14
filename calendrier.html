@@ -798,22 +798,11 @@
 
                     // Ajouter un écouteur d'événement au bouton "Borrar Factura"
                     borrarFacturaButton.addEventListener('click', function() {
-                        // Créer et insérer la boîte de dialogue de confirmation
-                        const confirmationPopup = document.createElement('div');
-                        confirmationPopup.innerHTML = `
-                            <div id="confirmationOverlay" style="background: rgba(0, 0, 0, 0.5); position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
-                                <div style="background: white; padding: 20px; border-radius: 5px; text-align: center;">
-                                    <p>¿Está seguro de que desea borrar la factura?</p>
-                                    <button id="confirmYes" style="margin-right: 10px;">Sí</button>
-                                    <button id="confirmNo">No</button>
-                                </div>
-                            </div>
-                        `;
+                        // Afficher la boîte de dialogue de confirmation
+                        const confirmationPopup = document.getElementById('confirmationPopup');
+                        confirmationPopup.style.display = 'block';
 
-                        // Ajouter le popup au body
-                        document.body.appendChild(confirmationPopup);
-
-                        // Attacher les écouteurs d'événements après l'insertion dans le DOM
+                        // Attacher l'événement au bouton "Sí" après avoir affiché la confirmation
                         document.getElementById('confirmYes').addEventListener('click', async function() {
                             const userId = row.dataset.userId; // Récupérer l'UUID du user
                             if (userId) {
@@ -827,8 +816,8 @@
                                     if (error) {
                                         console.error('Erreur lors de la mise à jour de la colonne factura:', error);
                                     } else {
-                                        alert("Factura borrada avec éxito.");
-                                        // Mettre à jour l'UI
+                                        alert("Factura borrada con éxito.");
+                                        // Mettre à jour l'UI pour remplacer "Voir la Facture" par "Adjuntar Factura"
                                         const facturaLink = row.querySelector('.factura-link');
                                         if (facturaLink) {
                                             facturaLink.textContent = 'Adjuntar Factura';
@@ -841,16 +830,17 @@
                                 }
                             }
 
-                            // Retirer le popup après avoir cliqué sur "Sí"
-                            document.body.removeChild(document.getElementById('confirmationOverlay'));
+                            // Masquer le popup après avoir cliqué sur "Sí"
+                            confirmationPopup.style.display = 'none';
                         });
 
                         // Gérer le clic sur "No"
                         document.getElementById('confirmNo').addEventListener('click', function() {
-                            // Retirer le popup si "No" est cliqué
-                            document.body.removeChild(document.getElementById('confirmationOverlay'));
+                            // Masquer le popup si "No" est cliqué
+                            confirmationPopup.style.display = 'none';
                         });
                     });
+
 
 
 

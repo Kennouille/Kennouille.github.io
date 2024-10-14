@@ -256,10 +256,7 @@
             if (confirmDelete) {
                 try {
                     const response = await fetch(`/delete-factura/${userId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
+                        method: 'GET',
                     });
 
                     if (response.ok) {
@@ -279,6 +276,7 @@
                 }
             }
         }
+
 
 
 

@@ -221,6 +221,35 @@
             input.click();
         }
 
+        borrarFacturaButton.addEventListener('click', async function() {
+            const userId = row.dataset.userId; // Récupérer le user_id de la ligne
+
+            if (!userId) {
+                alert("Erreur : user_id manquant.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/delete-factura/${userId}`, {
+                    method: 'POST', // Utilisation de la méthode POST pour la suppression
+                });
+
+                if (response.ok) {
+                    alert("Factura borrada con éxito.");
+                    // Remplacer le texte par "Adjuntar Factura" dans la cellule correspondante
+                    const facturaLink = row.querySelector('.factura-link');
+                    if (facturaLink) {
+                        facturaLink.textContent = 'Adjuntar Factura';
+                        facturaLink.removeAttribute('data-factura'); // Supprimer l'attribut data-factura
+                    }
+                } else {
+                    alert("Erreur lors de la suppression de la facture.");
+                }
+            } catch (error) {
+                console.error("Erreur:", error);
+                alert("Erreur lors de la suppression de la facture.");
+            }
+        });
 
         async function deleteFactura(userId) {
             const confirmDelete = confirm("¿Estás seguro de que quieres borrar la factura?");

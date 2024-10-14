@@ -412,7 +412,7 @@
             // Insérer les données dans event_quot1
             const { error: insertErrorEventQuot1 } = await supabase
                 .from('event_quot1')
-                .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, env_datos: env_datos, Factura: factura, pagado: pagado, user_id: user_id }]);
+                .insert([{ Telefono: telefono, Nombre: nombre, Fecha: fecha, Hora: hora, Min: min, Lugar: lugar, Precio: precio, Trabajo: trabajo, env_datos: env_datos, factura: factura, pagado: pagado, user_id: user_id }]);
 
             if (insertErrorEventQuot1) {
                 console.error('Erreur lors de l\'ajout de l\'événement :', insertErrorEventQuot1);

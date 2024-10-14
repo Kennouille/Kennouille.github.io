@@ -28,15 +28,14 @@ h1 {
 }
 
 .table-container {
-    width: 100%; /* La table occupera toute la largeur disponible */
-    overflow-x: auto; /* Active seulement l'ascenseur horizontal si nécessaire */
-    overflow-y: hidden; /* Désactive complètement l'ascenseur vertical */
-    white-space: normal; /* Permettre au texte de se plier sur plusieurs lignes */
+    width: 100%; /* Le conteneur occupera toute la largeur de l'écran */
+    overflow-x: auto; /* Active seulement l'ascenseur horizontal */
+    overflow-y: visible; /* Aucun ascenseur vertical */
 }
 
 #editable-table {
-    width: max-content; /* La largeur du tableau s'ajuste à son contenu */
-    border-collapse: collapse; /* Garde la structure compacte */
+    width: max-content; /* Ajuste la largeur du tableau en fonction du contenu */
+    border-collapse: collapse; /* Bordures compactes pour les cellules */
 }
 
 #editable-table th, #editable-table td {
@@ -44,8 +43,14 @@ h1 {
     border: 1px solid blue;
     text-align: center;
     white-space: normal; /* Le texte peut se plier sur plusieurs lignes */
-    word-wrap: break-word; /* Le texte long se replie sur plusieurs lignes */
+    word-wrap: break-word; /* Si le texte est long, il se pliera automatiquement */
 }
+
+/* Suppression des scrollbars verticales */
+body {
+    overflow-y: hidden; /* Aucune barre de défilement verticale pour la page entière */
+}
+
 
 
 #selectedDateDisplay {

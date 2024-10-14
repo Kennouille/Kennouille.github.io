@@ -1161,54 +1161,52 @@
             </table>
         </div>
         <div class="table-container">
-            <div class="table-wrapper">
-                <table id="editable-table" style="width: 1000px;">
-                    <thead>
-                        <tr>
-                            <th>Telefono</th>
-                            <th>Nombre</th>
-                            <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Min</th>
-                            <th>Lugar</th>
-                            <th>Precio</th>
-                            <th>Trabajo</th>
-                            <th>user_id</th>
-                            <th>Facturación</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td>
-                                <div class="checkbox-container" style="font-size: smaller;">
-                                    <label>
-                                        <input type="checkbox" data-column="env_datos" ${event.env_datos ? 'checked' : ''}> - Envié datos
-                                    </label>
-                                    <br>
-                                    <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.factura}">${event.factura ? 'Voir la Facture' : 'Adjuntar Factura'}</span>
-                                    // <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="chemin_vers_facture.pdf">Voir la Facture</span>
-                                    <br>
-                                    <label>
-                                        <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - pagado
-                                    </label>
-                                    <input type="file" id="facturaInput" style="display: none;">
-                                </div>
-                            </td>
-                        </tr>
+            <table id="editable-table">
+                <thead>
+                    <tr>
+                        <th>Telefono</th>
+                        <th>Nombre</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Min</th>
+                        <th>Lugar</th>
+                        <th>Precio</th>
+                        <th>Trabajo</th>
+                        <th>user_id</th>
+                        <th>Facturación</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td>
+                            <div class="checkbox-container" style="font-size: smaller;">
+                                <label>
+                                    <input type="checkbox" data-column="env_datos" ${event.env_datos ? 'checked' : ''}> - Envié datos
+                                </label>
+                                <br>
+                                <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.factura}">${event.factura ? 'Voir la Facture' : 'Adjuntar Factura'}</span>
+                                // <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="chemin_vers_facture.pdf">Voir la Facture</span>
+                                <br>
+                                <label>
+                                    <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - pagado
+                                </label>
+                                <input type="file" id="facturaInput" style="display: none;">
+                            </div>
+                        </td>
+                    </tr>
                     <!-- Ajoutez plus de lignes si nécessaire -->
-                    </tbody>
-                </table>
-           </div>
+                </tbody>
+            </table>
         </div>
         <!-- Modal pour afficher les PDF ou images -->
         <div id="facturaModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">

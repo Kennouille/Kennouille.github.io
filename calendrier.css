@@ -27,28 +27,6 @@ h1 {
     margin-bottom: 20px;
 }
 
-.table-container {
-    width: 100%; /* La table occupera toute la largeur disponible */
-    overflow-x: auto; /* Active un ascenseur horizontal si nécessaire */
-    overflow-y: hidden; /* Empêche totalement l'ascenseur vertical */
-}
-
-#editable-table {
-    min-width: 1000px; /* Fixe une largeur minimale au tableau */
-    border-collapse: collapse; /* Évite les écarts entre les cellules */
-}
-
-#editable-table th, #editable-table td {
-    padding: 10px;
-    border: 1px solid blue;
-    text-align: center;
-    word-wrap: break-word; /* Le texte long se replie sur plusieurs lignes */
-    white-space: normal; /* Permet au texte de se plier sur plusieurs lignes */
-}
-
-
-
-
 #selectedDateDisplay {
     font-size: 1.5em; /* Ajustez la taille selon vos besoins */
     font-weight: bold;

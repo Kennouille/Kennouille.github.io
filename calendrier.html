@@ -514,7 +514,9 @@
                                     <input type="checkbox" data-column="env_datos" ${event.env_datos ? 'checked' : ''}> - Envié datos
                                 </label>
                                 <br>
-                                <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.Factura}">${event.Factura ? 'Voir la Facture' : 'Adjuntar Factura'}</span>
+                                <span class="factura-link" style="cursor: pointer; color: blue; text-decoration: underline;" data-factura="${event.Factura}">
+                                    ${event.Factura ? 'Voir la Facture' : 'Ajouter Factura'}
+                                </span>
                                 <br>
                                 <label>
                                     <input type="checkbox" data-column="pagado" ${event.pagado ? 'checked' : ''}> - pagado

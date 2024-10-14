@@ -28,16 +28,19 @@ h1 {
 }
 
 .table-container {
-    overflow-x: auto; /* Permet le défilement horizontal */
-    width: 100%; /* Prend toute la largeur disponible */
-    margin-top: 20px; /* Séparation par rapport au calendrier */
+    overflow-x: auto; /* Permet seulement le défilement horizontal */
+    overflow-y: hidden; /* Désactive le défilement vertical */
+    width: 100%; /* Assure que le conteneur prend toute la largeur disponible */
+    margin-top: 20px; /* Espace entre le tableau et les autres éléments */
+    white-space: nowrap; /* Empêche le passage à la ligne des éléments */
 }
 
 #editable-table {
-    min-width: 1000px; /* Définir une largeur minimale pour forcer le défilement */
-    width: max-content; /* Assure que le tableau peut dépasser la largeur de la page si nécessaire */
-    border-collapse: collapse; /* Conserve la structure de ton tableau */
+    min-width: 1000px; /* Force une largeur minimale pour créer le défilement horizontal */
+    width: max-content; /* Permet au tableau de s'étendre en fonction de son contenu */
+    border-collapse: collapse; /* Maintient la structure du tableau */
 }
+
 
 #selectedDateDisplay {
     font-size: 1.5em; /* Ajustez la taille selon vos besoins */

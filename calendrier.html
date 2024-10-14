@@ -197,8 +197,8 @@
                             if (error.statusCode === 409 && error.message === 'The resource already exists') {
                                 alert('Este archivo fue utilizado. Ponle otro nombre para utilizarlo de nuevo.');
                             } else {
-                                console.error('Erreur lors du téléchargement de la facture :', error);
-                                alert('Erreur lors du téléchargement de la facture.');
+                                console.error('Este archivo fue utilizado. Ponle otro nombre para utilizarlo de nuevo.', error);
+                                alert('Este archivo fue utilizado. Ponle otro nombre para utilizarlo de nuevo.');
                             }
                             return;
                         }

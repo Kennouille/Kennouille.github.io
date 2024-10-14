@@ -798,7 +798,7 @@
 
                     // Ajouter un écouteur d'événement au bouton "Borrar Factura"
                     borrarFacturaButton.addEventListener('click', function() {
-                        // Créer une boîte de dialogue de confirmation
+                        // Créer et insérer la boîte de dialogue de confirmation
                         const confirmationPopup = document.createElement('div');
                         confirmationPopup.innerHTML = `
                             <div id="confirmationOverlay" style="background: rgba(0, 0, 0, 0.5); position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
@@ -810,10 +810,10 @@
                             </div>
                         `;
 
-                        // Ajouter le popup de confirmation au body
+                        // Ajouter le popup au body
                         document.body.appendChild(confirmationPopup);
 
-                        // Gérer le clic sur "Sí"
+                        // Attacher les écouteurs d'événements après l'insertion dans le DOM
                         document.getElementById('confirmYes').addEventListener('click', async function() {
                             const userId = row.dataset.userId; // Récupérer l'UUID du user
                             if (userId) {
@@ -828,7 +828,7 @@
                                         console.error('Erreur lors de la mise à jour de la colonne factura:', error);
                                     } else {
                                         alert("Factura borrada avec éxito.");
-                                        // Mettre à jour l'UI pour remplacer "Voir la Factura" par "Adjuntar Factura"
+                                        // Mettre à jour l'UI
                                         const facturaLink = row.querySelector('.factura-link');
                                         if (facturaLink) {
                                             facturaLink.textContent = 'Adjuntar Factura';

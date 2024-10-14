@@ -275,50 +275,42 @@
                 supabase
                     .storage
                     .from('facturas')
-                    .createSignedUrl(facturaPath, 86400) // 86400 secondes = 1 jour
+                    .createSignedUrl(facturaPath, 86400)
                     .then(({ data, error }) => {
                         if (error) {
                             console.error("Erreur lors de la récupération de l'URL publique de la facture :", error);
                         } else if (data) {
                             const fileUrl = data.signedUrl;
 
-                            // Détecter si le fichier est un PDF ou une image en fonction de son extension
+                            // Détecter si le fichier est un PDF
                             const isPDF = fileUrl.toLowerCase().endsWith('.pdf');
 
-                            // Afficher l'URL dans l'iframe du modal
-                            const iframe = document.getElementById('facturaIframe');
-                            iframe.src = fileUrl;
-
-                            // Ajuster la taille de l'iframe pour les PDF
+                            // Si c'est un PDF, afficher dans une iframe
                             if (isPDF) {
-                                iframe.style.height = '100%'; // Adapter la taille pour les PDF
+                                const modalContent = `
+                                    <div id="facturaModal" style="display:block; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+                                        <div style="position:relative; width:80%; height:80%; margin:5% auto; background:white;">
+                                            <iframe src="${fileUrl}" width="100%" height="100%"></iframe>
+                                            <button id="closeModal" style="position:absolute; top:10px; right:10px;">Fermer</button>
+                                        </div>
+                                    </div>
+                                `;
+                                document.body.insertAdjacentHTML('beforeend', modalContent);
+
+                                document.getElementById('closeModal').onclick = function() {
+                                    document.getElementById('facturaModal').remove();
+                                };
                             } else {
-                                iframe.style.height = '600px'; // Taille standard pour les images
+                                // Gérer d'autres types de fichiers comme les images
+                                window.open(fileUrl, '_blank');
                             }
-
-                            // Afficher le modal
-                            const modal = document.getElementById('facturaModal');
-                            modal.style.display = 'block';
-
-                            // Fermer le modal en cliquant sur la croix
-                            document.getElementById('closeModal').onclick = function() {
-                                modal.style.display = 'none';
-                                iframe.src = ''; // Vider l'iframe quand le modal est fermé
-                            };
-
-                            // Fermer le modal en cliquant en dehors du contenu
-                            window.onclick = function(event) {
-                                if (event.target === modal) {
-                                    modal.style.display = 'none';
-                                    iframe.src = ''; // Vider l'iframe quand le modal est fermé
-                                }
-                            };
                         }
                     });
             } else {
                 console.error('URL de la facture non trouvée.');
             }
         }
+
 
         // Assurer que handleDateClick est défini une seule fois
         if (typeof handleDateClick === 'undefined') {

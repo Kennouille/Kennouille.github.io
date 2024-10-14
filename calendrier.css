@@ -21,10 +21,16 @@ h1 {
     padding: 20px;
 }
 
-.navigation-container, .calendar-container, .editable-container, .form-container {
+.navigation-container, .calendar-container, .editable-table, .form-container {
     width: 100%;
     max-width: 600px; /* Limite la largeur pour une meilleure lisibilité sur les grands écrans */
     margin-bottom: 20px;
+}
+
+.table-container {
+    overflow-x: auto; /* Permet le défilement horizontal */
+    width: 100%; /* Prend toute la largeur disponible */
+    margin-top: 20px; /* Séparation par rapport au calendrier */
 }
 
 #selectedDateDisplay {

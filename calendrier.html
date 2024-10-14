@@ -328,6 +328,11 @@
 
                 console.log('fetchEventsByDate called for date:', formattedDate);
                 await fetchEventsByDate(formattedDate);
+
+                // Une fois que les événements sont chargés, activer l'ascenseur horizontal
+                const tableContainer = document.querySelector('.table-container');
+                tableContainer.style.overflowX = 'auto'; // Active l'ascenseur horizontal
+
             }
         }
 
@@ -1160,7 +1165,7 @@
                 </tr>
             </table>
         </div>
-        <div class="editable-container">
+        <div class="table-container">
             <table id="editable-table">
                 <thead>
                     <tr>

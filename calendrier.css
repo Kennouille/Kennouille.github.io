@@ -27,6 +27,25 @@ h1 {
     margin-bottom: 20px;
 }
 
+.table-container {
+    width: 100%;
+    max-width: 700px; /* Largeur maximale initiale */
+    overflow-x: hidden; /* Masque l'ascenseur horizontal */
+}
+
+#editable-table {
+    width: 1000px; /* Taille de la table pour forcer le dépassement */
+    border-collapse: collapse;
+}
+
+#editable-table th, #editable-table td {
+    padding: 10px;
+    border: 1px solid blue;
+    text-align: center;
+    white-space: normal; /* Permet le retour à la ligne */
+}
+
+
 #selectedDateDisplay {
     font-size: 1.5em; /* Ajustez la taille selon vos besoins */
     font-weight: bold;

@@ -343,6 +343,8 @@
             const pagado_checkbox = document.getElementById('pagado');
             const pagado = pagado_checkbox ? pagado_checkbox.checked : false; // Même vérification pour 'pagado'
 
+            // Initialisation de la facture à null, car elle n'est pas encore présente
+            const factura = null;
 
             // Générer un UUID pour user_id
             const user_id = crypto.randomUUID();

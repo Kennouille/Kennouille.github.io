@@ -31,11 +31,14 @@ h1 {
     width: 100%;
     max-width: 700px;
     overflow-x: auto;
+    height: auto;
+    overflow-y: hidden; /* Empêche le défilement vertical */
 }
 
 #editable-table {
     width: 1000px;
 }
+
 
 
 #selectedDateDisplay {

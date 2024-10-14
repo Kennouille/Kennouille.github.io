@@ -797,28 +797,60 @@
                     applyCell.appendChild(borrarFacturaButton);
 
                     // Ajouter un écouteur d'événement au bouton "Borrar Factura"
-                    borrarFacturaButton.addEventListener('click', async function() {
-                    const userId = row.dataset.userId; // Récupère l'UUID du user
-                    if (userId) {
-                        const { error } = await supabase
-                            .from('event_quot1')
-                            .update({ factura: null })
-                            .eq('user_id', userId);
+                    borrarFacturaButton.addEventListener('click', function() {
+                        // Créer une boîte de dialogue de confirmation
+                        const confirmationPopup = document.createElement('div');
+                        confirmationPopup.innerHTML = `
+                            <div style="background: rgba(0, 0, 0, 0.5); position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                                <div style="background: white; padding: 20px; border-radius: 5px; text-align: center;">
+                                    <p>¿Está seguro de que desea borrar la factura?</p>
+                                    <button id="confirmYes" style="margin-right: 10px;">Sí</button>
+                                    <button id="confirmNo">No</button>
+                                </div>
+                            </div>
+                        `;
 
-                        if (error) {
-                            console.error('Erreur lors de la mise à jour de la facture :', error);
-                        } else {
-                            alert('La facture a été détachée avec succès.');
-                            // Mettre à jour l'interface utilisateur pour afficher "Adjuntar Factura"
-                            const facturaLink = row.querySelector('.factura-link');
-                            if (facturaLink) {
-                                facturaLink.textContent = 'Adjuntar Factura';
-                                facturaLink.removeAttribute('data-factura');
+                        // Ajouter le popup de confirmation au body
+                        document.body.appendChild(confirmationPopup);
+
+                        // Gérer le clic sur "Sí"
+                        document.getElementById('confirmYes').addEventListener('click', async function() {
+                            const userId = row.dataset.userId; // Récupérer l'UUID du user
+                            if (userId) {
+                                try {
+                                    // Mettre la colonne 'factura' à NULL dans Supabase
+                                    const { error } = await supabase
+                                        .from('event_quot1')
+                                        .update({ factura: null })
+                                        .eq('user_id', userId);
+
+                                    if (error) {
+                                        console.error('Erreur lors de la mise à jour de la colonne factura:', error);
+                                    } else {
+                                        alert("Factura borrada avec éxito.");
+                                        // Mettre à jour l'UI pour remplacer "Voir la Factura" par "Adjuntar Factura"
+                                        const facturaLink = row.querySelector('.factura-link');
+                                        if (facturaLink) {
+                                            facturaLink.textContent = 'Adjuntar Factura';
+                                            facturaLink.removeAttribute('data-factura');
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error('Erreur:', error);
+                                    alert('Erreur lors de la suppression de la facture.');
+                                }
                             }
-                        }
-                    }
-                });
 
+                            // Retirer le popup après avoir cliqué sur "Sí"
+                            document.body.removeChild(confirmationPopup);
+                        });
+
+                        // Gérer le clic sur "No"
+                        document.getElementById('confirmNo').addEventListener('click', function() {
+                            // Retirer le popup si "No" est cliqué
+                            document.body.removeChild(confirmationPopup);
+                        });
+                    });
 
 
                     // Ajouter un écouteur d'événement au bouton "Aplicar cambio"

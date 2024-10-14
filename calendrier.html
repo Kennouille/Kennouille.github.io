@@ -280,9 +280,21 @@
                         if (error) {
                             console.error("Erreur lors de la récupération de l'URL publique de la facture :", error);
                         } else if (data) {
+                            const fileUrl = data.signedUrl;
+
+                            // Détecter si le fichier est un PDF ou une image en fonction de son extension
+                            const isPDF = fileUrl.toLowerCase().endsWith('.pdf');
+
                             // Afficher l'URL dans l'iframe du modal
                             const iframe = document.getElementById('facturaIframe');
-                            iframe.src = data.signedUrl;
+                            iframe.src = fileUrl;
+
+                            // Ajuster la taille de l'iframe pour les PDF
+                            if (isPDF) {
+                                iframe.style.height = '100%'; // Adapter la taille pour les PDF
+                            } else {
+                                iframe.style.height = '600px'; // Taille standard pour les images
+                            }
 
                             // Afficher le modal
                             const modal = document.getElementById('facturaModal');
@@ -307,13 +319,6 @@
                 console.error('URL de la facture non trouvée.');
             }
         }
-
-
-
-
-
-
-
 
         // Assurer que handleDateClick est défini une seule fois
         if (typeof handleDateClick === 'undefined') {

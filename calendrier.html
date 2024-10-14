@@ -133,10 +133,11 @@
             // Assurez-vous que chaque lien de facture déclenche openFactura
             document.querySelectorAll('.factura-link').forEach(link => {
                 link.addEventListener('click', function(event) {
-                    event.preventDefault(); // Empêcher l'ouverture par défaut
-                    openFactura(link); // Ouvrir dans le modal
+                    event.preventDefault(); // Empêche l'ouverture dans un nouvel onglet
+                    openFactura(link); // Ouvre la facture dans un modal
                 });
             });
+
 
             const cells = document.querySelectorAll('.clickable');
             cells.forEach(cell => {
@@ -292,56 +293,50 @@
             const facturaPath = link.dataset.factura;
 
             if (facturaPath) {
-                // Obtenir l'URL signée temporaire de la facture avec une durée de validité d'une journée (86400 secondes)
+                // Obtenir l'URL signée temporaire de la facture
                 supabase
                     .storage
                     .from('facturas')
                     .createSignedUrl(facturaPath, 86400)
                     .then(({ data, error }) => {
                         if (error) {
-                            console.error("Erreur lors de la récupération de l'URL publique de la facture :", error);
+                            console.error("Erreur lors de la récupération de l'URL signée :", error);
                         } else if (data) {
                             const fileUrl = data.signedUrl;
 
-                            // Détecter si le fichier est un PDF ou une image
+                            // Détecter si le fichier est un PDF
                             const isPDF = fileUrl.toLowerCase().endsWith('.pdf');
-                            const isImage = /\.(jpg|jpeg|png|gif|bmp)$/i.test(fileUrl);
-
-                            const modal = document.getElementById('facturaModal');
-                            const iframe = document.getElementById('facturaIframe');
-                            const imgElement = document.getElementById('facturaImg');
 
                             if (isPDF) {
-                                iframe.src = fileUrl;
-                                iframe.style.display = 'block';  // Afficher l'iframe
-                                imgElement.style.display = 'none';  // Masquer l'image
-                            } else if (isImage) {
-                                imgElement.src = fileUrl;
-                                imgElement.style.display = 'block';  // Afficher l'image
-                                iframe.style.display = 'none';  // Masquer l'iframe
+                                // Charger le PDF dans l'iframe du modal
+                                const modal = document.getElementById('facturaModal');
+                                const iframe = document.getElementById('facturaIframe');
+                                iframe.src = fileUrl; // Charger le PDF
+                                modal.style.display = 'block'; // Afficher le modal
+
+                                // Fermer le modal lorsque l'utilisateur clique sur le bouton "Fermer"
+                                document.getElementById('closeModal').onclick = function() {
+                                    modal.style.display = 'none';
+                                    iframe.src = '';  // Réinitialiser après fermeture
+                                };
                             } else {
-                                // Pour d'autres types de fichiers, ouvrir dans un nouvel onglet
-                                window.open(fileUrl, '_blank');
+                                // Gérer d'autres types de fichiers comme les images
+                                const modal = document.getElementById('facturaModal');
+                                const iframe = document.getElementById('facturaIframe');
+                                iframe.src = fileUrl; // Charger l'image ou autre dans le iframe
+                                modal.style.display = 'block';
+
+                                document.getElementById('closeModal').onclick = function() {
+                                    modal.style.display = 'none';
+                                    iframe.src = '';  // Réinitialiser après fermeture
+                                };
                             }
-
-                            // Afficher le modal
-                            modal.style.display = 'block';
-
-                            // Fermer le modal lorsque l'utilisateur clique sur la croix
-                            document.getElementById('closeModal').onclick = function() {
-                                modal.style.display = 'none';
-                                iframe.src = '';  // Réinitialiser après fermeture
-                                imgElement.src = '';  // Réinitialiser après fermeture
-                            };
                         }
                     });
             } else {
                 console.error('URL de la facture non trouvée.');
             }
         }
-
-
-
 
 
         // Assurer que handleDateClick est défini une seule fois
@@ -1231,12 +1226,10 @@
                 </tbody>
             </table>
         </div>
-        <button id="testModalButton">Test Modal</button>
-        <!-- Modal pour afficher les PDF et images -->
+        <!-- Modal pour afficher les PDF ou images -->
         <div id="facturaModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
-            <div class="modal-content" style="position:relative; width:80%; height:80%; margin:5% auto; background:white;">
-                <iframe id="facturaIframe" src="" style="width:100%; height:100%; display: none;"></iframe>
-                <img id="facturaImg" style="width:100%; height:100%; display: none;" />
+            <div style="position:relative; width:80%; height:80%; margin:5% auto; background:white;">
+                <iframe id="facturaIframe" src="" style="width:100%; height:100%;"></iframe>
                 <button id="closeModal" style="position:absolute; top:10px; right:10px;">Fermer</button>
             </div>
         </div>

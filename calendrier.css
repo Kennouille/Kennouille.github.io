@@ -27,6 +27,28 @@ h1 {
     margin-bottom: 20px;
 }
 
+.table-container {
+    width: 100%; /* Le conteneur prend toute la largeur disponible */
+    max-width: 700px; /* Limite la taille du conteneur parent à 700 pixels */
+    overflow-x: auto; /* Active un ascenseur horizontal */
+    overflow-y: hidden; /* Désactive complètement l'ascenseur vertical */
+}
+
+#editable-table {
+    width: 1000px; /* La largeur du tableau est fixée à 1000 pixels */
+    border-collapse: separate; /* Sépare les bordures des cellules */
+    border-radius: 12px; /* Bordure arrondie */
+}
+
+#editable-table th, #editable-table td {
+    padding: 10px;
+    border: 1px solid blue;
+    text-align: center;
+    white-space: normal; /* Le texte peut se plier sur plusieurs lignes */
+    word-wrap: break-word; /* Le texte long se replie sur plusieurs lignes */
+}
+
+
 #selectedDateDisplay {
     font-size: 1.5em; /* Ajustez la taille selon vos besoins */
     font-weight: bold;

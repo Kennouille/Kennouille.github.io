@@ -29,15 +29,13 @@ h1 {
 
 .table-container {
     width: 100%; /* La table occupera toute la largeur disponible */
-    max-width: 700px; /* Limite la taille du conteneur parent à 700 pixels */
-    overflow-x: auto; /* Active un ascenseur horizontal */
-    overflow-y: visible; /* Assure que tous les événements sont visibles avant l'apparition de l'ascenseur */
-    white-space: nowrap; /* Empêche les cellules de se replier, elles occuperont toute la largeur */
+    overflow-x: auto; /* Active un ascenseur horizontal si nécessaire */
+    overflow-y: hidden; /* Empêche totalement l'ascenseur vertical */
 }
 
 #editable-table {
-    width: 1000px; /* Largeur du tableau fixée */
-    border-collapse: collapse; /* Pour éviter des écarts entre les cellules */
+    min-width: 1000px; /* Fixe une largeur minimale au tableau */
+    border-collapse: collapse; /* Évite les écarts entre les cellules */
 }
 
 #editable-table th, #editable-table td {
@@ -47,6 +45,7 @@ h1 {
     word-wrap: break-word; /* Le texte long se replie sur plusieurs lignes */
     white-space: normal; /* Permet au texte de se plier sur plusieurs lignes */
 }
+
 
 
 

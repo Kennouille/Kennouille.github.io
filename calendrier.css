@@ -28,20 +28,20 @@ h1 {
 }
 
 .table-container {
-    overflow-x: auto; /* Permet le défilement horizontal */
-    overflow-y: visible; /* Permet de voir tout le contenu verticalement */
-    max-height: none; /* Permet de ne pas limiter la hauteur */
+    overflow-x: auto; /* Ajouter seulement un ascenseur horizontal si nécessaire */
+    overflow-y: hidden; /* Désactive l'ascenseur vertical */
     width: 100%; /* Prend toute la largeur disponible */
-    margin-top: 20px; /* Espace avec les autres éléments */
-    white-space: nowrap; /* Empêche le retour à la ligne dans le tableau */
+    white-space: nowrap; /* Empêche le retour à la ligne des colonnes */
+    border: 1px solid blue; /* Pour une meilleure visibilité de la table */
 }
 
 #editable-table {
-    min-width: 1000px; /* Force une largeur minimale pour créer le défilement horizontal */
-    width: max-content; /* Ajuste la largeur du tableau au contenu */
-    border-collapse: collapse; /* Garde la structure du tableau compacte */
-    table-layout: auto; /* Ajuste automatiquement les colonnes */
+    min-width: 1000px; /* Largeur minimale pour forcer un défilement horizontal si besoin */
+    width: max-content; /* Ajuste la largeur en fonction du contenu du tableau */
+    border-collapse: collapse; /* Garde la structure compacte */
+    table-layout: auto; /* Gère automatiquement la largeur des colonnes */
 }
+
 
 
 

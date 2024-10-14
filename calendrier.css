@@ -28,23 +28,25 @@ h1 {
 }
 
 .table-container {
-    width: 100%; /* Le conteneur occupera toute la largeur de l'écran */
-    overflow-x: auto; /* Active seulement l'ascenseur horizontal */
-    overflow-y: visible; /* Aucun ascenseur vertical */
+    width: 100%; /* Prend toute la largeur de l'agenda */
+    overflow-x: auto; /* Active uniquement l'ascenseur horizontal si nécessaire */
+    overflow-y: hidden; /* Désactive complètement l'ascenseur vertical */
+    white-space: nowrap; /* Empêche le texte ou les colonnes de se plier à la largeur de la fenêtre */
 }
 
 #editable-table {
-    width: max-content; /* Ajuste la largeur du tableau en fonction du contenu */
-    border-collapse: collapse; /* Bordures compactes pour les cellules */
+    width: max-content; /* Le tableau s'ajustera à son contenu */
+    border-collapse: collapse; /* Style compact pour les bordures */
 }
 
 #editable-table th, #editable-table td {
     padding: 10px;
     border: 1px solid blue;
     text-align: center;
-    white-space: normal; /* Le texte peut se plier sur plusieurs lignes */
-    word-wrap: break-word; /* Si le texte est long, il se pliera automatiquement */
+    white-space: normal; /* Le texte peut se plier sur plusieurs lignes si nécessaire */
+    word-wrap: break-word; /* Permet au texte long de revenir à la ligne à l'intérieur des cellules */
 }
+
 
 /* Suppression des scrollbars verticales */
 body {
